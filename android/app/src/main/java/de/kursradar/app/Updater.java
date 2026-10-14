@@ -179,7 +179,7 @@ public class Updater {
 
     private void toast(String msg) { Toast.makeText(act, msg, Toast.LENGTH_LONG).show(); }
 
-    /** Vergleicht Versionen wie 3.0.0.1 numerisch; leere Version ist die kleinste. */
+    /** Vergleicht Versionen wie 3.2 numerisch (Teil für Teil, 3.10 > 3.9). */
     static int cmp(String a, String b) {
         String[] x = a == null ? new String[0] : a.split("\\."), y = b == null ? new String[0] : b.split("\\.");
         for (int i = 0; i < Math.max(x.length, y.length); i++) {

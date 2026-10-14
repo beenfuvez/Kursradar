@@ -1,26 +1,27 @@
 Kursradar – Versionshistorie
-Schema: Hauptversion.0.0.Änderung
-  kleine Änderung  -> letzte Stelle +1      (z. B. 1.0.0.1 -> 1.0.0.2)
-  große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 1.0.0.5 -> 2.0.0.1)
+Schema: Hauptversion.Änderung
+  kleine Änderung  -> zweite Stelle +1   (z. B. 3.1 -> 3.2)
+  große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 3.5 -> 4.1)
 
-3.0.0.1  NEU: Android-App mit Live-Kursen ohne PC und automatischen Updates über GitHub.
+3.2      Kürzere Versionsnummern (3.2 statt 3.0.0.2); bisherige Versionen umbenannt.
+3.1      NEU: Android-App mit Live-Kursen ohne PC und automatischen Updates über GitHub.
          Handy-Ansicht mit Navigation unten (Märkte, Analyse, Depot) und Depot als Karten.
-2.0.0.3  Depot-Empfehlung je Position: Verkaufen / Teilgewinne sichern / Halten / Nachkaufen
+2.3      Depot-Empfehlung je Position: Verkaufen / Teilgewinne sichern / Halten / Nachkaufen
          mit Stop-Marke (Verkauf) und Wiedereinstiegs- bzw. Nachkaufmarke, Begründung in der Analyse,
          Filter nach Empfehlung.
-2.0.0.2  Depot: Kaufkurs in Euro auch für US-Werte und Kryptos (Umrechnung zum aktuellen Kurs),
+2.2      Depot: Kaufkurs in Euro auch für US-Werte und Kryptos (Umrechnung zum aktuellen Kurs),
          Warnung bei vermutlich falschem Symbol, Positionen ohne Börsenkurs (Wert vom Broker),
          Import-Button für JSON-Dateien; mitgeliefertes depot-import.json wird beim ersten Start geladen.
-2.0.0.1  NEU: Ansicht "Mein Depot" – Aktien, ETFs und Kryptos mit Stückzahl und Kaufkurs
+2.1      NEU: Ansicht "Mein Depot" – Aktien, ETFs und Kryptos mit Stückzahl und Kaufkurs
          speichern, bearbeiten, löschen, nach Art filtern und nach jeder Spalte sortieren.
          Depotwert, Gewinn/Verlust, Tagesänderung (in EUR), Aufteilung, Trend und Kaufsignal
          je Position; Klick auf eine Position öffnet die Analyse. Symbolsuche mit Vorschlägen.
          Depot wird im Benutzerordner gespeichert (Windows: %APPDATA%\Kursradar, Mac/Linux: ~/.kursradar)
          und bleibt bei neuen Versionen erhalten.
-1.0.0.3  Startdateien per Doppelklick (Windows/Mac/Linux): Python-Pruefung,
+1.3      Startdateien per Doppelklick (Windows/Mac/Linux): Python-Pruefung,
          automatische Python-Installation unter Windows, Browser oeffnet sich selbst
-1.0.0.2  Versionsnummer in App, Server und Download-Dateien
-1.0.0.1  Einstiegs-Check "Kauf zum aktuellen Kurs?" im Bereich Eignung
+1.2      Versionsnummer in App, Server und Download-Dateien
+1.1      Einstiegs-Check "Kauf zum aktuellen Kurs?" im Bereich Eignung
          (Urteil, Ziel/Stop, Chance-Risiko-Verhältnis, Begründung)
-1.0.0.0  Erste Version: Top-10-Listen Europa/Amerika/Asien/Weltweit, Live-Kurse
+1.0      Erste Version: Top-10-Listen Europa/Amerika/Asien/Weltweit, Live-Kurse
          über server.py, Charts, Trendanalyse, Filter, Bestenliste, Trend-Lexikon

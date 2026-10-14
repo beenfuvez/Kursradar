@@ -2,10 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
-// Versionen: App-Hülle aus android/APP_VERSION, Oberfläche aus kursradar/VERSION (Schema a.b.c.d)
+// Versionen: App-Hülle aus android/APP_VERSION, Oberfläche aus kursradar/VERSION (Schema Haupt.Änderung, z. B. 3.2)
 def appVersion = rootProject.file('APP_VERSION').text.trim()
 def p = appVersion.tokenize('.').collect { it as int }
-def appCode = p[0] * 1000000 + p[1] * 10000 + p[2] * 100 + p[3]
+def appCode = p[0] * 1000000 + p[1] * 1000
 def webVersion = rootProject.file('../kursradar/VERSION').text.trim()
 // GitHub-Repository für automatische Updates, z. B. "name/kursradar" (setzt der Build-Workflow)
 def updateRepo = (project.findProperty('updateRepo') ?: '').toString()

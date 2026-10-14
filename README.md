@@ -21,7 +21,7 @@ als Desktop-App (`kursradar/`) und als Android-App (`android/`) mit automatische
 | App selbst (Version in `android/APP_VERSION`) | neue Dateien hochladen | zeigt „App-Update … Installieren“ |
 
 In der App die Versionsnummer oben links antippen = sofort nach Updates suchen.
-Versionsschema: kleine Änderung `x.0.0.n+1`, große Änderung `n+1.0.0.1`.
+Versionsschema: kleine Änderung `3.1 → 3.2`, große Änderung `3.x → 4.1`.
 
 ## Desktop-Version
 

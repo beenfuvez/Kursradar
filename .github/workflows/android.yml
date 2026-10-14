@@ -39,10 +39,10 @@ jobs:
         run: |
           APP=$(tr -d '[:space:]' < android/APP_VERSION)
           WEB=$(tr -d '[:space:]' < kursradar/VERSION)
-          IFS=. read -r a b c d <<< "$APP"
+          IFS=. read -r a b <<< "$APP"
           echo "app=$APP" >> "$GITHUB_OUTPUT"
           echo "web=$WEB" >> "$GITHUB_OUTPUT"
-          echo "code=$((a*1000000 + b*10000 + c*100 + d))" >> "$GITHUB_OUTPUT"
+          echo "code=$((a*1000000 + b*1000))" >> "$GITHUB_OUTPUT"
           if git ls-remote --exit-code --tags origin "refs/tags/app-v$APP" > /dev/null; then
             echo "new=false" >> "$GITHUB_OUTPUT"
           else
