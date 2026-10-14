@@ -3,7 +3,7 @@
 import os, zipfile
 here = os.path.dirname(os.path.abspath(__file__))
 v = open(os.path.join(here, "VERSION")).read().strip()
-out = os.path.join(os.path.dirname(here), f"kursradar_v{v}.zip")
+out = os.path.join(os.path.dirname(os.path.dirname(here)), f"kursradar_v{v}.zip")  # neben dem Repository, nie darin
 FILES = ["depot-import.json", "Kursradar starten (Windows).bat", "Kursradar starten (Mac).command", "kursradar-start.sh",
          "LIESMICH.txt", "index.html", "server.py", "CHANGELOG.txt", "VERSION"]
 with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
