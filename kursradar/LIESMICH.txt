@@ -1,0 +1,15 @@
+KURSRADAR – SO STARTEST DU DIE APP
+
+Windows:  Doppelklick auf  "Kursradar starten (Windows).bat"
+Mac:      Doppelklick auf  "Kursradar starten (Mac).command"
+          (beim allerersten Mal: Rechtsklick -> "Öffnen" -> "Öffnen")
+Linux:    ./kursradar-start.sh
+
+Der Browser öffnet sich automatisch mit http://localhost:8765.
+Oben links steht "LIVE", wenn echte Kurse geladen werden.
+
+Das schwarze Fenster offen lassen, solange du die App nutzt.
+Zum Beenden das Fenster einfach schließen.
+
+Fehlt Python, installiert die Windows-Startdatei es automatisch
+(einmalig). Auf dem Mac öffnet sich die Download-Seite von python.org.

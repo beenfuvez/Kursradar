@@ -1,0 +1,10 @@
+# Persönliche Depot-Daten gehören nicht ins (öffentliche) Repository
+kursradar/depot-import.json
+portfolio*.json
+*.zip
+# Build-Ausgaben
+android/.gradle/
+android/build/
+android/app/build/
+android/app/src/main/assets/web/
+android/local.properties

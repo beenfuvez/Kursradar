@@ -1,0 +1,60 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Versionen: App-Hülle aus android/APP_VERSION, Oberfläche aus kursradar/VERSION (Schema a.b.c.d)
+def appVersion = rootProject.file('APP_VERSION').text.trim()
+def p = appVersion.tokenize('.').collect { it as int }
+def appCode = p[0] * 1000000 + p[1] * 10000 + p[2] * 100 + p[3]
+def webVersion = rootProject.file('../kursradar/VERSION').text.trim()
+// GitHub-Repository für automatische Updates, z. B. "name/kursradar" (setzt der Build-Workflow)
+def updateRepo = (project.findProperty('updateRepo') ?: '').toString()
+
+android {
+    namespace 'de.kursradar.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'de.kursradar.app'
+        minSdk 24
+        targetSdk 34
+        versionCode appCode
+        versionName appVersion
+        buildConfigField 'String', 'UPDATE_REPO', "\"${updateRepo}\""
+        buildConfigField 'String', 'WEB_VERSION', "\"${webVersion}\""
+    }
+
+    buildFeatures { buildConfig true }
+
+    // Fester Schlüssel, damit sich Updates über die installierte App installieren lassen
+    signingConfigs {
+        release {
+            storeFile rootProject.file('keystore/kursradar.jks')
+            storePassword 'kursradar'
+            keyAlias 'kursradar'
+            keyPassword 'kursradar'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// Oberfläche aus ../kursradar/index.html ins APK übernehmen (Fallback ohne Internet)
+tasks.register('copyWeb', Copy) {
+    from rootProject.file('../kursradar/index.html')
+    into 'src/main/assets/web'
+}
+preBuild.dependsOn 'copyWeb'
