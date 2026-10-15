@@ -201,6 +201,8 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .act button.danger{color:var(--down)}
 .dtbl tfoot td{font-weight:600;border-top:2px solid var(--line);border-bottom:0;cursor:default}
 .dempty{padding:18px 4px 6px}
+.impbox{margin-top:14px;padding:12px 14px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:6px}
+.impbox p{margin:0 0 10px} .impbox .hint{margin:10px 0 0}
 .advbar{align-items:center;margin-top:14px}
 .advbar .label{margin-right:4px}
 .hold-acts{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13px;margin:10px 0 0}
@@ -316,7 +318,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v5.1</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v5.2</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -454,9 +456,10 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
       <section class="card">
         <div class="dhead">
           <div><h2>Mein Depot</h2><div class="sub" id="dSaveInfo"></div></div>
-          <div class="factions" style="justify-content:flex-end"><label class="btn" for="dImport">Importieren</label><input type="file" id="dImport" accept=".json,application/json" hidden>
+          <div class="factions" style="justify-content:flex-end"><button class="btn" type="button" id="dExport">Exportieren</button><label class="btn" for="dImport">Importieren</label><input type="file" id="dImport" accept=".json,application/json" hidden>
           <button class="btn primary" id="dAddBtn" type="button">+ Position hinzufügen</button></div>
         </div>
+        <div class="impbox" id="impBox" hidden></div>
         <div class="tiles" id="dTiles"></div>
         <div class="alloc" id="dAlloc"></div>
         <div class="advbar chips" id="dAdvice"></div>
@@ -1414,16 +1417,46 @@ $("#dSample").addEventListener("click",async()=>{
   $("#dSample").disabled=false;await savePortfolio();renderDepot();
 });
 
+/* Export: Depot + Trade-Tagebuch als Datei (App: Speichern-Dialog von Android, PC: Download) */
+$("#dExport").addEventListener("click",()=>{
+  const name=`owlgo-depot-${today()}.json`;
+  const json=JSON.stringify({version:1,app:"Owlgo",exported:new Date().toISOString(),positions:S.portfolio,journal:S.journal||[]},null,1);
+  if(NATIVE){
+    if(typeof NATIVE.saveFile==="function"){NATIVE.saveFile(name,json);return}
+    $("#dSaveInfo").textContent="Exportieren braucht die neue App-Version: Versionsnummer oben links antippen und das App-Update installieren.";return;
+  }
+  try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([json],{type:"application/json"}));a.download=name;document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);$("#dSaveInfo").textContent=`Gespeichert als „${name}“ im Download-Ordner.`}
+  catch{$("#dSaveInfo").textContent="Export hier nicht möglich – bitte die PC-Version oder die App nutzen."}
+});
+/* Import: Depot ersetzen (z. B. Stand vom Handy übernehmen) oder neue Positionen hinzufügen */
+let pendingImport=null;
 $("#dImport").addEventListener("change",async e=>{
   const f=e.target.files?.[0];e.target.value="";if(!f)return;
   try{
     const j=JSON.parse(await f.text());const list=Array.isArray(j)?j:j.positions;if(!Array.isArray(list))throw new Error("keine Positionen gefunden");
-    const key=x=>x.sym+"|"+x.qty+"|"+x.buy;const have=new Set(S.portfolio.map(key));let n=0;
-    for(const x of list){if(!x||!x.sym||!(x.qty>0)||!(x.buy>0)||have.has(key(x)))continue;
-      S.portfolio.push({...x,id:x.id&&!S.portfolio.some(y=>y.id===x.id)?x.id:Math.random().toString(36).slice(2,10)});n++}
-    await savePortfolio();await refreshAll(false);renderDepot();
-    $("#dSaveInfo").textContent=`${n} Position${n===1?"":"en"} importiert${list.length-n?`, ${list.length-n} doppelt oder ungültig übersprungen`:""}.`;
+    const valid=list.filter(x=>x&&x.sym&&x.qty>0&&x.buy>0),jr=Array.isArray(j.journal)?j.journal:null;
+    pendingImport={valid,jr};
+    const when=j.exported?` vom ${new Date(j.exported).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"})}`:"";
+    $("#impBox").hidden=false;
+    $("#impBox").innerHTML=`<p><b>${esc(f.name)}</b>${esc(when)}: ${valid.length} Positionen${jr?`, ${jr.length} Trade${jr.length===1?"":"s"} im Tagebuch`:""}.</p>
+      <div class="factions"><button class="btn primary" type="button" data-imp="replace">Depot ersetzen</button>
+      <button class="btn" type="button" data-imp="add">Nur neue Positionen hinzufügen</button><button class="btn" type="button" data-imp="cancel">Abbrechen</button></div>
+      <p class="hint">„Ersetzen“ übernimmt den Stand aus der Datei komplett${jr?" (inkl. Tagebuch)":""} – z. B. vom Handy auf den PC. Der bisherige Stand bleibt als Sicherung (portfolio.bak.json) erhalten.</p>`;
   }catch(err){$("#dSaveInfo").textContent="Import fehlgeschlagen: "+err.message+". Erwartet wird eine JSON-Datei von Owlgo (oder Kursradar)."}
+});
+$("#impBox").addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-imp]");if(!b||!pendingImport)return;const {valid,jr}=pendingImport,mode=b.dataset.imp;
+  $("#impBox").hidden=true;pendingImport=null;if(mode==="cancel")return;let msg;
+  if(mode==="replace"){
+    S.portfolio=valid.map(x=>({...x,id:x.id||Math.random().toString(36).slice(2,10)}));if(jr)S.journal=jr;
+    msg=`Depot ersetzt: ${S.portfolio.length} Positionen${jr?` und ${jr.length} Trade${jr.length===1?"":"s"}`:""} übernommen.`;
+  }else{
+    const key=x=>x.sym+"|"+x.qty+"|"+x.buy;const have=new Set(S.portfolio.map(key));let n=0;
+    for(const x of valid){if(have.has(key(x)))continue;S.portfolio.push({...x,id:x.id&&!S.portfolio.some(y=>y.id===x.id)?x.id:Math.random().toString(36).slice(2,10)});n++}
+    msg=`${n} Position${n===1?"":"en"} hinzugefügt${valid.length-n?`, ${valid.length-n} schon vorhanden`:""}.`;
+  }
+  await savePortfolio();await refreshAll(false);renderDepot();renderJournal();$("#dSaveInfo").textContent=msg;
 });
 
 /* Tabelle */

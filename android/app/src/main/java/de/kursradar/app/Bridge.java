@@ -76,6 +76,10 @@ public class Bridge {
         } catch (Exception e) { return "{}"; }
     }
 
+    /** Depot-Export: öffnet den Android-Dialog zum Speichern der Datei. */
+    @JavascriptInterface
+    public void saveFile(final String name, final String content) { act.runOnUiThread(() -> act.startSave(name, content)); }
+
     /** Manuelle Update-Prüfung aus der Oberfläche. */
     @JavascriptInterface
     public void checkUpdate() { act.runOnUiThread(() -> act.updater.check(true)); }

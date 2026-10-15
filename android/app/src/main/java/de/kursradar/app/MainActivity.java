@@ -11,12 +11,18 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 /** Owlgo als Android-App (technischer Paketname bleibt de.kursradar.app, damit Updates weiter passen): zeigt die Web-Oberfläche und liefert ihr Live-Kurse über {@link Bridge}. */
 public class MainActivity extends Activity {
     /** Feste Herkunft, damit Browser-Speicher (Einstellungen) über Updates hinweg erhalten bleibt. */
     static final String BASE_URL = "https://app.kursradar.local/";
     private static final int REQ_FILE = 41;
+    private static final int REQ_SAVE = 42;
+    private String pendingSave;
 
     WebView web;
     private Bridge bridge;
@@ -77,8 +83,37 @@ public class MainActivity extends Activity {
         web.loadDataWithBaseURL(BASE_URL, html, "text/html", "utf-8", null);
     }
 
+    /** Export: Android-Dialog „Speichern unter“ (Downloads, Google Drive …), danach Inhalt schreiben. */
+    void startSave(String name, String content) {
+        pendingSave = content;
+        Intent i = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("application/json");
+        i.putExtra(Intent.EXTRA_TITLE, name);
+        try {
+            startActivityForResult(i, REQ_SAVE);
+        } catch (ActivityNotFoundException e) {
+            pendingSave = null;
+            Toast.makeText(this, "Speichern wird auf diesem Gerät nicht unterstützt.", Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQ_SAVE) {
+            String content = pendingSave;
+            pendingSave = null;
+            if (resultCode == RESULT_OK && data != null && data.getData() != null && content != null) {
+                try (OutputStream o = getContentResolver().openOutputStream(data.getData())) {
+                    if (o == null) throw new java.io.IOException("Datei nicht beschreibbar");
+                    o.write(content.getBytes(StandardCharsets.UTF_8));
+                    Toast.makeText(this, "Depot exportiert", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Export fehlgeschlagen: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+            return;
+        }
         if (requestCode == REQ_FILE && fileCallback != null) {
             fileCallback.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, data));
             fileCallback = null;
