@@ -1425,6 +1425,13 @@ $("#dExport").addEventListener("click",()=>{
     if(typeof NATIVE.saveFile==="function"){NATIVE.saveFile(name,json);return}
     $("#dSaveInfo").textContent="Exportieren braucht die neue App-Version: Versionsnummer oben links antippen und das App-Update installieren.";return;
   }
+  if(!S.server){ // Online-Ansicht: Datei über die Download-Funktion der Plattform anbieten
+    (async()=>{const dl=await window.claude?.use?.("downloads").catch(()=>null);
+      if(!dl){$("#dSaveInfo").textContent="Exportieren geht hier nicht – bitte in der App oder der PC-Version.";return}
+      try{await dl.save({filename:name,data:new Blob([json],{type:"application/json"})});$("#dSaveInfo").textContent=`„${name}“ gespeichert.`}
+      catch(e){$("#dSaveInfo").textContent=e?.code==="declined"?"Export abgebrochen.":"Exportieren geht hier nicht – bitte in der App oder der PC-Version."}})();
+    return;
+  }
   try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([json],{type:"application/json"}));a.download=name;document.body.appendChild(a);a.click();
     setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);$("#dSaveInfo").textContent=`Gespeichert als „${name}“ im Download-Ordner.`}
   catch{$("#dSaveInfo").textContent="Export hier nicht möglich – bitte die PC-Version oder die App nutzen."}
