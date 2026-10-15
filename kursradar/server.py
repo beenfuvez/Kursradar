@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Kursradar v4.1 – lokaler Server mit Live-Daten von Yahoo Finance.
+"""Owlgo v5.1 – lokaler Server mit Live-Daten von Yahoo Finance.
 
 Start:  python3 server.py   →  http://localhost:8765
 Nur Python-Standardbibliothek nötig.
@@ -15,7 +15,7 @@ import urllib.request
 import webbrowser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-VERSION = "4.1"
+VERSION = "5.1"
 PORT = int(os.environ.get("PORT", "8765"))
 ROOT = os.path.dirname(os.path.abspath(__file__))
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -98,9 +98,12 @@ def data_dir():
     d = os.environ.get("KURSRADAR_DATA")
     if not d:
         if os.name == "nt":
-            d = os.path.join(os.environ.get("APPDATA") or os.path.expanduser("~"), "Kursradar")
+            base = os.environ.get("APPDATA") or os.path.expanduser("~")
+            d, old = os.path.join(base, "Owlgo"), os.path.join(base, "Kursradar")
         else:
-            d = os.path.join(os.path.expanduser("~"), ".kursradar")
+            d, old = os.path.join(os.path.expanduser("~"), ".owlgo"), os.path.join(os.path.expanduser("~"), ".kursradar")
+        if not os.path.exists(d) and os.path.isdir(old):  # Depot aus der Kursradar-Zeit übernehmen
+            os.replace(old, d)
     os.makedirs(d, exist_ok=True)
     return d
 
@@ -243,13 +246,13 @@ if __name__ == "__main__":
     try:
         srv = Server(("127.0.0.1", PORT), Handler)
     except OSError:
-        # Port belegt: Kursradar läuft vermutlich schon → nur den Browser öffnen
-        print(f"Port {PORT} ist bereits belegt – Kursradar läuft wohl schon. Öffne {url}")
+        # Port belegt: Owlgo läuft vermutlich schon → nur den Browser öffnen
+        print(f"Port {PORT} ist bereits belegt – Owlgo läuft wohl schon. Öffne {url}")
         if open_browser:
             webbrowser.open(url)
         time.sleep(3)
         sys.exit(0)
-    print(f"Kursradar v{VERSION} läuft auf {url}")
+    print(f"Owlgo v{VERSION} läuft auf {url}")
     print(f"Depot-Datei: {portfolio_path()}")
     print("Dieses Fenster offen lassen, solange du die App nutzt. Beenden: Fenster schließen oder Strg+C.")
     if open_browser:

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Radar-Kurve: steigender Kursverlauf in einem Kreis -->
+<!-- Owlgo: Eulenkopf mit Federohren, großen Augen und Schnabel -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp"
     android:viewportWidth="108" android:viewportHeight="108">
-    <path android:fillColor="#00000000" android:strokeColor="#FFFFFF" android:strokeWidth="3.5"
-        android:pathData="M54,30a24,24 0 1,0 0.01,0z" />
-    <path android:fillColor="#00000000" android:strokeColor="#FFFFFF" android:strokeWidth="4.5"
-        android:strokeLineCap="round" android:strokeLineJoin="round"
-        android:pathData="M38,64 L48,54 L55,60 L70,44" />
-    <path android:fillColor="#FFFFFF" android:pathData="M64,42 L73,41 L72,50 Z" />
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z" />
+    <path android:fillColor="#1D5F86" android:pathData="M45,52m-9,0a9,9 0 1,0 18,0a9,9 0 1,0 -18,0" />
+    <path android:fillColor="#1D5F86" android:pathData="M63,52m-9,0a9,9 0 1,0 18,0a9,9 0 1,0 -18,0" />
+    <path android:fillColor="#FFFFFF" android:pathData="M47,49m-3,0a3,3 0 1,0 6,0a3,3 0 1,0 -6,0" />
+    <path android:fillColor="#FFFFFF" android:pathData="M65,49m-3,0a3,3 0 1,0 6,0a3,3 0 1,0 -6,0" />
+    <path android:fillColor="#E3A43C" android:pathData="M50,61 L58,61 L54,68 Z" />
 </vector>

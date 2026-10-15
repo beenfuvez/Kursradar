@@ -1,4 +1,4 @@
-<title>Kursradar</title>
+<title>Owlgo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -45,6 +45,9 @@ button,select,input{font:inherit;color:inherit}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px 10px}
 .brand h1{font-family:var(--f-display);font-size:22px;margin:0;letter-spacing:-.01em}
 .brand h1 span{color:var(--accent)}
+.brand h1{display:flex;align-items:center;gap:7px}
+.brand h1 .logo{width:26px;height:30px;flex:none}
+.brand h1 .wm{font-weight:inherit}
 .brand h1 .ver{font-family:var(--f-mono);font-size:11px;font-weight:400;color:var(--muted);letter-spacing:0}
 .badge{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:99px}
 .badge.live{background:var(--up-soft);color:var(--up)}
@@ -313,7 +316,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1>Kurs<span>radar</span> <small class="ver" id="appVer">v4.1</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v5.1</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -537,17 +540,17 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
           <article><h4>1 · Trendfolge mit gleitenden Durchschnitten</h4>
             <dl><dt>Kauf</dt><dd>Kurs schließt über der 200-Tage-Linie.</dd><dt>Verkauf</dt><dd>Kurs schließt darunter (manche warten auf 3 % darunter, um Fehlsignale zu filtern).</dd>
             <dt>Variante</dt><dd>„Golden Cross“: 50-Tage-Linie kreuzt die 200-Tage-Linie von unten.</dd><dt>Vorteil</dt><dd>Schützt vor langen Crashs wie 2008.</dd><dt>Nachteil</dt><dd>Viele Fehlsignale in Seitwärtsphasen.</dd></dl>
-            <p class="kuse">In Kursradar: Filter „200-Tage-Linie“ und „Golden Cross“.</p></article>
+            <p class="kuse">In Owlgo: Filter „200-Tage-Linie“ und „Golden Cross“.</p></article>
           <article><h4>2 · Unterstützung und Widerstand</h4>
             <dl><dt>Unterstützung</dt><dd>Kursbereich, an dem der Kurs mehrfach nach oben gedreht hat.</dd><dt>Einstieg</dt><dd>Nahe der Unterstützung, Stop-Loss knapp darunter.</dd>
             <dt>Ausbruch</dt><dd>Durchbruch über einen Widerstand mit hohem Volumen gilt als Kaufsignal.</dd></dl>
-            <p class="kuse">In Kursradar: gestrichelte Linien im Chart, Filter „Ausbruch / Unterstützung“.</p></article>
+            <p class="kuse">In Owlgo: gestrichelte Linien im Chart, Filter „Ausbruch / Unterstützung“.</p></article>
           <article><h4>3 · RSI (Relative Strength Index)</h4>
             <dl><dt>Signale</dt><dd>Unter 30 = überverkauft, über 70 = überkauft.</dd><dt>Richtig nutzen</dt><dd>In Richtung des übergeordneten Trends: im Aufwärtstrend Rücksetzer auf RSI ~30–40 kaufen, nicht gegen den Trend handeln.</dd></dl>
-            <p class="kuse">In Kursradar: Filter „RSI-Rücksetzer“.</p></article>
+            <p class="kuse">In Owlgo: Filter „RSI-Rücksetzer“.</p></article>
           <article><h4>4 · MACD</h4>
             <dl><dt>Kauf</dt><dd>MACD-Linie kreuzt die Signallinie von unten.</dd><dt>Am stärksten</dt><dd>Wenn es unter der Nulllinie passiert und der große Trend aufwärts zeigt.</dd></dl>
-            <p class="kuse">In Kursradar: Filter „MACD-Signal“, Wert unter Kennzahlen.</p></article>
+            <p class="kuse">In Owlgo: Filter „MACD-Signal“, Wert unter Kennzahlen.</p></article>
         </div>
         <h4 class="rules-h">Das Entscheidende: Risikoregeln</h4>
         <ol class="rules">
@@ -1420,7 +1423,7 @@ $("#dImport").addEventListener("change",async e=>{
       S.portfolio.push({...x,id:x.id&&!S.portfolio.some(y=>y.id===x.id)?x.id:Math.random().toString(36).slice(2,10)});n++}
     await savePortfolio();await refreshAll(false);renderDepot();
     $("#dSaveInfo").textContent=`${n} Position${n===1?"":"en"} importiert${list.length-n?`, ${list.length-n} doppelt oder ungültig übersprungen`:""}.`;
-  }catch(err){$("#dSaveInfo").textContent="Import fehlgeschlagen: "+err.message+". Erwartet wird eine JSON-Datei von Kursradar."}
+  }catch(err){$("#dSaveInfo").textContent="Import fehlgeschlagen: "+err.message+". Erwartet wird eine JSON-Datei von Owlgo (oder Kursradar)."}
 });
 
 /* Tabelle */

@@ -12,7 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-/** Kursradar als Android-App: zeigt die Web-Oberfläche und liefert ihr Live-Kurse über {@link Bridge}. */
+/** Owlgo als Android-App (technischer Paketname bleibt de.kursradar.app, damit Updates weiter passen): zeigt die Web-Oberfläche und liefert ihr Live-Kurse über {@link Bridge}. */
 public class MainActivity extends Activity {
     /** Feste Herkunft, damit Browser-Speicher (Einstellungen) über Updates hinweg erhalten bleibt. */
     static final String BASE_URL = "https://app.kursradar.local/";

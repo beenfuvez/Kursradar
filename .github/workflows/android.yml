@@ -48,22 +48,25 @@ jobs:
           else
             echo "new=true" >> "$GITHUB_OUTPUT"
           fi
-          cp android/app/build/outputs/apk/release/app-release.apk kursradar.apk
+          cp android/app/build/outputs/apk/release/app-release.apk owlgo.apk
+          cp owlgo.apk kursradar.apk
 
       - name: Release mit APK veröffentlichen (nur bei neuer App-Version)
         if: steps.v.outputs.new == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: app-v${{ steps.v.outputs.app }}
-          name: Kursradar App ${{ steps.v.outputs.app }}
-          body: Android-App Kursradar ${{ steps.v.outputs.app }} (Oberfläche ${{ steps.v.outputs.web }}). Auf dem Handy öffnen und kursradar.apk installieren.
-          files: kursradar.apk
+          name: Owlgo App ${{ steps.v.outputs.app }}
+          body: Android-App Owlgo ${{ steps.v.outputs.app }} (Oberfläche ${{ steps.v.outputs.web }}). Auf dem Handy öffnen und owlgo.apk installieren.
+          files: |
+            owlgo.apk
+            kursradar.apk
           make_latest: true
 
       - name: Update-Info für die Apps schreiben
         run: |
           mkdir -p update
-          printf '{"web":"%s","app":"%s","appCode":%s,"apk":"https://github.com/%s/releases/latest/download/kursradar.apk"}\n' \
+          printf '{"web":"%s","app":"%s","appCode":%s,"apk":"https://github.com/%s/releases/latest/download/owlgo.apk"}\n' \
             "${{ steps.v.outputs.web }}" "${{ steps.v.outputs.app }}" "${{ steps.v.outputs.code }}" "${{ github.repository }}" > update/version.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -75,5 +78,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: kursradar-apk
-          path: kursradar.apk
+          name: owlgo-apk
+          path: owlgo.apk

@@ -1,8 +1,10 @@
-Kursradar – Versionshistorie
+Owlgo (bis 4.1: Kursradar) – Versionshistorie
 Schema: Hauptversion.Änderung
   kleine Änderung  -> zweite Stelle +1   (z. B. 3.1 -> 3.2)
   große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 3.5 -> 4.1)
 
+5.1      Neuer Name: Kursradar heißt jetzt Owlgo – App-Name, Eulen-Icon, Titel, Startdateien
+         und Downloads. Depot und Einstellungen werden übernommen.
 4.1      NEU: Die fünf verbreitetsten Chart-Strategien als Signale und Filter: 200-Tage-Linie
          (Verkauf erst 3 % darunter), Golden/Death Cross, Unterstützung & Widerstand mit Ausbruch
          (Linien im Chart), RSI-Rücksetzer im Trend, MACD. Strategie-Check in der Analyse.

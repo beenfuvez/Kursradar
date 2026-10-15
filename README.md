@@ -1,4 +1,6 @@
-# Kursradar
+# Owlgo
+
+*(bis Version 4.1: „Kursradar“)*
 
 Aktien-Cockpit mit Top-10-Listen, Charts, Trendanalyse, Filtern und eigenem Depot –
 als Desktop-App (`kursradar/`) und als Android-App (`android/`) mit automatischen Updates.
@@ -8,7 +10,7 @@ als Desktop-App (`kursradar/`) und als Android-App (`android/`) mit automatische
 1. **Dieses Repository muss öffentlich sein.** Die App lädt Updates ohne Anmeldung von hier.
 2. Tab **Actions** öffnen. Falls GitHub fragt, Workflows aktivieren. Der Build „Android-App bauen“
    startet bei jeder Änderung automatisch (oder über „Run workflow“) und dauert ca. 5 Minuten.
-3. Danach unter **Releases** die Datei `kursradar.apk` **auf dem Handy** öffnen und installieren.
+3. Danach unter **Releases** die Datei `owlgo.apk` **auf dem Handy** öffnen und installieren.
    Android fragt einmalig, ob der Browser Apps installieren darf → erlauben.
 4. In der App unten **Depot** → **Importieren** → `depot-import.json` wählen
    (die Datei liegt nur bei dir, nicht in diesem Repository).
@@ -25,10 +27,12 @@ Versionsschema: kleine Änderung `3.1 → 3.2`, große Änderung `3.x → 4.1`.
 
 ## Desktop-Version
 
-Ordner `kursradar/`: Doppelklick auf `Kursradar starten (Windows).bat` bzw. `(Mac).command`.
+Ordner `kursradar/`: Doppelklick auf `Owlgo starten (Windows).bat` bzw. `Owlgo starten (Mac).command`.
 
 ## Hinweise
 
+- Technische Namen (Ordner `kursradar/`, App-Kennung `de.kursradar.app`, Repository-Name) bleiben bewusst unverändert,
+  damit bereits installierte Apps ihre Updates weiter finden. **Repository nicht umbenennen.**
 - Persönliche Depot-Daten (`depot-import.json`, `portfolio.json`) sind per `.gitignore` ausgeschlossen – nicht hochladen.
 - Der Signierschlüssel `android/keystore/kursradar.jks` liegt im Repository, damit GitHub
   Updates mit demselben Schlüssel bauen kann. Installiere die App deshalb nur aus den Releases

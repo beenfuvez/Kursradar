@@ -1,7 +1,7 @@
 @echo off
-rem Kursradar - Startdatei fuer Windows (Doppelklick genuegt)
+rem Owlgo - Startdatei fuer Windows (Doppelklick genuegt)
 chcp 65001 >nul
-title Kursradar
+title Owlgo
 cd /d "%~dp0"
 
 set "PY="
@@ -36,11 +36,11 @@ exit /b
 
 :start
 echo.
-echo  Kursradar wird gestartet - der Browser oeffnet sich gleich.
+echo  Owlgo wird gestartet - der Browser oeffnet sich gleich.
 echo.
 %PY% server.py
 if errorlevel 1 (
   echo.
-  echo  Kursradar wurde mit einem Fehler beendet. Bitte die Meldung oben an Claude schicken.
+  echo  Owlgo wurde mit einem Fehler beendet. Bitte die Meldung oben an Claude schicken.
   pause
 )

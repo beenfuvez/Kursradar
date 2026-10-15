@@ -1,9 +1,9 @@
 KURSRADAR – SO STARTEST DU DIE APP
 
-Windows:  Doppelklick auf  "Kursradar starten (Windows).bat"
-Mac:      Doppelklick auf  "Kursradar starten (Mac).command"
+Windows:  Doppelklick auf  "Owlgo starten (Windows).bat"
+Mac:      Doppelklick auf  "Owlgo starten (Mac).command"
           (beim allerersten Mal: Rechtsklick -> "Öffnen" -> "Öffnen")
-Linux:    ./kursradar-start.sh
+Linux:    ./owlgo-start.sh
 
 Der Browser öffnet sich automatisch mit http://localhost:8765.
 Oben links steht "LIVE", wenn echte Kurse geladen werden.

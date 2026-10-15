@@ -62,7 +62,7 @@ public class Updater {
                 return new String(Bridge.readAll(in), StandardCharsets.UTF_8);
             }
         } catch (IOException e) {
-            return "<p style=\"font-family:sans-serif;padding:24px\">Kursradar konnte nicht geladen werden: " + e.getMessage() + "</p>";
+            return "<p style=\"font-family:sans-serif;padding:24px\">Owlgo konnte nicht geladen werden: " + e.getMessage() + "</p>";
         }
     }
 
@@ -96,7 +96,7 @@ public class Updater {
                 if (cmp(info.optString("web"), currentWebVersion()) > 0) {
                     String html = Bridge.get(raw("kursradar/index.html"));
                     Matcher m = VER.matcher(html);
-                    if (html.length() > 20_000 && html.contains("<title>Kursradar</title>") && m.find()
+                    if (html.length() > 20_000 && (html.contains("<title>Owlgo</title>") || html.contains("<title>Kursradar</title>")) && m.find()
                             && cmp(m.group(1), currentWebVersion()) > 0) {
                         File dir = webFile.getParentFile();
                         if (dir != null && !dir.exists()) //noinspection ResultOfMethodCallIgnored
@@ -105,7 +105,7 @@ public class Updater {
                         prefs.edit().putString("webVersion", m.group(1)).apply();
                         found = true;
                         final String v = m.group(1);
-                        act.runOnUiThread(() -> { toast("Kursradar aktualisiert auf v" + v); act.loadUi(); });
+                        act.runOnUiThread(() -> { toast("Owlgo aktualisiert auf v" + v); act.loadUi(); });
                     }
                 }
                 // 2) App selbst
@@ -115,7 +115,7 @@ public class Updater {
                     final String v = info.optString("app"), url = info.optString("apk");
                     act.runOnUiThread(() -> askInstall(v, url));
                 }
-                if (manual && !found) act.runOnUiThread(() -> toast("Kursradar ist aktuell (v" + currentWebVersion() + ")."));
+                if (manual && !found) act.runOnUiThread(() -> toast("Owlgo ist aktuell (v" + currentWebVersion() + ")."));
             } catch (Exception e) {
                 if (manual) act.runOnUiThread(() -> toast("Update-Prüfung fehlgeschlagen: " + e.getMessage()));
             } finally {
@@ -128,7 +128,7 @@ public class Updater {
         if (act.isFinishing()) return;
         new AlertDialog.Builder(act)
                 .setTitle("App-Update " + version)
-                .setMessage("Eine neue Version der Kursradar-App ist verfügbar. Jetzt herunterladen und installieren? Dein Depot bleibt erhalten.")
+                .setMessage("Eine neue Version der Owlgo-App ist verfügbar. Jetzt herunterladen und installieren? Dein Depot bleibt erhalten.")
                 .setPositiveButton("Installieren", (d, w) -> install(url, version))
                 .setNegativeButton("Später", null)
                 .show();
