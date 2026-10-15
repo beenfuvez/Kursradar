@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Kursradar v3.2 – lokaler Server mit Live-Daten von Yahoo Finance.
+"""Kursradar v4.1 – lokaler Server mit Live-Daten von Yahoo Finance.
 
 Start:  python3 server.py   →  http://localhost:8765
 Nur Python-Standardbibliothek nötig.
@@ -15,7 +15,7 @@ import urllib.request
 import webbrowser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-VERSION = "3.2"
+VERSION = "4.1"
 PORT = int(os.environ.get("PORT", "8765"))
 ROOT = os.path.dirname(os.path.abspath(__file__))
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -75,6 +75,24 @@ def search(q):
     return {"quotes": [{k: x.get(k) for k in keep} for x in j.get("quotes", []) if x.get("symbol")]}
 
 
+# Nachrichten-Feeds (nur diese festen Adressen werden abgerufen)
+FEEDS = {
+    "wirtschaft": "https://www.tagesschau.de/wirtschaft/index~rss2.xml",
+    "finanzen": "https://www.tagesschau.de/wirtschaft/finanzen/index~rss2.xml",
+}
+
+
+def news(q):
+    qs = urllib.parse.urlencode({"q": q, "quotesCount": 0, "newsCount": 8, "lang": "de-DE", "region": "DE"})
+    j = json.loads(_get(f"https://query2.finance.yahoo.com/v1/finance/search?{qs}"))
+    keep = ("title", "publisher", "link", "providerPublishTime", "relatedTickers")
+    return {"news": [{k: x.get(k) for k in keep} for x in j.get("news", []) if x.get("title")]}
+
+
+def feed(fid):
+    return {"xml": _get(FEEDS[fid]).decode("utf-8", "replace")}
+
+
 def data_dir():
     """Depot-Daten liegen im Benutzerordner, damit sie neue Versionen überleben."""
     d = os.environ.get("KURSRADAR_DATA")
@@ -116,7 +134,8 @@ def write_portfolio(data):
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump({"version": 1, "saved": time.strftime("%Y-%m-%d %H:%M:%S"),
-                   "positions": data["positions"]}, f, ensure_ascii=False, indent=2)
+                   "positions": data["positions"], "journal": data.get("journal") or []},
+                  f, ensure_ascii=False, indent=2)
     os.replace(tmp, path)
     return path
 
@@ -186,6 +205,14 @@ class Handler(SimpleHTTPRequestHandler):
             if u.path == "/api/search":
                 q = arg("q").strip()[:60]
                 return self._json(200, cached(("s", q), lambda: search(q), ttl=300) if q else {"quotes": []})
+            if u.path == "/api/news":
+                q = arg("q").strip()[:60]
+                return self._json(200, cached(("n", q), lambda: news(q), ttl=300) if q else {"news": []})
+            if u.path == "/api/feed":
+                fid = arg("id")
+                if fid not in FEEDS:
+                    return self._json(400, {"error": "unbekannter Feed"})
+                return self._json(200, cached(("f", fid), lambda: feed(fid), ttl=600))
             if u.path == "/api/quote":
                 syms = arg("symbols")
                 return self._json(200, cached(("q", syms), lambda: quote(syms), ttl=60))

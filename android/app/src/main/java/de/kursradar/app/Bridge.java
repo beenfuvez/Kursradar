@@ -107,6 +107,29 @@ public class Bridge {
                 return ok(cached("s|" + q, 300_000, "https://query2.finance.yahoo.com/v1/finance/search?q=" + enc(q)
                         + "&quotesCount=10&newsCount=0&lang=de-DE&region=DE"));
             }
+            case "/api/news": {
+                String q = def(u.getQueryParameter("q"), "").trim();
+                if (q.isEmpty()) return ok("{\"news\":[]}");
+                if (q.length() > 60) q = q.substring(0, 60);
+                JSONObject j = new JSONObject(cached("s|n|" + q, 300_000, "https://query2.finance.yahoo.com/v1/finance/search?q=" + enc(q)
+                        + "&quotesCount=0&newsCount=8&lang=de-DE&region=DE"));
+                JSONArray in = j.optJSONArray("news"), out = new JSONArray();
+                if (in != null) for (int i = 0; i < in.length(); i++) {
+                    JSONObject n = in.optJSONObject(i);
+                    if (n == null || n.optString("title").isEmpty()) continue;
+                    out.put(new JSONObject().put("title", n.optString("title")).put("publisher", n.optString("publisher"))
+                            .put("link", n.optString("link")).put("providerPublishTime", n.optLong("providerPublishTime"))
+                            .put("relatedTickers", n.optJSONArray("relatedTickers") == null ? new JSONArray() : n.optJSONArray("relatedTickers")));
+                }
+                return ok(new JSONObject().put("news", out).toString());
+            }
+            case "/api/feed": {
+                String id = def(u.getQueryParameter("id"), "");
+                String url = "wirtschaft".equals(id) ? "https://www.tagesschau.de/wirtschaft/index~rss2.xml"
+                        : "finanzen".equals(id) ? "https://www.tagesschau.de/wirtschaft/finanzen/index~rss2.xml" : null;
+                if (url == null) return new String[]{"400", error("unbekannter Feed")};
+                return ok(new JSONObject().put("xml", cached("f|" + id, 600_000, url)).toString());
+            }
             case "/api/portfolio":
                 if ("PUT".equals(method)) return savePortfolio(body);
                 return ok(readPortfolio());
@@ -133,7 +156,9 @@ public class Bridge {
             f.renameTo(new File(act.getFilesDir(), "portfolio.bak.json"));
         File tmp = new File(act.getFilesDir(), "portfolio.json.tmp");
         try (FileOutputStream o = new FileOutputStream(tmp)) {
-            o.write(new JSONObject().put("version", 1).put("positions", pos).toString(1).getBytes(StandardCharsets.UTF_8));
+            JSONArray jr = in.optJSONArray("journal");
+            o.write(new JSONObject().put("version", 1).put("positions", pos).put("journal", jr == null ? new JSONArray() : jr)
+                    .toString(1).getBytes(StandardCharsets.UTF_8));
         }
         if (!tmp.renameTo(f)) throw new IOException("Speichern fehlgeschlagen");
         return ok("{\"ok\":true,\"path\":\"App-Speicher\"}");

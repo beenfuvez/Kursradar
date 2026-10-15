@@ -39,7 +39,7 @@ button,select,input{font:inherit;color:inherit}
 @media (max-width:900px){.app{grid-template-columns:minmax(0,1fr)}}
 
 /* Sidebar */
-.side{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;
+.side{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;overflow-y:auto!important;overscroll-behavior:contain;
   position:sticky;top:calc(16px + env(safe-area-inset-top,0px));max-height:calc(100vh - 32px);overflow:hidden}
 @media (max-width:900px){.side{position:static;max-height:none}}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px 10px}
@@ -73,7 +73,8 @@ select.sel{border:1px solid var(--line);background:var(--panel-2);border-radius:
 .chip{border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:4px 10px;font-size:12.5px;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
 .fdesc{font-size:12.5px;color:var(--muted);margin:8px 0 0}
-.list{overflow-y:auto;padding:6px 8px 10px;flex:1;min-height:0}
+.side > *{flex-shrink:0}
+.list{padding:6px 8px 10px}
 .row{display:grid;grid-template-columns:22px minmax(0,1fr) 64px auto;gap:8px;align-items:center;padding:8px;border-radius:6px;cursor:pointer;border:1px solid transparent;width:100%;text-align:left;background:none}
 .row:hover{background:var(--panel-2)}
 .row[aria-current="true"]{background:var(--accent-soft);border-color:var(--accent)}
@@ -148,7 +149,7 @@ details:first-of-type{border-top:0}
 summary{cursor:pointer;font-weight:600}
 details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .view{display:flex;flex-direction:column;gap:16px;min-width:0}
-.viewsw{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 16px 10px}
+.viewsw{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 16px 10px}
 .viewsw button{border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:7px 8px;cursor:pointer;font-weight:600}
 .viewsw button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 .cnt{font-family:var(--f-mono);font-size:11px;font-weight:500;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:0 6px;margin-left:4px}
@@ -206,7 +207,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .msort{display:none}
 @media (max-width:700px){
   .app{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
-  .mnav{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--panel);border-top:1px solid var(--line);
+  .mnav{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--panel);border-top:1px solid var(--line);
     padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
   .mnav button{border:0;background:none;padding:10px 4px;font-weight:600;color:var(--muted);border-radius:8px;font-size:14px}
   .mnav button[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
@@ -240,13 +241,79 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
   .msort{display:block;width:100%}
   .viewsw{display:none}
 }
+/* Anlageklasse + gruppierte Filter */
+.assetsw{display:grid;grid-template-columns:repeat(3,1fr);margin:0 16px 10px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel-2)}
+.assetsw button{border:0;background:none;padding:8px 4px;font-weight:600;color:var(--muted);cursor:pointer;border-right:1px solid var(--line)}
+.assetsw button:last-child{border-right:0}
+.assetsw button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.filters{padding:10px 16px 8px;border-bottom:1px solid var(--line)}
+.fhead{display:flex;align-items:center;gap:8px;width:100%;border:0;background:none;padding:2px 0 6px;cursor:pointer;text-align:left;color:var(--fg)}
+.fhead b{font-size:14px;color:var(--accent)} .fhead .caret{margin-left:auto;color:var(--muted);transition:transform .15s}
+.fhead[aria-expanded="false"] .caret{transform:rotate(-90deg)}
+.fgroups{display:flex;flex-direction:column;gap:8px;margin-top:2px}
+.fgroup{display:grid;grid-template-columns:92px minmax(0,1fr);gap:8px;align-items:start}
+.flabel{font-size:11px;font-weight:600;color:var(--muted);line-height:1.25;padding-top:6px}
+.fgroup .chips{margin-top:0;gap:5px}
+.fgroup .chip{font-size:12px;padding:3px 9px}
+.fdesc{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:10px 0 2px;font-size:12px;line-height:1.45}
+@media (prefers-reduced-motion:reduce){.fhead .caret{transition:none}}
+/* Analyse: Strategie-Check + Risiko-Rechner */
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:1100px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.ctitle{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ctitle h3{margin-bottom:10px}
+.strats{display:flex;flex-direction:column}
+.strat{padding:10px 0;border-top:1px solid var(--line)}
+.strat:first-child{border-top:0;padding-top:0}
+.shead{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.strat p{margin:4px 0 0;font-size:13px;color:var(--muted);max-width:70ch}
+.sig.neutral{background:var(--panel-2);color:var(--muted);border:1px solid var(--line)}
+.rform{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.rform label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}
+.rform input,.rform select{border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:7px 8px;color:var(--fg);width:100%;min-width:0}
+.rout{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+/* Trade-Tagebuch */
+.jprog{display:flex;align-items:center;gap:12px;margin:12px 0 4px;font-size:12.5px;flex-wrap:wrap}
+.jprog .bar{flex:0 0 160px}
+.jtbl{font-size:12.5px} .jtbl th,.jtbl td{padding:7px 5px}
+.jtbl th:nth-child(-n+3),.jtbl td:nth-child(-n+3){text-align:left}
+.jtbl td small{color:var(--muted)}
+#jForm{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+/* Infos & News */
+.vtitle{font-family:var(--f-display);font-size:26px;margin:0}
+.mkt{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:8px}
+.mtile{display:flex;flex-direction:column;gap:2px;text-align:left;border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:9px 11px;font:inherit;color:var(--fg);cursor:pointer;min-width:0}
+.mtile span:first-child{font-size:12px;color:var(--muted)} .mtile b{font-size:16px;font-weight:500}
+.mtile:hover{border-color:var(--accent)}
+.news{display:flex;flex-direction:column}
+.nitem{display:flex;flex-direction:column;gap:3px;padding:9px 0;border-top:1px solid var(--line);color:var(--fg);text-decoration:none}
+.nitem:first-child{border-top:0;padding-top:0}
+.nitem b{font-weight:600;line-height:1.35} .nitem:hover b{color:var(--accent)}
+.nitem span{font-size:12px}
+.honest{background:var(--warn-soft);border:1px solid var(--warn);border-radius:6px;padding:10px 12px;font-size:13.5px;max-width:90ch}
+.kgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.kgrid article{border:1px solid var(--line);border-radius:6px;padding:12px;background:var(--panel-2)}
+.kgrid h4{margin:0 0 8px;font-size:14.5px}
+.kgrid dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:0;font-size:13px}
+.kgrid dt{color:var(--muted);font-weight:600} .kgrid dd{margin:0}
+.kuse{margin:8px 0 0;font-size:12px;color:var(--accent)}
+.rules-h{margin:18px 0 8px;font-size:15px}
+.rules{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;max-width:90ch}
+@media (max-width:700px){
+  .mnav button{font-size:13px;padding:10px 2px}
+  :root[data-m="info"] .side{display:none}
+  .fgroup{grid-template-columns:minmax(0,1fr);gap:4px}
+  .flabel{padding-top:0}
+  .jtbl{min-width:640px}
+  .kgrid{grid-template-columns:minmax(0,1fr)}
+}
 .foot{font-size:12px;color:var(--muted);text-align:center;padding:4px 0 8px}
 </style>
 
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1>Kurs<span>radar</span> <small class="ver" id="appVer">v3.2</small></h1>
+      <h1>Kurs<span>radar</span> <small class="ver" id="appVer">v4.1</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -258,18 +325,24 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
     </div>
     <div class="viewsw" role="group" aria-label="Ansicht">
       <button type="button" data-v="markt" id="vMarkt">Markt</button>
-      <button type="button" data-v="depot" id="vDepot">Mein Depot <span class="cnt" id="depotCount"></span></button>
+      <button type="button" data-v="depot" id="vDepot">Depot <span class="cnt" id="depotCount"></span></button>
+      <button type="button" data-v="info" id="vInfo">Infos</button>
     </div>
     <div class="stamp" id="stamp">Lade Daten …</div>
-    <div class="tabs" role="tablist">
+    <div class="assetsw" id="assetSeg" role="group" aria-label="Anlageklasse">
+      <button type="button" data-a="aktie">Aktien</button><button type="button" data-a="etf">ETFs</button><button type="button" data-a="krypto">Kryptos</button>
+    </div>
+    <div class="tabs" role="tablist" id="regionTabs">
       <button class="tab" role="tab" data-region="europa" id="tab-europa">Europa</button>
       <button class="tab" role="tab" data-region="amerika" id="tab-amerika">Amerika</button>
       <button class="tab" role="tab" data-region="asien" id="tab-asien">Asien</button>
       <button class="tab" role="tab" data-region="welt" id="tab-welt">Weltweit</button>
     </div>
     <div class="filters">
-      <div class="label">Filter / Sortierung</div>
-      <div class="chips" id="chips"></div>
+      <button type="button" class="fhead" id="fToggle" aria-expanded="true" aria-controls="fgroups">
+        <span class="label">Sortiert nach</span><b id="fActive">–</b><span class="caret" aria-hidden="true">▾</span>
+      </button>
+      <div class="fgroups" id="fgroups"></div>
       <p class="fdesc" id="fdesc"></p>
     </div>
     <div class="list" id="list" role="list"></div>
@@ -283,6 +356,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
     <button type="button" data-m="listen">Märkte</button>
     <button type="button" data-m="analyse">Analyse</button>
     <button type="button" data-m="depot">Depot</button>
+    <button type="button" data-m="info">Infos</button>
   </nav>
   <main class="main">
     <div class="demo-note" id="demoNote" hidden>
@@ -338,10 +412,31 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
       </section>
     </div>
 
+    <div class="grid2">
+      <section class="card">
+        <div class="ctitle"><h3>Strategie-Check</h3><span class="muted" id="stratSum"></span></div>
+        <div id="strats" class="strats"></div>
+        <p class="hint">Die fünf verbreitetsten Chart-Strategien, angewendet auf den aktuellen Kurs. Mehr dazu unter „Infos“.</p>
+      </section>
+      <section class="card">
+        <h3>Risiko-Rechner</h3>
+        <form id="riskForm" class="rform" novalidate>
+          <label>Depotwert €<input id="rDepot" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label>Risiko pro Trade<select id="rPct"><option value="0.5">0,5 %</option><option value="1" selected>1 %</option><option value="1.5">1,5 %</option><option value="2">2 %</option></select></label>
+          <label>Einstieg <span class="muted rcur"></span><input id="rEntry" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label>Stop-Loss <span class="muted rcur"></span><input id="rStop" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label>Ziel <span class="muted rcur"></span><input id="rTarget" type="number" min="0" step="any" inputmode="decimal"></label>
+        </form>
+        <dl class="kv rout" id="rOut"></dl>
+        <div class="factions" style="margin-top:10px"><button class="btn" type="button" id="rToJournal">Als Trade ins Tagebuch</button><span class="muted" id="rMsg" style="font-size:12.5px"></span></div>
+        <p class="hint">Regeln: höchstens 1–2 % des Depots pro Trade riskieren · Stop-Loss vor dem Kauf festlegen und nicht verschieben · Chance/Risiko mindestens 2 : 1. Vorschläge: Stop knapp unter der nächsten Unterstützung, Ziel am nächsten Widerstand.</p>
+      </section>
+    </div>
+
     <section class="card">
       <h3 id="boardTitle">Bestenliste</h3>
       <div class="tbl-wrap"><table>
-        <thead><tr><th>#</th><th>Aktie</th><th>Region</th><th>Kurs</th><th>1T</th><th>1M</th><th>1J</th><th>Div. 12M</th><th>RSI</th><th>Trend</th><th id="boardMetricTh">Wert</th></tr></thead>
+        <thead><tr><th>#</th><th>Name</th><th>Region</th><th>Kurs</th><th>1T</th><th>1M</th><th>1J</th><th>Div. 12M</th><th>RSI</th><th>Trend</th><th id="boardMetricTh">Wert</th></tr></thead>
         <tbody id="board"></tbody>
       </table></div>
     </section>
@@ -392,6 +487,76 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
           <div class="factions"><button class="btn primary" type="button" id="dAddBtn2">+ Erste Position hinzufügen</button><button class="btn" type="button" id="dSample">Beispiel-Depot zum Ausprobieren laden</button></div>
         </div>
       </section>
+
+      <section class="card" id="journalCard">
+        <div class="dhead">
+          <div><h2>Trade-Tagebuch</h2><div class="sub">Jeden Trade mit Stop und Ziel festhalten und nach 50+ Trades ehrlich auswerten.</div></div>
+          <button class="btn primary" type="button" id="jAddBtn">+ Trade erfassen</button>
+        </div>
+        <div class="tiles" id="jTiles"></div>
+        <div class="jprog" id="jProg"></div>
+        <form id="jForm" class="dform" novalidate hidden>
+          <label>Datum<input id="jDate" type="date"></label>
+          <label>Symbol<input id="jSym" list="symList" autocomplete="off" placeholder="z. B. SAP.DE"></label>
+          <label>Strategie<select id="jStrat"><option>Trendfolge 200-Tage-Linie</option><option>Golden Cross</option><option>Unterstützung / Ausbruch</option><option>RSI-Rücksetzer</option><option>MACD</option><option>Sonstige</option></select></label>
+          <label>Stückzahl<input id="jQty" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label>Einstieg<input id="jEntry" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label>Stop-Loss<input id="jStop" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label>Ziel<input id="jTarget" type="number" min="0" step="any" inputmode="decimal"></label>
+          <label>Notiz<input id="jNote" maxlength="140" placeholder="Warum dieser Trade?"></label>
+          <div class="factions"><button class="btn primary" type="submit">Trade speichern</button><button class="btn" type="button" id="jCancel">Abbrechen</button><span class="fmsg" id="jMsg"></span></div>
+        </form>
+        <div class="tbl-wrap"><table class="jtbl"><thead><tr><th>Datum</th><th>Symbol</th><th>Strategie</th><th>Einstieg</th><th>Stop</th><th>Ziel</th><th>CRV</th><th>Status</th><th>R</th><th>G/V €</th><th></th></tr></thead><tbody id="jBody"></tbody></table></div>
+        <p class="hint" id="jEmpty">Noch keine Trades. Tipp: Im Risiko-Rechner der Analyse gibt es „Als Trade ins Tagebuch“. R = Gewinn oder Verlust in Vielfachen des geplanten Risikos (Einstieg − Stop); +2 R heißt doppelt so viel gewonnen wie riskiert.</p>
+      </section>
+    </div>
+    <div id="viewInfo" class="view" hidden>
+      <section class="card">
+        <div class="ctitle"><h2 class="vtitle">Infos &amp; News</h2><span class="muted" id="infoStamp"></span></div>
+        <div class="label" style="margin-top:12px">Marktüberblick</div>
+        <div class="mkt" id="mktTiles"></div>
+      </section>
+      <div class="grid2">
+        <section class="card">
+          <div class="ctitle"><h3>Nachrichten zu deinem Depot</h3><button class="btn" type="button" id="newsReload">Neu laden</button></div>
+          <div id="newsDepot" class="news"></div>
+        </section>
+        <section class="card">
+          <h3>Wirtschaft &amp; Börse</h3>
+          <div id="newsMarket" class="news"></div>
+        </section>
+      </div>
+      <section class="card">
+        <h3>Termine deiner Depotwerte</h3>
+        <div id="events"></div>
+      </section>
+      <section class="card know" id="knowCard">
+        <h3>Strategien &amp; Risikoregeln</h3>
+        <div class="honest"><b>Ehrlich vorweg:</b> Die Forschung zeigt, dass Chartanalyse Privatanlegern im Schnitt keine Überrendite gegenüber einem einfachen ETF-Sparplan bringt, vor allem nach Gebühren und Steuern. Am sinnvollsten nutzt man sie für Risikomanagement – also um zu wissen, wann man aussteigt.</div>
+        <div class="kgrid">
+          <article><h4>1 · Trendfolge mit gleitenden Durchschnitten</h4>
+            <dl><dt>Kauf</dt><dd>Kurs schließt über der 200-Tage-Linie.</dd><dt>Verkauf</dt><dd>Kurs schließt darunter (manche warten auf 3 % darunter, um Fehlsignale zu filtern).</dd>
+            <dt>Variante</dt><dd>„Golden Cross“: 50-Tage-Linie kreuzt die 200-Tage-Linie von unten.</dd><dt>Vorteil</dt><dd>Schützt vor langen Crashs wie 2008.</dd><dt>Nachteil</dt><dd>Viele Fehlsignale in Seitwärtsphasen.</dd></dl>
+            <p class="kuse">In Kursradar: Filter „200-Tage-Linie“ und „Golden Cross“.</p></article>
+          <article><h4>2 · Unterstützung und Widerstand</h4>
+            <dl><dt>Unterstützung</dt><dd>Kursbereich, an dem der Kurs mehrfach nach oben gedreht hat.</dd><dt>Einstieg</dt><dd>Nahe der Unterstützung, Stop-Loss knapp darunter.</dd>
+            <dt>Ausbruch</dt><dd>Durchbruch über einen Widerstand mit hohem Volumen gilt als Kaufsignal.</dd></dl>
+            <p class="kuse">In Kursradar: gestrichelte Linien im Chart, Filter „Ausbruch / Unterstützung“.</p></article>
+          <article><h4>3 · RSI (Relative Strength Index)</h4>
+            <dl><dt>Signale</dt><dd>Unter 30 = überverkauft, über 70 = überkauft.</dd><dt>Richtig nutzen</dt><dd>In Richtung des übergeordneten Trends: im Aufwärtstrend Rücksetzer auf RSI ~30–40 kaufen, nicht gegen den Trend handeln.</dd></dl>
+            <p class="kuse">In Kursradar: Filter „RSI-Rücksetzer“.</p></article>
+          <article><h4>4 · MACD</h4>
+            <dl><dt>Kauf</dt><dd>MACD-Linie kreuzt die Signallinie von unten.</dd><dt>Am stärksten</dt><dd>Wenn es unter der Nulllinie passiert und der große Trend aufwärts zeigt.</dd></dl>
+            <p class="kuse">In Kursradar: Filter „MACD-Signal“, Wert unter Kennzahlen.</p></article>
+        </div>
+        <h4 class="rules-h">Das Entscheidende: Risikoregeln</h4>
+        <ol class="rules">
+          <li><b>Pro Trade maximal 1–2 % des Depots riskieren.</b> Der Risiko-Rechner in der Analyse berechnet daraus die Stückzahl.</li>
+          <li><b>Vor jedem Kauf Stop-Loss festlegen und nicht verschieben.</b> Ohne Stop nimmt das Trade-Tagebuch keinen Trade an.</li>
+          <li><b>Chance/Risiko mindestens 2 : 1.</b> Siehe Filter „Chance/Risiko“ und Einstiegs-Check.</li>
+          <li><b>Jeden Trade dokumentieren und nach 50+ Trades ehrlich auswerten.</b> Dafür gibt es das Trade-Tagebuch im Depot.</li>
+        </ol>
+      </section>
     </div>
     <datalist id="symList"></datalist>
 
@@ -423,9 +588,21 @@ const U = [
   ["7203.T","Toyota","JP","asien",270,3.0,2800],["600519.SS","Kweichow Moutai","CN","asien",250,3.6,1450],["RELIANCE.NS","Reliance Industries","IN","asien",220,0.4,1380],
   ["000660.KS","SK Hynix","KR","asien",200,0.6,350000],["HDFCBANK.NS","HDFC Bank","IN","asien",175,1.1,960],["6758.T","Sony","JP","asien",170,0.6,4200],
   ["8306.T","Mitsubishi UFJ","JP","asien",170,3.0,2300],
-].map(([s,n,c,reg,mc,dy,b])=>({s,n,c,reg,mc,dy,b}));
+].map(([s,n,c,reg,mc,dy,b])=>({s,n,c,reg,mc,dy,b,a:"aktie"}));
+// Größte ETFs (Xetra, EUR; mc = ungefähres Fondsvolumen in Mrd. USD) und Kryptos (mc = Marktkapitalisierung)
+U.push(...[
+  ["SXR8.DE","iShares Core S&P 500","IE",100,1.1,620],["EUNL.DE","iShares Core MSCI World","IE",95,1.4,105],["VUSA.DE","Vanguard S&P 500","IE",55,1.1,115],
+  ["VWCE.DE","Vanguard FTSE All-World","IE",40,1.6,140],["IS3N.DE","iShares Core MSCI EM IMI","IE",25,2.2,37],["SXRV.DE","iShares Nasdaq 100","IE",16,0.6,1150],
+  ["XDWD.DE","Xtrackers MSCI World","IE",15,1.4,120],["EXSA.DE","iShares STOXX Europe 600","DE",10,2.8,55],["EXS1.DE","iShares Core DAX","DE",7,0,200],
+  ["IUSN.DE","iShares MSCI World Small Cap","IE",6,1.5,7.5],
+].map(([s,n,c,mc,dy,b])=>({s,n,c,reg:"etf",mc,dy,b,a:"etf"})),
+...[
+  ["BTC-EUR","Bitcoin",2200,95000],["ETH-EUR","Ethereum",450,3500],["XRP-EUR","XRP",150,2.4],["BNB-EUR","BNB",130,900],["SOL-EUR","Solana",100,180],
+  ["DOGE-EUR","Dogecoin",30,0.2],["TRX-EUR","TRON",30,0.3],["ADA-EUR","Cardano",28,0.7],["LINK-EUR","Chainlink",14,20],["AVAX-EUR","Avalanche",12,25],
+].map(([s,n,mc,b])=>({s,n,c:"",reg:"krypto",mc,dy:0,b,a:"krypto"})));
 const BY = Object.fromEntries(U.map(x=>[x.s,x]));
-const REG_NAME = {europa:"Europa",amerika:"Amerika",asien:"Asien",welt:"Weltweit"};
+const REG_NAME = {europa:"Europa",amerika:"Amerika",asien:"Asien",welt:"Weltweit",etf:"ETF",krypto:"Krypto"};
+const ASSET_NAME = {aktie:"Aktien",etf:"ETFs",krypto:"Kryptos"};
 const FX_FALLBACK = {USD:1,EUR:1.16,GBP:1.34,GBp:1.34,CHF:1.25,DKK:0.156,JPY:0.0066,HKD:0.128,KRW:0.00071,TWD:0.031,INR:0.0113,SAR:0.267,CNY:0.14};
 
 /* ---------- Filter ---------- */
@@ -439,9 +616,22 @@ const FILTERS = [
   {id:"oversold",name:"Überverkauft",   desc:"RSI unter bzw. nahe 30: stark gefallene Werte, bei denen eine technische Gegenbewegung (Rebound) möglich ist. Höheres Risiko.", key:m=>-m.rsi, fmt:m=>"RSI "+m.rsi.toFixed(0), th:"RSI"},
   {id:"lowvol",name:"Defensiv",         desc:"Geringste Schwankung (annualisierte 20-Tage-Volatilität). Ruhigere Werte für vorsichtige Anleger.", key:m=>-m.vol, fmt:m=>pct(m.vol,0,false)+" Vola", th:"Volatilität"},
   {id:"perf",  name:"Top 12 Monate",    desc:"Beste Kursentwicklung der letzten 12 Monate.", key:m=>m.c1y, fmt:m=>pct(m.c1y,1), th:"1J"},
+  {id:"crv",   name:"Chance/Risiko",    desc:"Bestes Verhältnis von möglichem Gewinn (bis zum nächsten Widerstand) zum Risiko (bis zur nächsten Unterstützung, Stop knapp darunter). Ab 2 : 1 gilt ein Einstieg als lohnend. Werte unter der 200-Tage-Linie stehen hinten, weil ihr Chance/Risiko gegen den Trend trügt.", key:m=>Math.min(m.entry.crv,10)-(m.p<m.s200?10:0), fmt:m=>nf(1).format(m.entry.crv)+" : 1", th:"Chance/Risiko"},
+  {id:"sma200",name:"200-Tage-Linie",   desc:"Trendfolge: Kaufsignal, wenn der Kurs über der 200-Tage-Linie schließt. Verkaufssignal, wenn er mehr als 3 % darunter fällt (Filter gegen Fehlsignale). Frische Kaufsignale stehen oben. Schützt vor langen Crashs, liefert aber in Seitwärtsphasen viele Fehlsignale.", key:m=>m.strat.sma200.score, fmt:m=>m.strat.sma200.short, th:"200-Tage-Signal"},
+  {id:"golden",name:"Golden Cross",     desc:"Die 50-Tage-Linie kreuzt die 200-Tage-Linie von unten (Golden Cross) – ein klassisches Kaufsignal für einen neuen Aufwärtstrend. Die jüngsten Kreuzungen stehen oben, Death Crosses (von oben) unten.", key:m=>m.strat.golden.score, fmt:m=>m.strat.golden.short, th:"Kreuzung"},
+  {id:"breakout",name:"Ausbruch / Unterstützung", desc:"Unterstützung und Widerstand: Ausbrüche über einen Widerstand mit hohem Volumen (Kaufsignal) und Kurse nahe einer Unterstützung im Aufwärtstrend (Einstieg mit Stop knapp darunter).", key:m=>m.strat.sr.score, fmt:m=>m.strat.sr.short, th:"Signal"},
+  {id:"rsipull",name:"RSI-Rücksetzer",  desc:"RSI in Richtung des Trends: im Aufwärtstrend Rücksetzer auf einen RSI von etwa 30–40 kaufen, nicht gegen den Trend handeln. Oben stehen Aufwärtstrends mit dem tiefsten RSI.", key:m=>m.strat.rsi.score, fmt:m=>m.strat.rsi.short, th:"RSI"},
+  {id:"macd",  name:"MACD-Signal",      desc:"Kaufsignal, wenn die MACD-Linie die Signallinie von unten kreuzt. Am aussagekräftigsten unter der Nulllinie und wenn der große Trend aufwärts zeigt – solche Signale stehen oben.", key:m=>m.strat.macd.score, fmt:m=>m.strat.macd.short, th:"MACD"},
   {id:"high",  name:"Nahe 52W-Hoch",    desc:"Aktien, die nahe an ihrem 52-Wochen-Hoch notieren – oft ein Zeichen relativer Stärke (Ausbruchskandidaten).", key:m=>-m.distHi, fmt:m=>pct(-m.distHi,1), th:"Abst. Hoch"},
 ];
 
+// Filter in Gruppen für die Übersicht
+const FGROUPS=[
+  {t:"Überblick",ids:["mcap","perf","high"]},
+  {t:"Ertrag & Sicherheit",ids:["div","lowvol","long"]},
+  {t:"Trend & Timing",ids:["trend","crv","week","short","oversold"]},
+  {t:"Strategien",ids:["sma200","golden","breakout","rsipull","macd"]},
+];
 const TRENDS = {
   strongUp:{t:"Starker Aufwärtstrend",short:"Stark ↑",cls:"up",
     x:"Kurs über dem 50- und 200-Tage-Durchschnitt, und der 50-Tage-Schnitt steigt. Käufer haben klar die Oberhand; Rücksetzer werden bisher gekauft."},
@@ -473,7 +663,7 @@ const store = {get(k,d){try{const v=localStorage.getItem("kr_"+k);return v==null
 
 /* ---------- Zustand ---------- */
 const S = {
-  mode:"demo", region:store.get("region","welt"), filter:store.get("filter","mcap"), sel:store.get("sel","NVDA"),
+  mode:"demo", region:store.get("region","welt"), asset:store.get("asset","aktie"), fOpen:store.get("fOpen",!matchMedia("(max-width: 700px)").matches), journal:[], filter:store.get("filter","mcap"), sel:store.get("sel","NVDA"),
   range:store.get("range","1y"), ctype:store.get("ctype","candle"),
   daily:{}, meta:{}, metrics:{}, live:{}, fx:{...FX_FALLBACK}, extra:{}, updated:null, busy:false,
   server:false, view:store.get("view","markt"), portfolio:[], symInfo:{},
@@ -548,8 +738,11 @@ async function pool(items,n,fn){const out=[];let i=0;await Promise.all(Array.fro
 async function loadLiveExtras(){
   // Marktkapitalisierung (für das Ranking) + Wechselkurse
   try{
-    const j=await api("/api/quote?symbols="+encodeURIComponent(U.map(x=>x.s).join(",")));
-    for(const q of j?.quoteResponse?.result||[])S.live[q.symbol]={mcap:q.marketCap,cur:q.currency,name:q.longName||q.shortName};
+    const qs=[...new Set([...U.map(x=>x.s),...S.portfolio.filter(p=>!p.manual).map(p=>p.sym)])];
+    const parts=[];for(let i=0;i<qs.length;i+=60)parts.push(qs.slice(i,i+60));
+    for(const part of parts){const j=await api("/api/quote?symbols="+encodeURIComponent(part.join(",")));
+      for(const q of j?.quoteResponse?.result||[])S.live[q.symbol]={mcap:q.marketCap,cur:q.currency,name:q.longName||q.shortName,
+        earn:q.earningsTimestampStart||q.earningsTimestamp||null,div:q.dividendDate||null,exDiv:q.exDividendDate||null}}
   }catch(e){console.warn("Quote/Marktkapitalisierung nicht verfügbar – nutze Näherungswerte",e)}
   await ensureFx([...Object.values(S.live).map(x=>x.cur),"EUR",...S.portfolio.map(p=>curOf(p.sym))],true);
 }
@@ -560,6 +753,74 @@ function smaSeries(bars,n){const c=bars.map(b=>b.c);const out=[];let s=0;for(let
 function rsi(c,n=14){if(c.length<n+1)return 50;let g=0,l=0;for(let i=1;i<=n;i++){const d=c[i]-c[i-1];d>0?g+=d:l-=d}g/=n;l/=n;
   for(let i=n+1;i<c.length;i++){const d=c[i]-c[i-1];g=(g*(n-1)+Math.max(d,0))/n;l=(l*(n-1)+Math.max(-d,0))/n}return l===0?100:100-100/(1+g/l)}
 function chgN(c,n,p){return c.length>n?p/c[c.length-1-n]-1:null}
+function emaArr(a,n){const k=2/(n+1);const o=[];let e=a[0];for(let i=0;i<a.length;i++){e=i?a[i]*k+e*(1-k):a[i];o.push(e)}return o}
+function smaArr(a,n){const o=new Array(a.length).fill(null);let s=0;for(let i=0;i<a.length;i++){s+=a[i];if(i>=n)s-=a[i-n];if(i>=n-1)o[i]=s/n}return o}
+/* Unterstützungen/Widerstände: Wendepunkte der letzten ~12 Monate, die sich (±1,5 %) mindestens zweimal wiederholen */
+function srLevels(bars){
+  const n=bars.length,piv=[];
+  for(let i=Math.max(5,n-250);i<n-5;i++){let lo=true,hi=true;
+    for(let k=i-5;k<=i+5;k++){if(bars[k].l<bars[i].l)lo=false;if(bars[k].h>bars[i].h)hi=false}
+    if(lo)piv.push(bars[i].l);if(hi)piv.push(bars[i].h)}
+  piv.sort((a,b)=>a-b);const out=[];
+  for(const x of piv){const c=out[out.length-1];if(c&&x<=c.sum/c.n*1.015){c.sum+=x;c.n++}else out.push({sum:x,n:1})}
+  return out.filter(c=>c.n>=2).map(c=>({lvl:c.sum/c.n,touches:c.n}));
+}
+/* Die fünf verbreitetsten Chart-Strategien als Signale (score: höher = stärkeres Kaufsignal) */
+function strategies(m,bars,c,v){
+  const n=c.length,last=n-1,s50a=smaArr(c,50),s200a=smaArr(c,Math.min(200,n-1)),St={};
+  const daysAgo=i=>last-i;
+  // 1) Trendfolge 200-Tage-Linie (Verkauf erst 3 % darunter)
+  let upX=null,dnX=null;
+  for(let i=last;i>Math.max(1,n-260)&&(upX==null||dnX==null);i--){
+    if(s200a[i-1]==null)break;
+    if(upX==null&&c[i]>s200a[i]&&c[i-1]<=s200a[i-1])upX=i;
+    if(dnX==null&&c[i]<s200a[i]*0.97&&c[i-1]>=s200a[i-1]*0.97)dnX=i;
+  }
+  const a200=m.p/m.s200-1;
+  if(a200>=0){const d=upX!=null?daysAgo(upX):null;St.sma200={state:"buy",score:100-Math.min(d??99,99),short:d!=null?`Kauf seit ${d} T.`:"über 200-T.",
+      txt:`Kurs ${pct(a200,1)} über der 200-Tage-Linie (${fmtPx(m.s200)}): Kaufsignal${d!=null?`, ausgelöst vor ${d} Handelstagen`:" (seit über einem Jahr)"}.`}}
+  else if(a200<-0.03){const d=dnX!=null?daysAgo(dnX):null;St.sma200={state:"sell",score:-100+Math.min(d??99,99),short:d!=null?`Verkauf seit ${d} T.`:"unter 200-T.",
+      txt:`Kurs ${pct(-a200,1,false)} unter der 200-Tage-Linie (${fmtPx(m.s200)}): Verkaufssignal${d!=null?` seit ${d} Handelstagen`:""}. Erst über ${fmtPx(m.s200)} gibt es wieder ein Kaufsignal.`}}
+  else St.sma200={state:"warn",score:-10,short:"Warnzone",txt:`Kurs knapp (${pct(-a200,1,false)}) unter der 200-Tage-Linie: noch kein Verkaufssignal (Filter 3 %), aber Vorsicht. Verkauf unter ${fmtPx(m.s200*0.97)}.`};
+  // 2) Golden / Death Cross
+  let gX=null,dX=null;
+  for(let i=last;i>Math.max(1,n-260)&&(gX==null||dX==null);i--){
+    if(s200a[i-1]==null||s50a[i-1]==null)break;
+    if(gX==null&&s50a[i]>s200a[i]&&s50a[i-1]<=s200a[i-1])gX=i;
+    if(dX==null&&s50a[i]<s200a[i]&&s50a[i-1]>=s200a[i-1])dX=i;
+  }
+  if(m.s50>m.s200){const d=gX!=null?daysAgo(gX):null;St.golden={state:d!=null&&d<=60?"buy":"neutral",score:d!=null&&d<=60?100-d:10,short:d!=null?`Golden Cross vor ${d} T.`:"50 über 200",
+      txt:d!=null?`Golden Cross vor ${d} Handelstagen: Die 50-Tage-Linie hat die 200-Tage-Linie von unten gekreuzt.${d>60?" Das Signal ist schon älter.":""}`:"Die 50-Tage-Linie liegt seit über einem Jahr über der 200-Tage-Linie."}}
+  else{const d=dX!=null?daysAgo(dX):null;St.golden={state:"sell",score:-100+Math.min(d??99,99),short:d!=null?`Death Cross vor ${d} T.`:"50 unter 200",
+      txt:d!=null?`Death Cross vor ${d} Handelstagen: Die 50-Tage-Linie ist unter die 200-Tage-Linie gefallen – Zeichen für einen Abwärtstrend.`:"Die 50-Tage-Linie liegt unter der 200-Tage-Linie."}}
+  // 3) Unterstützung & Widerstand, Ausbruch mit Volumen
+  const L=srLevels(bars);const sup=L.filter(x=>x.lvl<m.p*0.995).sort((a,b)=>b.lvl-a.lvl)[0]||null,res=L.filter(x=>x.lvl>m.p*1.005).sort((a,b)=>a.lvl-b.lvl)[0]||null;
+  m.supLvl=sup;m.resLvl=res;m.levels=L;
+  const v50=v.slice(-55,-5).reduce((a,b)=>a+b,0)/Math.max(1,Math.min(50,n-5));let bo=null;
+  for(let j=last;j>=Math.max(1,n-5)&&!bo;j--)for(const x of L){if(c[j-1]<x.lvl&&c[j]>x.lvl*1.005&&v[j]>1.5*v50&&m.p>x.lvl){bo={lvl:x.lvl,d:daysAgo(j),vr:v[j]/v50};break}}
+  const up=m.p>m.s200;
+  if(bo)St.sr={state:"buy",score:100-bo.d,short:`Ausbruch über ${fmtPx(bo.lvl)}`,txt:`Ausbruch über den Widerstand bei ${fmtPx(bo.lvl)} vor ${bo.d} Tagen mit ${nf(1).format(bo.vr)}-fachem Volumen: Kaufsignal. Der alte Widerstand ist jetzt Unterstützung.`};
+  else if(sup&&m.p/sup.lvl-1<0.03&&up)St.sr={state:"buy",score:60-(m.p/sup.lvl-1)*1000,short:`nahe Unterstützung`,txt:`Kurs nur ${pct(m.p/sup.lvl-1,1,false)} über der Unterstützung bei ${fmtPx(sup.lvl)} (${sup.touches}× nach oben gedreht), dazu Aufwärtstrend: Einstieg nahe Unterstützung, Stop-Loss knapp darunter bei ${fmtPx(sup.lvl*0.99)}.`};
+  else if(sup&&m.p<sup.lvl*1.0&&!up)St.sr={state:"sell",score:-50,short:"Unterstützung gebrochen",txt:"Unterstützung gebrochen im Abwärtstrend."};
+  else St.sr={state:"neutral",score:0,short:sup?`Unterst. ${fmtPx(sup.lvl)}`:"keine Marke",
+    txt:`${sup?`Nächste Unterstützung ${fmtPx(sup.lvl)} (${sup.touches} Berührungen, ${pct(sup.lvl/m.p-1,1)})`:"Keine klare Unterstützung unter dem Kurs"}${res?`, nächster Widerstand ${fmtPx(res.lvl)} (${pct(res.lvl/m.p-1,1)})`:", kein Widerstand darüber (Nähe Hoch)"}. Kein frisches Signal.`};
+  // 4) RSI in Richtung des Trends
+  const R=m.rsi;
+  if(up&&R>=28&&R<=42)St.rsi={state:"buy",score:100-R,short:`RSI ${R.toFixed(0)} im Aufwärtstrend`,txt:`RSI ${R.toFixed(0)} im Aufwärtstrend: klassischer Rücksetzer-Kauf (Zone 30–40) in Richtung des großen Trends.`};
+  else if(R>70)St.rsi={state:"warn",score:-30,short:`RSI ${R.toFixed(0)} überkauft`,txt:`RSI ${R.toFixed(0)}: überkauft. Kein guter Einstiegszeitpunkt – Rücksetzer abwarten.`};
+  else if(R<30&&!up)St.rsi={state:"warn",score:-20,short:`RSI ${R.toFixed(0)} gegen Trend`,txt:`RSI ${R.toFixed(0)}: überverkauft, aber im Abwärtstrend. Gegen den Trend zu kaufen ist riskant („fallendes Messer“).`};
+  else St.rsi={state:"neutral",score:up?50-R/2:-R/2,short:`RSI ${R.toFixed(0)}`,txt:`RSI ${R.toFixed(0)}: neutral. ${up?"Im Aufwärtstrend auf einen Rücksetzer Richtung 30–40 warten.":"Kein Aufwärtstrend – RSI-Käufe hier meiden."}`};
+  // 5) MACD (12/26/9)
+  const e12=emaArr(c,12),e26=emaArr(c,26),mac=c.map((_,i)=>e12[i]-e26[i]),sg=emaArr(mac,9);
+  m.macd=mac[last];m.macdSig=sg[last];let bx=null,sx=null;
+  for(let i=last;i>=Math.max(1,n-10);i--){if(bx==null&&mac[i]>sg[i]&&mac[i-1]<=sg[i-1])bx=i;if(sx==null&&mac[i]<sg[i]&&mac[i-1]>=sg[i-1])sx=i}
+  if(bx!=null&&(sx==null||bx>sx)){const d=daysAgo(bx),below=mac[bx]<0;St.macd={state:"buy",score:60-d*4+(below?20:0)+(up?20:0),short:`Kauf vor ${d} T.${below?" (unter 0)":""}`,
+    txt:`MACD hat die Signallinie vor ${d} Tagen von unten gekreuzt: Kaufsignal${below?" unter der Nulllinie":""}${up?" bei großem Aufwärtstrend":""} – ${below&&up?"die aussagekräftigste Variante":below||up?"mittlere Aussagekraft":"gegen den großen Trend, eher schwach"}.`}}
+  else if(sx!=null){const d=daysAgo(sx);St.macd={state:"sell",score:-60+d*4,short:`Verkauf vor ${d} T.`,txt:`MACD hat die Signallinie vor ${d} Tagen von oben gekreuzt: Verkaufssignal, das Momentum lässt nach.`}}
+  else St.macd={state:mac[last]>sg[last]?"neutral":"neutral",score:mac[last]>sg[last]?5:-5,short:mac[last]>sg[last]?"über Signal":"unter Signal",
+    txt:`Kein frisches MACD-Signal. MACD ${mac[last]>sg[last]?"über":"unter"} der Signallinie, ${mac[last]>=0?"über":"unter"} der Nulllinie.`};
+  return St;
+}
 function computeMetrics(sym){
   const d=S.daily[sym];if(!d||d.bars.length<30)return null;
   const bars=d.bars, c=bars.map(b=>b.c), v=bars.map(b=>b.v);
@@ -580,6 +841,7 @@ function computeMetrics(sym){
     s20,s50,s200,slope50,rsi:R,vol,hi,lo,distHi:1-p/hi,maxDD:dd,volRatio:v50?v5/v50:1,divYield:p?divSum/p:0,mcapUSD,cur,
     spark:c.slice(-30)};
   m.low20=Math.min(...bars.slice(-20).map(b=>b.l));m.hi60=Math.max(...bars.slice(-60).map(b=>b.h));
+  m.strat=strategies(m,bars,c,v);
   m.trend=classify(m);m.entry=entryCheck(m);return m;
 }
 /* Depot-Empfehlung für gehaltene Positionen: Verkaufen / Teilgewinne / Halten / Nachkaufen + Stop- und Rückkaufmarke */
@@ -626,8 +888,8 @@ function entryCheck(m){
   const {p,s20,s50,s200,rsi:R,vol}=m;const pts=[];let sc=0;
   const add=(v,cls,txt)=>{sc+=v;pts.push([cls,txt])};
   // Stop = nächste Unterstützung unter dem Kurs, Ziel = nächster Widerstand darüber
-  const sup=[m.low20,s20,s50,s200].filter(x=>x&&x<p*0.995);const stop=sup.length?Math.max(...sup):p*(1-vol*0.25);
-  const res=[m.hi60,m.hi,s20,s50,s200].filter(x=>x&&x>p*1.01);const target=res.length?Math.min(...res):p*(1+vol*0.25);
+  const sup=[m.supLvl?.lvl,m.low20,s20,s50,s200].filter(x=>x&&x<p*0.995);const stop=sup.length?Math.max(...sup)*0.99:p*(1-vol*0.25);
+  const res=[m.resLvl?.lvl,m.hi60,m.hi,s20,s50,s200].filter(x=>x&&x>p*1.01);const target=res.length?Math.min(...res):p*(1+vol*0.25);
   const risk=Math.max((p-stop)/p,0.005),chance=(target-p)/p,crv=chance/risk;
   if(p>s200&&s50>s200)add(2,"pos","Übergeordneter Aufwärtstrend (Kurs und SMA 50 über SMA 200).");
   else if(p<s200&&s50<s200)add(-2,"neg","Übergeordneter Abwärtstrend – gegen den Trend zu kaufen ist riskant.");
@@ -661,9 +923,15 @@ function classify(m){
 }
 function zs(list,f){const v=list.map(f);const mu=v.reduce((a,b)=>a+b,0)/v.length;const sd=Math.sqrt(v.reduce((a,b)=>a+(b-mu)**2,0)/v.length)||1;return v.map(x=>(x-mu)/sd)}
 function rankPct(vals){const s=[...vals].sort((a,b)=>a-b);return vals.map(v=>s.length>1?s.indexOf(v)/(s.length-1)*100:50)}
+function assetOf(sym){return BY[sym]?.a||S.portfolio.find(x=>x.sym===sym)?.type||guessType(sym)}
 function computeAll(){
   S.metrics={};for(const s of Object.keys(S.daily)){const m=computeMetrics(s);if(m)S.metrics[s]=m}
-  const L=Object.values(S.metrics);if(!L.length)return;
+  // Punkte je Anlageklasse vergleichen (Kryptos schwanken ganz anders als Aktien)
+  const groups={};for(const m of Object.values(S.metrics))(groups[assetOf(m.sym)]??=[]).push(m);
+  Object.values(groups).forEach(scoreGroup);
+}
+function scoreGroup(L){
+  if(!L.length)return;
   const zVR=zs(L,m=>Math.min(m.volRatio,3)),z5=zs(L,m=>m.c5d||0),z1m=zs(L,m=>m.c1m||0),zVol=zs(L,m=>m.vol),z1y=zs(L,m=>m.c1y||0),
         zDD=zs(L,m=>m.maxDD),zDy=zs(L,m=>m.divYield),zA50=zs(L,m=>m.p/m.s50-1),zA200=zs(L,m=>m.p/m.s200-1),zSl=zs(L,m=>m.slope50);
   const w=[],sh=[],lg=[];
@@ -705,7 +973,8 @@ async function refreshAll(full=true){
 
 /* ---------- Sidebar ---------- */
 function regionList(reg){
-  const cands=(reg==="welt"?U:U.filter(x=>x.reg===reg)).map(x=>S.metrics[x.s]).filter(Boolean);
+  const pool=U.filter(x=>x.a===S.asset&&(S.asset!=="aktie"||reg==="welt"||x.reg===reg));
+  const cands=pool.map(x=>S.metrics[x.s]).filter(Boolean);
   const top=cands.sort((a,b)=>b.mcapUSD-a.mcapUSD).slice(0,10);
   const f=FILTERS.find(x=>x.id===S.filter);
   return S.filter==="mcap"?top:[...top].sort((a,b)=>f.key(b)-f.key(a));
@@ -718,8 +987,12 @@ function spark(vals){
 }
 function renderSide(){
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.region===S.region));
-  $("#chips").innerHTML=FILTERS.map(f=>`<button class="chip" type="button" data-f="${f.id}" aria-pressed="${f.id===S.filter}">${f.name}</button>`).join("");
-  const f=FILTERS.find(x=>x.id===S.filter);$("#fdesc").textContent=f.desc;
+  document.querySelectorAll("#assetSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.a===S.asset));
+  $("#regionTabs").hidden=S.asset!=="aktie";
+  $("#fgroups").innerHTML=FGROUPS.map(g=>`<div class="fgroup"><div class="flabel">${g.t}</div><div class="chips">${g.ids.map(id=>{const f=FILTERS.find(x=>x.id===id);
+    return `<button class="chip" type="button" data-f="${f.id}" aria-pressed="${f.id===S.filter}">${f.name}</button>`}).join("")}</div></div>`).join("");
+  const f=FILTERS.find(x=>x.id===S.filter);$("#fdesc").textContent=f.desc;$("#fActive").textContent=f.name;
+  $("#fToggle").setAttribute("aria-expanded",S.fOpen);$("#fgroups").hidden=!S.fOpen;$("#fdesc").hidden=!S.fOpen;
   const list=regionList(S.region);
   $("#list").innerHTML=list.map((m,i)=>{const info=BY[m.sym];return `<button class="row" role="listitem" data-s="${m.sym}" aria-current="${m.sym===S.sel}">
     <span class="rk">${i+1}</span>
@@ -733,8 +1006,8 @@ function renderSide(){
 /* ---------- Bestenliste ---------- */
 function renderBoard(){
   const f=FILTERS.find(x=>x.id===S.filter);
-  const L=Object.values(S.metrics).filter(m=>BY[m.sym]).sort((a,b)=>f.key(b)-f.key(a)).slice(0,15);
-  $("#boardTitle").textContent="Bestenliste aller Regionen · "+f.name;$("#boardMetricTh").textContent=f.th;
+  const L=Object.values(S.metrics).filter(m=>BY[m.sym]?.a===S.asset).sort((a,b)=>f.key(b)-f.key(a)).slice(0,15);
+  $("#boardTitle").textContent=`Bestenliste ${ASSET_NAME[S.asset]}${S.asset==="aktie"?" (alle Regionen)":""} · ${f.name}`;$("#boardMetricTh").textContent=f.th;
   $("#board").innerHTML=L.map((m,i)=>`<tr data-s="${m.sym}" tabindex="0"><td class="num">${i+1}</td><td><b>${esc(BY[m.sym].n)}</b> <span class="muted num">${esc(m.sym)}</span></td>
     <td><span class="rg">${REG_NAME[BY[m.sym].reg]}</span></td><td class="num">${fmtPx(m.p)} <span class="muted">${m.cur}</span></td>
     <td class="num ${cls(m.c1d)}">${pct(m.c1d,1)}</td><td class="num ${cls(m.c1m)}">${pct(m.c1m,1)}</td><td class="num ${cls(m.c1y)}">${pct(m.c1y,1)}</td>
@@ -753,7 +1026,7 @@ function ensureChart(){
   return true;
 }
 function rebuildSeries(){
-  [mainSer,volSer,...Object.values(smaSer)].forEach(s=>s&&chart.removeSeries(s));smaSer={};
+  [mainSer,volSer,...Object.values(smaSer)].forEach(s=>s&&chart.removeSeries(s));smaSer={};srLines=[];
   mainSer=S.ctype==="candle"
     ?chart.addCandlestickSeries({upColor:css("--up"),downColor:css("--down"),borderVisible:false,wickUpColor:css("--up"),wickDownColor:css("--down")})
     :chart.addAreaSeries({lineColor:css("--accent"),topColor:css("--accent-soft"),bottomColor:"rgba(0,0,0,0)",lineWidth:2});
@@ -800,10 +1073,12 @@ async function renderStock(keepView=false){
   const up=css("--up"),dn=css("--down");
   volSer.setData(bars.map(b=>({time:b.t,value:b.v,color:(b.c>=b.o?up:dn)+"55"})));
   for(const n of [20,50,200])smaSer[n].setData(smaSeries(bars,n));
+  drawLevels(m,!rb.intraday&&S.range!=="5y");
   chart.applyOptions({timeScale:{timeVisible:rb.intraday,secondsVisible:false}});
   if(!keepView||rb.intraday||!rb.from){rb.from?chart.timeScale().setVisibleRange({from:rb.from,to:bars[bars.length-1].t}):chart.timeScale().fitContent()}
 }
 function renderAnalysis(m){
+  renderStrategies(m);fillRisk(m);
   $("#trTitle").innerHTML=`<span class="${m.trend.cls==="side-t"?"":m.trend.cls}">${esc(m.trend.t)}</span>`;
   $("#trText").textContent=m.trend.x;
   const sig=[];const a200=m.p/m.s200-1,a50=m.p/m.s50-1;
@@ -819,7 +1094,9 @@ function renderAnalysis(m){
   $("#kv").innerHTML=row("1 Tag",pct(m.c1d),cls(m.c1d))+row("5 Tage",pct(m.c5d),cls(m.c5d))+row("1 Monat",pct(m.c1m),cls(m.c1m))+row("6 Monate",pct(m.c6m),cls(m.c6m))+row("12 Monate",pct(m.c1y),cls(m.c1y))
     +row("Dividende 12M",pct(m.divYield,2,false))+row("RSI (14)",m.rsi.toFixed(1))+row("Volatilität (ann.)",pct(m.vol,1,false))
     +row("52W-Hoch / -Tief",fmtPx(m.hi)+" / "+fmtPx(m.lo))+row("Abstand zum Hoch",pct(-m.distHi,1),cls(-m.distHi))+row("Max. Rückgang 12M",pct(-m.maxDD,1),"down")
-    +row("Volumen 5T vs. Ø50T",nf(2).format(m.volRatio)+"×");
+    +row("Volumen 5T vs. Ø50T",nf(2).format(m.volRatio)+"×")
+    +row("MACD / Signal",`${nf(2).format(m.macd)} / ${nf(2).format(m.macdSig)}`,m.macd>m.macdSig?"up":"down")
+    +row("Unterstützung",m.supLvl?fmtPx(m.supLvl.lvl):"–","up")+row("Widerstand",m.resLvl?fmtPx(m.resLvl.lvl):"–","down");
   const sc=(n,v)=>`<div class="score"><span>${n}</span><span class="bar"><i style="width:${Math.max(3,v)}%"></i></span><span class="num">${v.toFixed(0)}</span></div>`;
   $("#scores").innerHTML=sc("Wochenhandel",m.sWeek)+sc("Short Term",m.sShort)+sc("Long Term",m.sLong);
   const e=m.entry,when=S.updated?S.updated.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}):"";
@@ -846,6 +1123,50 @@ function renderAnalysis(m){
     </dl>
     <ul class="signals" style="margin-top:10px">${e.pts.map(([c,t])=>`<li class="${c}">${esc(t)}</li>`).join("")}</ul>`;
 }
+const ST_NAMES={sma200:"Trendfolge 200-Tage-Linie",golden:"Golden Cross 50/200",sr:"Unterstützung & Widerstand",rsi:"RSI im Trend",macd:"MACD"};
+const ST_LABEL={buy:["Kaufsignal","up"],sell:["Verkaufssignal","down"],warn:["Vorsicht","side-t"],neutral:["Neutral","neutral"]};
+function renderStrategies(m){
+  const st=m.strat,keys=Object.keys(ST_NAMES);const nb=keys.filter(k=>st[k].state==="buy").length,ns=keys.filter(k=>st[k].state==="sell").length;
+  $("#stratSum").textContent=`${nb} × Kauf · ${ns} × Verkauf`;
+  $("#strats").innerHTML=keys.map(k=>{const [l,c]=ST_LABEL[st[k].state];return `<div class="strat"><div class="shead"><b>${ST_NAMES[k]}</b><span class="sig ${c}">${l}</span></div><p>${esc(st[k].txt)}</p></div>`}).join("");
+}
+let riskSym=null;
+function depotTotalEUR(){return S.portfolio.reduce((a,p)=>{const m=S.metrics[p.sym];const px=m&&!p.manual?toEUR(m.p,m.cur):p.refPx;return a+(px?p.qty*px:0)},0)}
+function fillRisk(m){
+  if(riskSym!==m.sym){riskSym=m.sym;
+    $("#rEntry").value=+m.p.toPrecision(6);$("#rStop").value=+m.entry.stop.toPrecision(6);$("#rTarget").value=+m.entry.target.toPrecision(6);
+    if(!$("#rDepot").value){const t=depotTotalEUR();$("#rDepot").value=store.get("rDepot",t?Math.round(t):10000)}
+    document.querySelectorAll(".rcur").forEach(x=>x.textContent="("+m.cur+")");$("#rMsg").textContent="";
+  }
+  calcRisk();
+}
+function calcRisk(){
+  const m=S.metrics[riskSym];if(!m)return;const num=id=>parseFloat(String($(id).value).replace(",","."));
+  const dep=num("#rDepot"),rp=num("#rPct")/100,en=num("#rEntry"),sl=num("#rStop"),tg=num("#rTarget");
+  const row=(k,v,c="")=>`<dt>${k}</dt><dd class="${c}">${v}</dd>`;
+  if(!(dep>0&&en>0&&sl>0)||sl>=en){$("#rOut").innerHTML=row("Hinweis","Stop-Loss muss unter dem Einstieg liegen","down");return null}
+  const budget=dep*rp,riskEUR=toEUR(en-sl,m.cur),crypto=assetOf(m.sym)==="krypto";
+  let qty=budget/riskEUR;qty=crypto?Math.floor(qty*1e4)/1e4:Math.floor(qty);
+  const posEUR=qty*toEUR(en,m.cur),crv=tg>en?(tg-en)/(en-sl):0,lossEUR=qty*riskEUR;
+  $("#rOut").innerHTML=row("Max. Verlust (Budget)",fmtEur(budget))+row("Risiko je Stück",`${fmtPx(en-sl)} ${m.cur} (${pct((en-sl)/en,1,false)})`)
+    +row("Stückzahl",`<b>${fmtQty(qty)}</b>`)+row("Positionsgröße",`${fmtEur(posEUR)} (${pct(posEUR/dep,1,false)} vom Depot)`,posEUR>dep?"down":"")
+    +row("Verlust beim Stop",fmtEur(lossEUR),"down")+row("Gewinn am Ziel",tg>en?fmtEur(qty*toEUR(tg-en,m.cur)):"–","up")
+    +row("Chance/Risiko",`${nf(1).format(crv)} : 1 ${crv>=2?"✓":"✗ unter 2 : 1"}`,crv>=2?"up":"down");
+  return {qty,en,sl,tg,crv};
+}
+$("#riskForm").addEventListener("input",e=>{if(e.target.id==="rDepot")store.set("rDepot",$("#rDepot").value);calcRisk()});
+$("#riskForm").addEventListener("change",calcRisk);
+$("#rToJournal").addEventListener("click",()=>{const r=calcRisk();if(!r||!(r.qty>0)){$("#rMsg").textContent="Erst gültige Werte eintragen.";return}
+  openJournalForm({sym:riskSym,entry:r.en,stop:r.sl,target:r.tg,qty:r.qty});});
+
+/* Unterstützungs-/Widerstandslinien im Chart */
+let srLines=[];
+function drawLevels(m,daily){
+  srLines.forEach(l=>{try{mainSer.removePriceLine(l)}catch{}});srLines=[];if(!daily||!mainSer)return;
+  const add=(x,t,c)=>srLines.push(mainSer.createPriceLine({price:x,color:c,lineWidth:1,lineStyle:2,axisLabelVisible:true,title:t}));
+  if(m.supLvl)add(m.supLvl.lvl,"Unterstützung",css("--up"));if(m.resLvl)add(m.resLvl.lvl,"Widerstand",css("--down"));
+}
+
 function renderLexicon(){
   $("#lexicon").innerHTML=Object.values(TRENDS).map(t=>`<details><summary class="${t.cls==="side-t"?"":t.cls}">${esc(t.t)}</summary><p>${esc(t.x)}</p></details>`).join("")
    +`<details><summary>Begriffe: SMA, RSI, Volatilität</summary><p><b>SMA 20/50/200</b>: Durchschnittskurs der letzten 20/50/200 Handelstage – kurz-, mittel- und langfristige Richtung. <b>RSI</b> (0–100): misst die Stärke der jüngsten Bewegungen; über 70 gilt als überkauft, unter 30 als überverkauft. <b>Volatilität</b>: typische Schwankungsbreite pro Jahr; hoch = mehr Chance und mehr Risiko.</p></details>`;
@@ -866,20 +1187,22 @@ const fmtQty=v=>new Intl.NumberFormat("de-DE",{maximumFractionDigits:6}).format(
 const fmtEur=v=>v==null||!isFinite(v)?"–":nf(2).format(v)+" €";
 function toEUR(v,cur){if(v==null||!isFinite(v))return null;if(cur==="GBp"){v/=100;cur="GBP"}
   const r=(S.fx[cur]??FX_FALLBACK[cur]??1)/(S.fx.EUR??FX_FALLBACK.EUR);return v*r}
-function guessType(sym){const p=PRESETS[sym];if(p)return p.t;if(/^[A-Z0-9]+-(EUR|USD|USDT|CHF|GBP)$/.test(sym))return"krypto";return S.symInfo[sym]?.type||"aktie"}
+function guessType(sym){if(BY[sym])return BY[sym].a;const p=PRESETS[sym];if(p)return p.t;if(/^[A-Z0-9]+-(EUR|USD|USDT|CHF|GBP)$/.test(sym))return"krypto";return S.symInfo[sym]?.type||"aktie"}
 
 async function loadPortfolio(){
   let list=null;
-  if(S.server){try{const j=await api("/api/portfolio");list=j.positions;S.pfPath=j.path}catch(e){console.warn("Depot-Datei nicht lesbar",e)}}
+  let jr=null;
+  if(S.server){try{const j=await api("/api/portfolio");list=j.positions;jr=j.journal;S.pfPath=j.path}catch(e){console.warn("Depot-Datei nicht lesbar",e)}}
+  S.journal=Array.isArray(jr)&&jr.length?jr:store.get("journal",[]);
   const local=store.get("portfolio",[]);
   if(!list||(!list.length&&local.length))list=local; // ältere Browser-Daten übernehmen
   S.portfolio=(list||[]).filter(p=>p&&p.sym&&p.qty>0);
   updateSaveInfo();
 }
 async function savePortfolio(){
-  store.set("portfolio",S.portfolio); // Kopie im Browser
+  store.set("portfolio",S.portfolio);store.set("journal",S.journal); // Kopie im Browser
   if(S.server){
-    try{const r=await http("PUT","/api/portfolio",{version:1,positions:S.portfolio});
+    try{const r=await http("PUT","/api/portfolio",{version:1,positions:S.portfolio,journal:S.journal});
       if(!r.ok)throw new Error("HTTP "+r.status);S.pfPath=(await r.json()).path;S.pfErr=null}
     catch(e){S.pfErr=e.message}
   }
@@ -895,7 +1218,7 @@ function isMobile(){return matchMedia("(max-width: 700px)").matches}
 function setMobileTab(t){
   document.documentElement.dataset.m=t;store.set("mtab",t);
   document.querySelectorAll("#mnav button").forEach(b=>b.setAttribute("aria-current",b.dataset.m===t?"page":"false"));
-  if(t==="depot"&&S.view!=="depot")setView("depot");if(t==="analyse"&&S.view!=="markt")setView("markt");
+  if(t==="depot"&&S.view!=="depot")setView("depot");if(t==="analyse"&&S.view!=="markt")setView("markt");if(t==="info"&&S.view!=="info")setView("info");
   window.scrollTo(0,0);
 }
 document.querySelectorAll("#mnav button").forEach(b=>b.addEventListener("click",()=>setMobileTab(b.dataset.m)));
@@ -904,16 +1227,126 @@ window.krBack=()=>{ // Zurück-Taste der Android-App
   const t=document.documentElement.dataset.m;if(isMobile()&&t&&t!=="listen"){setMobileTab("listen");return true}
   return false;
 };
+/* ---------- Infos & News ---------- */
+const MKT=[["^GDAXI","DAX"],["^STOXX50E","Euro Stoxx 50"],["^GSPC","S&P 500"],["^NDX","Nasdaq 100"],["^N225","Nikkei 225"],
+  ["EURUSD=X","Euro / Dollar"],["GC=F","Gold (USD)"],["BZ=F","Öl Brent (USD)"],["BTC-EUR","Bitcoin (EUR)"]];
+const safeUrl=u=>/^https?:\/\//i.test(u||"")?u:null;
+function ago(ts){const d=(Date.now()-ts)/6e4;return d<60?`vor ${Math.max(1,Math.round(d))} Min.`:d<1440?`vor ${Math.round(d/60)} Std.`:`vor ${Math.round(d/1440)} T.`}
+function newsItem(n){const u=safeUrl(n.link);if(!u)return"";
+  return `<a class="nitem" href="${esc(u)}" target="_blank" rel="noopener noreferrer"><b>${esc(n.title)}</b><span class="muted">${esc(n.source||"")}${n.ts?" · "+ago(n.ts):""}${n.tickers?.length?" · "+n.tickers.slice(0,3).map(esc).join(", "):""}</span></a>`}
+let infoLoaded=0;
+async function renderInfo(force=false){
+  renderEvents();
+  if(!S.server||S.mode!=="live"){
+    const msg=`<p class="muted">${NATIVE||S.server?"Keine Verbindung zu Yahoo Finance – Nachrichten und Marktdaten erscheinen, sobald Live-Kurse geladen sind.":"Nachrichten und Marktüberblick gibt es nur mit Live-Daten: in der Android-App oder in der PC-Version (server.py)."}</p>`;
+    $("#mktTiles").innerHTML=msg.replace("<p ",'<p style="grid-column:1/-1" ');const nm='<p class="muted">Nur mit Live-Daten verfügbar.</p>';$("#newsDepot").innerHTML=nm;$("#newsMarket").innerHTML=nm;$("#infoStamp").textContent="";return;
+  }
+  if(!force&&Date.now()-infoLoaded<10*6e4)return;infoLoaded=Date.now();
+  $("#infoStamp").textContent="Stand "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+  // Marktüberblick
+  const mk=await pool(MKT,5,async([sym,name])=>{const d=parseChart(await api(`/api/chart?symbol=${encodeURIComponent(sym)}&range=5d&interval=1d`));
+    const p=d.meta.regularMarketPrice,pc=d.meta.chartPreviousClose??d.bars[d.bars.length-2]?.c;return{sym,name,p,ch:pc?p/pc-1:null}});
+  $("#mktTiles").innerHTML=mk.map((x,i)=>x?`<button type="button" class="mtile" data-s="${esc(x.sym)}"><span>${esc(x.name)}</span><b class="num">${fmtPx(x.p)}</b><span class="num ${cls(x.ch)}">${pct(x.ch,2)}</span></button>`
+    :`<div class="mtile"><span>${esc(MKT[i][1])}</span><b>–</b></div>`).join("");
+  // Nachrichten zu den größten Depotwerten
+  const top=depotRows().rows.filter(r=>r.m&&!r.p.manual).sort((a,b)=>(b.value||0)-(a.value||0)).slice(0,8).map(r=>r.p.sym);
+  $("#newsDepot").innerHTML='<p class="muted">Lade …</p>';
+  const lists=await pool(top.length?top:["DAX"],4,async q=>(await api("/api/news?q="+encodeURIComponent(q))).news||[]);
+  const seen=new Set(),items=lists.flat().filter(Boolean).filter(n=>n.link&&!seen.has(n.title)&&seen.add(n.title))
+    .map(n=>({title:n.title,link:n.link,source:n.publisher,ts:(n.providerPublishTime||0)*1000,tickers:n.relatedTickers})).sort((a,b)=>b.ts-a.ts).slice(0,14);
+  $("#newsDepot").innerHTML=items.map(newsItem).join("")||'<p class="muted">Keine aktuellen Meldungen gefunden.</p>';
+  // Wirtschaft & Börse (tagesschau)
+  const feeds=await pool(["wirtschaft","finanzen"],2,async id=>{const j=await api("/api/feed?id="+id);const x=new DOMParser().parseFromString(j.xml||"","text/xml");
+    return [...x.querySelectorAll("item")].map(it=>({title:it.querySelector("title")?.textContent?.trim(),link:it.querySelector("link")?.textContent?.trim(),
+      source:"tagesschau",ts:Date.parse(it.querySelector("pubDate")?.textContent||"")||0}))});
+  const seen2=new Set(),mi=feeds.flat().filter(Boolean).filter(n=>n.title&&!seen2.has(n.title)&&seen2.add(n.title)).sort((a,b)=>b.ts-a.ts).slice(0,14);
+  $("#newsMarket").innerHTML=mi.map(newsItem).join("")||'<p class="muted">Nachrichten konnten nicht geladen werden.</p>';
+}
+function renderEvents(){
+  const now=Date.now()/1000,rows=[];
+  for(const p of S.portfolio){const l=S.live[p.sym];if(!l)continue;
+    if(l.earn&&l.earn>now-86400&&l.earn<now+120*86400)rows.push([l.earn,p,"Quartalszahlen"]);
+    if(l.exDiv&&l.exDiv>now-86400&&l.exDiv<now+120*86400)rows.push([l.exDiv,p,"Ex-Dividende"]);
+    else if(l.div&&l.div>now-86400&&l.div<now+120*86400)rows.push([l.div,p,"Dividendenzahlung"]);}
+  rows.sort((a,b)=>a[0]-b[0]);
+  $("#events").innerHTML=rows.length?`<div class="tbl-wrap"><table><thead><tr><th>Datum</th><th>Wert</th><th>Ereignis</th></tr></thead><tbody>${rows.map(([t,p,e])=>
+    `<tr data-s="${esc(p.sym)}"><td class="num">${new Date(t*1000).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"})}</td><td><b>${esc(p.name||p.sym)}</b></td><td>${e}</td></tr>`).join("")}</tbody></table></div>`
+    :`<p class="muted">${S.mode==="live"?"Keine Termine in den nächsten vier Monaten bekannt (Yahoo liefert nicht für alle Werte Termine, z. B. nicht für ETFs und Kryptos).":"Termine gibt es nur mit Live-Daten."}</p>`;
+}
+$("#newsReload").addEventListener("click",()=>renderInfo(true));
+$("#mktTiles").addEventListener("click",async e=>{const b=e.target.closest(".mtile[data-s]");if(b&&await ensureData(b.dataset.s)){S.extra[b.dataset.s]=1;select(b.dataset.s)}});
+$("#events").addEventListener("click",e=>{const tr=e.target.closest("tr[data-s]");if(tr)openAnalysis(tr.dataset.s)});
+
+/* ---------- Trade-Tagebuch ---------- */
+const today=()=>new Date().toISOString().slice(0,10);
+function openJournalForm(pre){
+  setView("depot");if(isMobile())setMobileTab("depot");
+  $("#jForm").hidden=false;$("#jMsg").textContent="";
+  $("#jDate").value=today();$("#jSym").value=pre?.sym||"";$("#jQty").value=pre?.qty??"";$("#jEntry").value=pre?.entry!=null?+pre.entry.toPrecision(6):"";
+  $("#jStop").value=pre?.stop!=null?+pre.stop.toPrecision(6):"";$("#jTarget").value=pre?.target!=null?+pre.target.toPrecision(6):"";$("#jNote").value="";
+  const st=pre?.sym&&S.metrics[pre.sym]?.strat;if(st){const best=Object.keys(ST_NAMES).find(k=>st[k].state==="buy");
+    if(best)$("#jStrat").value={sma200:"Trendfolge 200-Tage-Linie",golden:"Golden Cross",sr:"Unterstützung / Ausbruch",rsi:"RSI-Rücksetzer",macd:"MACD"}[best]}
+  $("#journalCard").scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("#jAddBtn").addEventListener("click",()=>openJournalForm(null));
+$("#jCancel").addEventListener("click",()=>{$("#jForm").hidden=true});
+$("#jForm").addEventListener("submit",async e=>{
+  e.preventDefault();const num=id=>parseFloat(String($(id).value).replace(",","."));const msg=$("#jMsg");msg.className="fmsg err";
+  const sym=$("#jSym").value.trim().toUpperCase(),qty=num("#jQty"),en=num("#jEntry"),sl=num("#jStop"),tg=num("#jTarget");
+  if(!sym){msg.textContent="Bitte ein Symbol eintragen.";return}
+  if(!(qty>0&&en>0)){msg.textContent="Bitte Stückzahl und Einstieg eintragen.";return}
+  if(!(sl>0&&sl<en)){msg.textContent="Ohne Stop-Loss unter dem Einstieg kein Trade – das ist die wichtigste Regel.";return}
+  S.journal.push({id:Date.now().toString(36),date:$("#jDate").value||today(),sym,strat:$("#jStrat").value,qty,entry:en,stop:sl,target:tg>0?tg:null,
+    cur:S.metrics[sym]?.cur||curOf(sym),note:$("#jNote").value.trim(),status:"offen"});
+  $("#jForm").hidden=true;await savePortfolio();renderJournal();
+});
+function tradeStats(t){
+  const risk=t.entry-t.stop,m=S.metrics[t.sym],exit=t.status==="geschlossen"?t.exit:m?.p;
+  const r=exit!=null&&risk>0?(exit-t.entry)/risk:null,pl=exit!=null?toEUR((exit-t.entry)*t.qty,t.cur):null;
+  return {r,pl,exit,crv:t.target&&risk>0?(t.target-t.entry)/risk:null,hitStop:t.status==="offen"&&m&&m.p<=t.stop,hitTarget:t.status==="offen"&&m&&t.target&&m.p>=t.target};
+}
+function renderJournal(){
+  const J=S.journal||[],closed=J.filter(t=>t.status==="geschlossen").map(t=>({t,...tradeStats(t)}));
+  const wins=closed.filter(x=>x.pl>0),avgR=closed.length?closed.reduce((a,x)=>a+(x.r||0),0)/closed.length:null,sum=closed.reduce((a,x)=>a+(x.pl||0),0);
+  $("#jTiles").innerHTML=[
+    ["Abgeschlossene Trades",`${closed.length} / 50`,`${J.length-closed.length} offen`,""],
+    ["Trefferquote",closed.length?pct(wins.length/closed.length,0,false):"–",`${wins.length} Gewinner`,""],
+    ["Ø Ergebnis (R)",avgR!=null?(avgR>0?"+":"")+nf(2).format(avgR)+" R":"–","je Trade",cls(avgR)],
+    ["Summe G/V",closed.length?(sum>0?"+":"")+fmtEur(sum):"–","abgeschlossen",cls(sum)],
+  ].map(([l,v,x,c])=>`<div class="tile"><span class="label">${l}</span><div class="v ${c}">${v}</div><div class="s muted">${x}</div></div>`).join("");
+  const n=closed.length;$("#jProg").innerHTML=`<div class="bar"><i style="width:${Math.min(100,n*2)}%"></i></div><span class="muted">${n>=50
+    ?`Auswertung möglich: ${avgR>0?"Deine Trades verdienen im Schnitt mehr, als sie riskieren.":"Deine Trades verlieren im Schnitt – ein ETF-Sparplan wäre bisher besser gewesen."} Vergleiche auch mit einem MSCI-World-Sparplan im selben Zeitraum.`
+    :`Noch ${50-n} abgeschlossene Trades bis zu einer aussagekräftigen Auswertung.`}</span>`;
+  $("#jEmpty").hidden=J.length>0;$(".jtbl").hidden=!J.length;
+  $("#jBody").innerHTML=[...J].reverse().map(t=>{const x=tradeStats(t),open=t.status==="offen";
+    const status=open?(S.closeId===t.id?`<span class="act"><input id="jExit" type="number" step="any" placeholder="Ausstieg" style="width:90px" value="${S.metrics[t.sym]?+S.metrics[t.sym].p.toPrecision(6):""}"><button type="button" data-a="closeok">OK</button><button type="button" data-a="closeno">✕</button></span>`
+      :`offen${x.hitStop?' · <b class="down">Stop erreicht!</b>':x.hitTarget?' · <b class="up">Ziel erreicht</b>':""}`):`geschlossen ${fmtPx(t.exit)}`;
+    return `<tr data-id="${t.id}" data-s="${esc(t.sym)}"><td class="num">${new Date(t.date).toLocaleDateString("de-DE")}</td><td><b>${esc(t.sym)}</b>${t.note?`<br><small>${esc(t.note)}</small>`:""}</td><td>${esc(t.strat)}</td>
+      <td class="num">${fmtPx(t.entry)}</td><td class="num">${fmtPx(t.stop)}</td><td class="num">${t.target?fmtPx(t.target):"–"}</td><td class="num ${x.crv>=2?"up":x.crv!=null?"down":""}">${x.crv!=null?nf(1).format(x.crv)+":1":"–"}</td>
+      <td>${status}</td><td class="num ${cls(x.r)}">${x.r!=null?(x.r>0?"+":"")+nf(2).format(x.r):"–"}</td><td class="num ${cls(x.pl)}">${x.pl!=null?fmtEur(x.pl):"–"}</td>
+      <td><span class="act">${open&&S.closeId!==t.id?'<button type="button" data-a="close">Schließen</button>':""}${S.delJ===t.id?'<button type="button" class="danger" data-a="delyes">Löschen?</button><button type="button" data-a="delno">Nein</button>':'<button type="button" class="danger" data-a="del" aria-label="Trade löschen">✕</button>'}</span></td></tr>`}).join("");
+}
+$("#jBody").addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-a]"),tr=e.target.closest("tr");if(!b||!tr)return;const id=tr.dataset.id,t=S.journal.find(x=>x.id===id);if(!t)return;
+  const a=b.dataset.a;
+  if(a==="close")S.closeId=id;else if(a==="closeno")S.closeId=null;
+  else if(a==="closeok"){const v=parseFloat(String($("#jExit").value).replace(",","."));if(!(v>0))return;t.status="geschlossen";t.exit=v;t.exitDate=today();S.closeId=null;await savePortfolio()}
+  else if(a==="del")S.delJ=id;else if(a==="delno")S.delJ=null;
+  else if(a==="delyes"){S.journal=S.journal.filter(x=>x.id!==id);S.delJ=null;await savePortfolio()}
+  renderJournal();
+});
+
 function setView(v){
   S.view=v;store.set("view",v);
-  $("#viewMarket").hidden=v!=="markt";$("#viewDepot").hidden=v!=="depot";
-  $("#vMarkt").setAttribute("aria-pressed",v==="markt");$("#vDepot").setAttribute("aria-pressed",v==="depot");
-  if(v==="depot")renderDepot();
+  $("#viewMarket").hidden=v!=="markt";$("#viewDepot").hidden=v!=="depot";$("#viewInfo").hidden=v!=="info";
+  $("#vMarkt").setAttribute("aria-pressed",v==="markt");$("#vDepot").setAttribute("aria-pressed",v==="depot");$("#vInfo").setAttribute("aria-pressed",v==="info");
+  if(v==="info")renderInfo();
+  if(v==="depot"){renderDepot();renderJournal()}
 }
 
 /* Symbolvorschläge: lokal (Top-Listen + ETFs/Kryptos) und – mit Server – Yahoo-Suche */
 function fillSymList(items){
-  const base=[...U.map(x=>[x.s,x.n,"Aktie"]),...Object.entries(PRESETS).map(([s,p])=>[s,p.n,TYPE_NAME[p.t]])];
+  const base=[...U.map(x=>[x.s,x.n,TYPE_NAME[x.a]]),...Object.entries(PRESETS).map(([s,p])=>[s,p.n,TYPE_NAME[p.t]])];
   const extra=(Array.isArray(items)?items:[]).map(q=>[q.symbol,q.longname||q.shortname||"",q.typeDisp||q.quoteType||""]);
   const seen=new Set();const rows=[...extra,...base].filter(([s])=>s&&!seen.has(s)&&seen.add(s));
   $("#symList").innerHTML=rows.slice(0,120).map(([s,n,t])=>`<option value="${esc(s)}">${esc(n)}${t?" · "+esc(t):""}</option>`).join("");
@@ -1086,7 +1519,9 @@ $("#list").addEventListener("click",e=>{const r=e.target.closest(".row");if(r)se
 $("#board").addEventListener("click",e=>{const r=e.target.closest("tr");if(r)select(r.dataset.s)});
 $("#board").addEventListener("keydown",e=>{if(e.key==="Enter"){const r=e.target.closest("tr");if(r)select(r.dataset.s)}});
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{S.region=t.dataset.region;store.set("region",S.region);renderSide()}));
-$("#chips").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;S.filter=c.dataset.f;store.set("filter",S.filter);renderSide();renderBoard()});
+$("#assetSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.asset=b.dataset.a;store.set("asset",S.asset);renderSide();renderBoard()});
+$("#fToggle").addEventListener("click",()=>{S.fOpen=!S.fOpen;store.set("fOpen",S.fOpen);renderSide()});
+$("#fgroups").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;S.filter=c.dataset.f;store.set("filter",S.filter);renderSide();renderBoard()});
 $("#rangeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.range=b.dataset.r;store.set("range",S.range);renderStock()});
 $("#typeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.ctype=b.dataset.t;store.set("ctype",S.ctype);if(chart)rebuildSeries();renderStock()});
 for(const n of [20,50,200])$("#sma"+n).addEventListener("change",e=>smaSer[n]&&smaSer[n].applyOptions({visible:e.target.checked}));

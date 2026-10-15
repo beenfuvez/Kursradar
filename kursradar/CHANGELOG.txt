@@ -3,6 +3,14 @@ Schema: Hauptversion.Änderung
   kleine Änderung  -> zweite Stelle +1   (z. B. 3.1 -> 3.2)
   große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 3.5 -> 4.1)
 
+4.1      NEU: Die fünf verbreitetsten Chart-Strategien als Signale und Filter: 200-Tage-Linie
+         (Verkauf erst 3 % darunter), Golden/Death Cross, Unterstützung & Widerstand mit Ausbruch
+         (Linien im Chart), RSI-Rücksetzer im Trend, MACD. Strategie-Check in der Analyse.
+         Risiko-Rechner (1–2 % Risiko, Stückzahl, Chance/Risiko ≥ 2:1) und Trade-Tagebuch mit
+         Auswertung (Trefferquote, R-Vielfache, Fortschritt bis 50 Trades).
+         Filter „Chance/Risiko“; Anlageklassen Aktien / ETFs / Kryptos mit eigenen Top-10-Listen;
+         Filterübersicht in Gruppen. Neuer Bereich „Infos“: Marktüberblick, Nachrichten zum Depot,
+         Wirtschaftsnachrichten (tagesschau), Termine (Quartalszahlen, Dividenden), Strategien & Regeln.
 3.2      Kürzere Versionsnummern (3.2 statt 3.0.0.2); bisherige Versionen umbenannt.
 3.1      NEU: Android-App mit Live-Kursen ohne PC und automatischen Updates über GitHub.
          Handy-Ansicht mit Navigation unten (Märkte, Analyse, Depot) und Depot als Karten.
