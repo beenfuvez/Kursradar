@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Owlgo v5.2 – lokaler Server mit Live-Daten von Yahoo Finance.
+"""Owlgo v5.3 – lokaler Server mit Live-Daten von Yahoo Finance.
 
 Start:  python3 server.py   →  http://localhost:8765
 Nur Python-Standardbibliothek nötig.
@@ -15,7 +15,7 @@ import urllib.request
 import webbrowser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-VERSION = "5.2"
+VERSION = "5.3"
 PORT = int(os.environ.get("PORT", "8765"))
 ROOT = os.path.dirname(os.path.abspath(__file__))
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "

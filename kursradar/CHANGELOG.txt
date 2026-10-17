@@ -3,6 +3,10 @@ Schema: Hauptversion.Änderung
   kleine Änderung  -> zweite Stelle +1   (z. B. 3.1 -> 3.2)
   große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 3.5 -> 4.1)
 
+5.3      Gewinnmitnahme-Check: Abwägung je Position im Plus (Trendbruch, Überhitzung, Widerstand,
+         Klumpenrisiko vs. intakter Trend, Dividende), nachziehender Stop, Steuer-Hinweis (26,375 %,
+         Pauschbetrag, Krypto-Haltefrist). Übersicht im Depot, Details in der Analyse, Wissensartikel
+         „Wann Gewinne mitnehmen?“. Depot-Empfehlung berücksichtigt die Abwägung.
 5.2      Depot zwischen Handy und PC abgleichen: „Exportieren“ (App: Speichern-Dialog, PC: Download)
          und beim Import „Depot ersetzen“ statt nur hinzuzufügen; Sicherung des alten Stands.
 5.1      Neuer Name: Kursradar heißt jetzt Owlgo – App-Name, Eulen-Icon, Titel, Startdateien

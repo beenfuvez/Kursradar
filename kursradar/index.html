@@ -201,6 +201,12 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .act button.danger{color:var(--down)}
 .dtbl tfoot td{font-weight:600;border-top:2px solid var(--line);border-bottom:0;cursor:default}
 .dempty{padding:18px 4px 6px}
+.pcheck{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+.pcols{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:10px;font-size:13px}
+.pcols b{display:block;margin-bottom:4px;font-size:12.5px}
+.ptbl{font-size:12.5px} .ptbl th:nth-child(-n+1),.ptbl td:nth-child(-n+1){text-align:left} .ptbl th:nth-child(3),.ptbl td:nth-child(3){text-align:left}
+.ptbl td small{color:var(--muted)} .ptbl tbody tr{cursor:pointer}
+.klist{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13px}
 .impbox{margin-top:14px;padding:12px 14px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:6px}
 .impbox p{margin:0 0 10px} .impbox .hint{margin:10px 0 0}
 .advbar{align-items:center;margin-top:14px}
@@ -318,7 +324,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v5.2</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v5.3</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -494,6 +500,13 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
         </div>
       </section>
 
+      <section class="card" id="profitCard">
+        <h3>Gewinnmitnahme-Check</h3>
+        <p class="hint" style="margin-top:0">Alle Positionen im Plus: Lohnt es sich jetzt, Gewinne zu realisieren? Abgewogen werden Trend, Überhitzung, Widerstände, Gewichtung im Depot und Steuern. Zeile antippen für alle Gründe.</p>
+        <div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Position</th><th>Gewinn</th><th>Abwägung</th><th>Nachziehender Stop</th><th>Nach Steuer ca.</th></tr></thead><tbody id="pBody"></tbody></table></div>
+        <p class="muted" id="pEmpty" hidden>Aktuell keine Position im Plus.</p>
+      </section>
+
       <section class="card" id="journalCard">
         <div class="dhead">
           <div><h2>Trade-Tagebuch</h2><div class="sub">Jeden Trade mit Stop und Ziel festhalten und nach 50+ Trades ehrlich auswerten.</div></div>
@@ -555,6 +568,24 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
             <dl><dt>Kauf</dt><dd>MACD-Linie kreuzt die Signallinie von unten.</dd><dt>Am stärksten</dt><dd>Wenn es unter der Nulllinie passiert und der große Trend aufwärts zeigt.</dd></dl>
             <p class="kuse">In Owlgo: Filter „MACD-Signal“, Wert unter Kennzahlen.</p></article>
         </div>
+        <h4 class="rules-h">Wann ist es sinnvoll, Gewinne mitzunehmen?</h4>
+        <div class="kgrid">
+          <article><h4>Eher verkaufen (ganz oder teilweise)</h4><ul class="klist">
+            <li><b>Der Trend bricht:</b> Kurs fällt unter die 200-Tage-Linie – vorher erzielte Gewinne nicht wieder hergeben.</li>
+            <li><b>Überhitzung:</b> RSI über 70–75 und Kurs weit über dem langfristigen Mittel – Teilverkauf, Rest laufen lassen.</li>
+            <li><b>Widerstand oder Kursziel erreicht:</b> der Kurs prallt an einer bekannten Marke ab.</li>
+            <li><b>Klumpenrisiko:</b> eine Position ist auf über 10–20 % des Depots angewachsen – zurück auf das Wunschgewicht.</li>
+            <li><b>Die Kaufidee ist erledigt:</b> der Grund für den Kauf gilt nicht mehr, oder es gibt eine klar bessere Anlage.</li>
+          </ul></article>
+          <article><h4>Eher halten</h4><ul class="klist">
+            <li><b>Intakter Aufwärtstrend:</b> „Gewinne laufen lassen, Verluste begrenzen.“ Statt zu verkaufen den Stop nachziehen.</li>
+            <li><b>Kein Grund außer „es ist viel“:</b> Der Kaufkurs ist für die Zukunft egal (Anker-Effekt). Entscheidend ist, wie die Aktie <i>ab jetzt</i> aussieht.</li>
+            <li><b>Steuern:</b> Jeder Verkauf löst ca. 26,4 % Abgeltungsteuer aus (über dem Pauschbetrag von 1.000 €/2.000 €). Wer hält, lässt auch den Steueranteil weiter arbeiten. Kryptos sind nach einem Jahr Haltedauer steuerfrei.</li>
+            <li><b>Typischer Fehler:</b> Privatanleger verkaufen Gewinner meist zu früh und halten Verlierer zu lange („Dispositionseffekt“).</li>
+          </ul></article>
+        </div>
+        <p class="kuse">In Owlgo: „Gewinnmitnahme-Check“ im Depot und in der Analyse jeder Depot-Position im Plus.</p>
+
         <h4 class="rules-h">Das Entscheidende: Risikoregeln</h4>
         <ol class="rules">
           <li><b>Pro Trade maximal 1–2 % des Depots riskieren.</b> Der Risiko-Rechner in der Analyse berechnet daraus die Stückzahl.</li>
@@ -851,7 +882,60 @@ function computeMetrics(sym){
   m.trend=classify(m);m.entry=entryCheck(m);return m;
 }
 /* Depot-Empfehlung für gehaltene Positionen: Verkaufen / Teilgewinne / Halten / Nachkaufen + Stop- und Rückkaufmarke */
-const ADV_ORDER={"Verkaufen":4,"Teilgewinne sichern":3,"Halten – Stop eng":2,"Halten":1,"Nachkaufen":0};
+/* Gewinnmitnahme-Check: Gründe für Verkauf gegen Gründe fürs Halten abwägen (nur Positionen im Plus) */
+const TAX=0.26375; // Abgeltungsteuer 25 % + Solidaritätszuschlag (ohne Kirchensteuer)
+/* Depot-Empfehlung und Gewinnmitnahme-Check in Einklang bringen */
+function mergeAdvice(adv,pc){
+  if(!adv||!pc)return adv;
+  if(pc.score>=3&&adv.rank<3.5)return{...adv,act:"Gewinne sichern",cls:"down",rank:3.5,reLbl:"Rückkauf ab",
+    reTxt:`${pc.act} ${adv.act==="Verkaufen"?"":`Wiedereinstieg erst, wenn der Trend wieder intakt ist (über ${fmtPx(adv.re)}).`}`.trim(),why:[["neg","Gewinnmitnahme-Check: "+pc.t+"."],...adv.why]};
+  if(pc.score>=1&&adv.rank<3)return{...adv,act:"Teilgewinne sichern",cls:"side-t",rank:3,reLbl:"Rückkauf bei",reTxt:pc.act,why:[["neu","Gewinnmitnahme-Check: "+pc.t+"."],...adv.why]};
+  return adv;
+}
+function profitCheck(m,h){ // h: {qty,costEUR,valueEUR,plp,type,date,share}
+  if(!(h.plp>0))return null;
+  const {p,s20,s50,s200,rsi:R}=m,sell=[],hold=[];let sc=0;
+  const S_=(v,t)=>{sc+=v;sell.push(t)},H_=(v,t)=>{sc-=v;hold.push(t)};
+  const up=p>s50&&s50>s200&&m.slope50>0;
+  // Gründe für einen Verkauf
+  if(p<s200)S_(3,`Kurs unter der 200-Tage-Linie (${fmtPx(s200)}): der langfristige Trend ist gebrochen – Gewinne nicht wieder hergeben.`);
+  else if(p<s50)S_(1.5,`Kurs unter die 50-Tage-Linie (${fmtPx(s50)}) gefallen: das Momentum lässt nach.`);
+  if(R>75)S_(1.5,`RSI ${R.toFixed(0)}: stark überhitzt – nach solchen Anstiegen folgen oft Rücksetzer.`);
+  else if(R>70)S_(0.75,`RSI ${R.toFixed(0)}: überkauft.`);
+  const a200=p/s200-1;
+  if(a200>0.4)S_(1,`Kurs ${pct(a200,0)} über der 200-Tage-Linie: weit vom langfristigen Mittel entfernt.`);
+  else if(a200>0.25)S_(0.5,`Kurs ${pct(a200,0)} über der 200-Tage-Linie.`);
+  if(m.resLvl&&m.resLvl.lvl/p-1<0.02)S_(1,`Kurs direkt unter einem Widerstand (${fmtPx(m.resLvl.lvl)}), an dem er schon ${m.resLvl.touches}× abgeprallt ist.`);
+  if(m.strat?.macd?.state==="sell")S_(1,"MACD hat ein frisches Verkaufssignal gegeben.");
+  if(h.share>0.2)S_(1.5,`Die Position macht ${pct(h.share,0,false)} deines Depots aus – Klumpenrisiko. Ein Teilverkauf verteilt das Risiko.`);
+  else if(h.share>0.12)S_(0.5,`Die Position ist mit ${pct(h.share,0,false)} schon ein großer Teil deines Depots.`);
+  if(h.plp>1)S_(0.75,`Der Wert hat sich mehr als verdoppelt (${pct(h.plp,0)}): z. B. den Einsatz herausnehmen und den Rest laufen lassen.`);
+  // Gründe fürs Halten
+  if(up)H_(2,"Aufwärtstrend intakt (Kurs über der steigenden 50-Tage-Linie, diese über der 200-Tage-Linie): Gewinne laufen lassen.");
+  else if(p>s200)H_(0.75,"Langfristiger Trend noch aufwärts (über der 200-Tage-Linie).");
+  if(R>=45&&R<=68)H_(0.5,`RSI ${R.toFixed(0)}: gesundes Momentum, nicht überhitzt.`);
+  if(m.strat?.golden?.state==="buy")H_(0.5,"Frisches Golden Cross – der Trend ist eher jung.");
+  if(m.divYield>0.03)H_(0.5,`${pct(m.divYield,1,false)} Dividendenrendite: die Position bringt laufende Erträge.`);
+  // Steuern (Deutschland, vereinfacht)
+  const gain=h.valueEUR-h.costEUR,tax=[];
+  if(h.type==="krypto"){
+    const days=h.date?Math.floor((Date.now()-Date.parse(h.date))/864e5):null;
+    if(days!=null&&days<365){H_(1,`Krypto: Verkauf nach über einem Jahr Haltedauer ist steuerfrei – noch ${365-days} Tage warten.`);tax.push(`Vor Ablauf eines Jahres wird der Gewinn mit deinem persönlichen Steuersatz versteuert (Freigrenze 1.000 € Gesamtgewinn im Jahr).`)}
+    else if(days!=null)tax.push("Krypto: über ein Jahr gehalten – Verkauf ist steuerfrei.");
+    else tax.push("Krypto: Kaufdatum fehlt (✎ eintragen). Nach über einem Jahr Haltedauer ist der Verkauf steuerfrei, davor gilt der persönliche Steuersatz.");
+  }else{
+    tax.push(`Bei Verkauf fallen auf ${fmtEur(gain)} Gewinn ca. ${fmtEur(gain*TAX)} Abgeltungsteuer an (26,375 % inkl. Soli, ohne Kirchensteuer) – soweit der Sparer-Pauschbetrag (1.000 €, Paare 2.000 € pro Jahr) schon verbraucht ist.`);
+    tax.push("Verluste anderer Aktien aus demselben Jahr werden verrechnet – realisierte Verluste können die Steuer auf diesen Gewinn senken.");
+  }
+  // Nachziehender Stop: knapp unter der nächsten Unterstützung / 50-Tage-Linie, bei gutem Gewinn mindestens über dem Einstand
+  const buyPx=p/(1+h.plp);let trail=Math.max(...[m.supLvl?.lvl*0.99,s50*0.98,m.low20*0.99].filter(x=>x&&x<p*0.99),p*0.85);
+  if(h.plp>0.15)trail=Math.max(trail,buyPx*1.02);
+  const v=sc>=3?{t:"Gewinne sichern – Verkauf sinnvoll",cls:"down",act:"Ganz oder größtenteils verkaufen, der Trend spricht nicht mehr fürs Halten."}
+    :sc>=1?{t:"Teilverkauf erwägen",cls:"side-t",act:"Einen Teil (z. B. ein Drittel) verkaufen und den Rest mit nachgezogenem Stop laufen lassen."}
+    :{t:"Gewinne laufen lassen",cls:"up",act:"Halten und den Stop nachziehen – verkauft wird erst, wenn der Trend bricht."};
+  return {...v,score:sc,sell,hold,tax,gain,net:h.type==="krypto"?null:gain*(1-TAX),trail,trailGain:trail/buyPx-1};
+}
+const ADV_ORDER={"Verkaufen":4,"Gewinne sichern":3.5,"Teilgewinne sichern":3,"Halten – Stop eng":2,"Halten":1,"Nachkaufen":0};
 function depotAdvice(m,plp){
   const {p,s20,s50,s200,rsi:R,slope50}=m;const why=[];
   const up=p>s200&&s50>s200,down=p<s200&&s50<s200;
@@ -885,7 +969,7 @@ function depotAdvice(m,plp){
     why.push(["pos",up?"Aufwärtstrend intakt – Gewinne laufen lassen.":"Trend neutral bis leicht positiv."]);
     if(R>65)why.push(["neu",`RSI ${R.toFixed(0)}: schon gut gelaufen – jetzt nicht nachkaufen.`]);
   }
-  const reLbl={"Verkaufen":"Rückkauf ab","Teilgewinne sichern":"Rückkauf bei","Halten – Stop eng":"Nachkauf über","Halten":"Nachkauf bei","Nachkaufen":"Limit"}[a.act];
+  const reLbl={"Verkaufen":"Rückkauf ab","Gewinne sichern":"Rückkauf ab","Teilgewinne sichern":"Rückkauf bei","Halten – Stop eng":"Nachkauf über","Halten":"Nachkauf bei","Nachkaufen":"Limit"}[a.act];
   return {...a,reLbl,rank:ADV_ORDER[a.act],stop,why,cur:m.cur};
 }
 
@@ -971,7 +1055,7 @@ async function refreshAll(full=true){
     }else{
       for(const s of syms){if(!S.daily[s])S.daily[s]=demoDaily(s);else demoTick(s)}
     }
-    S.updated=new Date();computeAll();renderSide();renderBoard();if(S.view==="depot")renderDepot();await renderStock(true);
+    S.updated=new Date();computeAll();renderSide();renderBoard();if(S.view==="depot"){renderDepot();renderProfit()}await renderStock(true);
   }catch(e){
     $("#stamp").textContent="Fehler beim Aktualisieren: "+e.message+". Läuft server.py noch?";
   }finally{S.busy=false;b.classList.remove("busy");b.disabled=false}
@@ -1109,7 +1193,9 @@ function renderAnalysis(m){
   const held=S.portfolio.filter(x=>x.sym===m.sym&&!x.manual);$("#hold").hidden=!held.length;
   if(held.length){
     const q=held.reduce((a,x)=>a+x.qty,0),cost=held.reduce((a,x)=>a+toEUR(x.qty*x.buy,x.buyCur||m.cur),0),plp=cost?toEUR(m.p*q,m.cur)/cost-1:null;
-    const a=depotAdvice(m,plp);
+    const tot=depotTotalEUR(),val=toEUR(m.p*q,m.cur);
+    const pc=profitCheck(m,{qty:q,costEUR:cost,valueEUR:val,plp,type:held[0].type,date:held.map(x=>x.date).filter(Boolean).sort()[0],share:tot?val/tot:0});
+    const a=mergeAdvice(depotAdvice(m,plp),pc);
     $("#hold").innerHTML=`<div class="label">Dein Depot: ${fmtQty(q)} Stück · ${pct(plp,1)}</div>
       <div class="verdict ${a.cls}"><b>${esc(a.act)}</b></div>
       <dl class="hold-acts">
@@ -1117,7 +1203,7 @@ function renderAnalysis(m){
         <dt>${a.act==="Nachkaufen"?"Nachkauf-Limit":esc(a.reLbl)}</dt><dd class="up">${fmtPx(a.re)} ${esc(m.cur)}</dd>
       </dl>
       <p class="hint" style="color:var(--fg)">${esc(a.reTxt)}</p>
-      <ul class="signals" style="margin-top:8px">${a.why.map(([c,t])=>`<li class="${c}">${esc(t)}</li>`).join("")}</ul>`;
+      <ul class="signals" style="margin-top:8px">${a.why.map(([c,t])=>`<li class="${c}">${esc(t)}</li>`).join("")}</ul>${profitBlock(m,pc)}`;
   }
   $("#entry").innerHTML=`<div class="label">Kauf zum aktuellen Kurs?</div>
     <div class="verdict ${e.cls}"><b>${esc(e.t)}</b><span class="num">${e.score>0?"+":""}${nf(1).format(e.score)} Pkt</span></div>
@@ -1137,6 +1223,16 @@ function renderStrategies(m){
   $("#strats").innerHTML=keys.map(k=>{const [l,c]=ST_LABEL[st[k].state];return `<div class="strat"><div class="shead"><b>${ST_NAMES[k]}</b><span class="sig ${c}">${l}</span></div><p>${esc(st[k].txt)}</p></div>`}).join("");
 }
 let riskSym=null;
+function profitBlock(m,pc){
+  if(!pc)return"";
+  return `<div class="pcheck"><div class="label">Gewinnmitnahme? · ${fmtEur(pc.gain)} im Plus</div>
+    <div class="verdict ${pc.cls}"><b>${esc(pc.t)}</b></div><p class="hint" style="color:var(--fg);margin-top:0">${esc(pc.act)}</p>
+    <dl class="hold-acts"><dt>Gewinn</dt><dd class="up">${fmtEur(pc.gain)}</dd>${pc.net!=null?`<dt>nach Steuer ca.</dt><dd>${fmtEur(pc.net)}</dd>`:""}
+      <dt>Nachziehender Stop</dt><dd>${fmtPx(pc.trail)} ${esc(m.cur)} <small class="muted">(${pc.trailGain>=0?"sichert "+pct(pc.trailGain,0):"Verlust "+pct(pc.trailGain,0)})</small></dd></dl>
+    <div class="pcols"><div><b class="down">Spricht für Verkauf</b><ul class="signals">${pc.sell.map(t=>`<li class="neg">${esc(t)}</li>`).join("")||'<li class="neu">Kein Verkaufsgrund.</li>'}</ul></div>
+      <div><b class="up">Spricht fürs Halten</b><ul class="signals">${pc.hold.map(t=>`<li class="pos">${esc(t)}</li>`).join("")||'<li class="neu">Kein Haltegrund.</li>'}</ul></div></div>
+    <p class="hint">${pc.tax.map(esc).join(" ")} Keine Steuerberatung.</p></div>`;
+}
 function depotTotalEUR(){return S.portfolio.reduce((a,p)=>{const m=S.metrics[p.sym];const px=m&&!p.manual?toEUR(m.p,m.cur):p.refPx;return a+(px?p.qty*px:0)},0)}
 function fillRisk(m){
   if(riskSym!==m.sym){riskSym=m.sym;
@@ -1283,6 +1379,19 @@ $("#newsReload").addEventListener("click",()=>renderInfo(true));
 $("#mktTiles").addEventListener("click",async e=>{const b=e.target.closest(".mtile[data-s]");if(b&&await ensureData(b.dataset.s)){S.extra[b.dataset.s]=1;select(b.dataset.s)}});
 $("#events").addEventListener("click",e=>{const tr=e.target.closest("tr[data-s]");if(tr)openAnalysis(tr.dataset.s)});
 
+function renderProfit(){
+  if($("#viewDepot").hidden)return;
+  const {rows,tot}=depotRows();
+  const list=rows.filter(r=>r.pc&&!r.p.manual).map(r=>({r,pc:r.pc})).sort((a,b)=>b.pc.score-a.pc.score);
+  $("#pEmpty").hidden=list.length>0;$(".ptbl").hidden=!list.length;
+  $("#pBody").innerHTML=list.map(({r,pc})=>`<tr data-s="${esc(r.p.sym)}" tabindex="0"><td><b>${esc(r.name)}</b> <small>${esc(r.p.sym)}</small></td>
+    <td class="num up">${fmtEur(pc.gain)} <small>${pct(r.plp,1)}</small></td>
+    <td><span class="sig ${pc.cls}" title="${esc([...pc.sell,...pc.hold].join(" "))}">${esc(pc.t)}</span></td>
+    <td class="num">${fmtPx(pc.trail)} <small>${esc(r.m.cur)} · ${pc.trailGain>=0?"sichert "+pct(pc.trailGain,0):pct(pc.trailGain,0)}</small></td>
+    <td class="num">${pc.net!=null?fmtEur(pc.net):"<small>Krypto: Haltedauer</small>"}</td></tr>`).join("");
+}
+$("#pBody").addEventListener("click",e=>{const tr=e.target.closest("tr[data-s]");if(tr)openAnalysis(tr.dataset.s)});
+
 /* ---------- Trade-Tagebuch ---------- */
 const today=()=>new Date().toISOString().slice(0,10);
 function openJournalForm(pre){
@@ -1347,7 +1456,7 @@ function setView(v){
   $("#viewMarket").hidden=v!=="markt";$("#viewDepot").hidden=v!=="depot";$("#viewInfo").hidden=v!=="info";
   $("#vMarkt").setAttribute("aria-pressed",v==="markt");$("#vDepot").setAttribute("aria-pressed",v==="depot");$("#vInfo").setAttribute("aria-pressed",v==="info");
   if(v==="info")renderInfo();
-  if(v==="depot"){renderDepot();renderJournal()}
+  if(v==="depot"){renderDepot();renderJournal();renderProfit()}
 }
 
 /* Symbolvorschläge: lokal (Top-Listen + ETFs/Kryptos) und – mit Server – Yahoo-Suche */
@@ -1485,6 +1594,9 @@ function depotRows(){
       type:p.type,name:p.name||p.sym,qty:p.qty,buy:p.buy};
   });
   const tot=rows.reduce((a,r)=>a+(r.value||0),0);rows.forEach(r=>r.share=tot&&r.value!=null?r.value/tot:0);
+  rows.forEach(r=>{if(!r.adv||!(r.plp>0))return;
+    r.pc=profitCheck(r.m,{qty:r.p.qty,costEUR:r.cost,valueEUR:r.value,plp:r.plp,type:r.p.type,date:r.p.date,share:r.share});
+    r.adv=mergeAdvice(r.adv,r.pc);r.rec=r.adv.rank});
   return {rows,tot};
 }
 function renderDepot(){
