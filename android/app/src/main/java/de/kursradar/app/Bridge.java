@@ -111,6 +111,24 @@ public class Bridge {
                 return ok(cached("s|" + q, 300_000, "https://query2.finance.yahoo.com/v1/finance/search?q=" + enc(q)
                         + "&quotesCount=10&newsCount=0&lang=de-DE&region=DE"));
             }
+            case "/api/summary":
+            case "/api/timeseries": {
+                String sym = def(u.getQueryParameter("symbol"), ""), lst = def(u.getQueryParameter("modules"), def(u.getQueryParameter("types"), ""));
+                if (!sym.matches("[A-Za-z0-9.\\-^=]{1,24}") || !lst.matches("[A-Za-z,]{1,1500}")) return new String[]{"400", error("ungültige Anfrage")};
+                if (p.equals("/api/summary")) {
+                    try {
+                        return ok(cached("sum|" + sym + "|" + lst, 6 * 3600_000L, "https://query2.finance.yahoo.com/v10/finance/quoteSummary/" + enc(sym)
+                                + "?modules=" + enc(lst) + "&crumb=" + enc(crumb())));
+                    } catch (IOException e) {
+                        if (!String.valueOf(e.getMessage()).contains("401")) throw e;
+                        crumb = null; // Crumb abgelaufen → einmal neu versuchen
+                        return ok(cached("sum|" + sym + "|" + lst, 6 * 3600_000L, "https://query2.finance.yahoo.com/v10/finance/quoteSummary/" + enc(sym)
+                                + "?modules=" + enc(lst) + "&crumb=" + enc(crumb())));
+                    }
+                }
+                return ok(cached("ts|" + sym + "|" + lst, 6 * 3600_000L, "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/"
+                        + enc(sym) + "?symbol=" + enc(sym) + "&type=" + enc(lst) + "&period1=1420070400&period2=" + (System.currentTimeMillis() / 1000)));
+            }
             case "/api/news": {
                 String q = def(u.getQueryParameter("q"), "").trim();
                 if (q.isEmpty()) return ok("{\"news\":[]}");

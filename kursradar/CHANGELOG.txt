@@ -3,6 +3,14 @@ Schema: Hauptversion.Änderung
   kleine Änderung  -> zweite Stelle +1   (z. B. 3.1 -> 3.2)
   große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 3.5 -> 4.1)
 
+6.1      NEU: Bereich „Strategien“ mit 35 Anlagestrategien – Faktoren (Momentum, Value, Quality, Low Vol,
+         Profitability, Multi-Faktor, Small Cap Value, Quality-Momentum, Shareholder Yield, Low Asset Growth),
+         Piotroski, Magic Formula, Earnings Momentum, PEAD, Insider, Rückkäufe, Dividendenwachstum, Net-Net,
+         Accruals, Low Beta, 52W-Hoch, Industrie-Momentum, Spin-offs, 200-Tage-Linie, Dual Momentum,
+         Buy & Hold, Sparplan-Rechner, GARP, Burggraben, Qualität zum fairen Preis, Dividende, Dogs of the Dow,
+         Equal Weight, Core-Satellite, Sektorrotation. Unternehmensdaten von Yahoo (KGV, KBV, Margen,
+         Bilanzen, Analysten, Insider). Zukunftsprognose je Aktie (12 Monate, Spannen, Analystenziel,
+         Faktor-Aufschlag) und Strategie-Profil in der Analyse.
 5.3      Gewinnmitnahme-Check: Abwägung je Position im Plus (Trendbruch, Überhitzung, Widerstand,
          Klumpenrisiko vs. intakter Trend, Dividende), nachziehender Stop, Steuer-Hinweis (26,375 %,
          Pauschbetrag, Krypto-Haltefrist). Übersicht im Depot, Details in der Analyse, Wissensartikel

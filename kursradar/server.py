@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Owlgo v5.3 – lokaler Server mit Live-Daten von Yahoo Finance.
+"""Owlgo v6.1 – lokaler Server mit Live-Daten von Yahoo Finance.
 
 Start:  python3 server.py   →  http://localhost:8765
 Nur Python-Standardbibliothek nötig.
@@ -10,12 +10,13 @@ import os
 import sys
 import threading
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import webbrowser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-VERSION = "5.3"
+VERSION = "6.1"
 PORT = int(os.environ.get("PORT", "8765"))
 ROOT = os.path.dirname(os.path.abspath(__file__))
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -143,6 +144,30 @@ def write_portfolio(data):
     return path
 
 
+SYM_OK = __import__("re").compile(r"^[A-Za-z0-9.\-^=]{1,24}$")
+LIST_OK = __import__("re").compile(r"^[A-Za-z,]{1,1500}$")
+
+
+def summary(sym, modules):
+    """Unternehmensdaten (KGV, Margen, Analysten, Insider …) aus Yahoos quoteSummary."""
+    for attempt in (0, 1):
+        crumb = get_crumb()
+        q = urllib.parse.urlencode({"modules": modules, "crumb": crumb})
+        try:
+            return json.loads(_get(f"https://query2.finance.yahoo.com/v10/finance/quoteSummary/{urllib.parse.quote(sym)}?{q}"))
+        except urllib.error.HTTPError as e:
+            if e.code == 401 and attempt == 0:
+                _crumb["value"] = None  # Crumb abgelaufen → neu holen
+                continue
+            raise
+
+
+def timeseries(sym, types):
+    """Jahresabschlüsse (Bilanz, GuV, Cashflow) der letzten Jahre."""
+    q = urllib.parse.urlencode({"symbol": sym, "type": types, "period1": 1420070400, "period2": int(time.time())})
+    return json.loads(_get(f"https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/{urllib.parse.quote(sym)}?{q}"))
+
+
 def quote(symbols):
     crumb = get_crumb()
     q = urllib.parse.urlencode({"symbols": symbols, "crumb": crumb})
@@ -208,6 +233,12 @@ class Handler(SimpleHTTPRequestHandler):
             if u.path == "/api/search":
                 q = arg("q").strip()[:60]
                 return self._json(200, cached(("s", q), lambda: search(q), ttl=300) if q else {"quotes": []})
+            if u.path in ("/api/summary", "/api/timeseries"):
+                sym, lst = arg("symbol"), arg("modules") or arg("types")
+                if not SYM_OK.match(sym) or not LIST_OK.match(lst):
+                    return self._json(400, {"error": "ungültige Anfrage"})
+                fn = summary if u.path == "/api/summary" else timeseries
+                return self._json(200, cached((u.path, sym, lst), lambda: fn(sym, lst), ttl=6 * 3600))
             if u.path == "/api/news":
                 q = arg("q").strip()[:60]
                 return self._json(200, cached(("n", q), lambda: news(q), ttl=300) if q else {"news": []})
