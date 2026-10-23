@@ -236,6 +236,15 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .sp.ok{background:var(--up-soft);color:var(--up);border-color:var(--up);font-weight:600}
 @media (max-width:700px){:root[data-m="strat"] .side{display:none}.mnav button{font-size:12px;padding:10px 1px}.sc-head{padding:11px 10px}.sc-body{padding:12px 10px}}
 @media (prefers-reduced-motion:reduce){.sc-head .caret{transition:none}}
+.watchrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.watchrow .btn[aria-pressed="true"]{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.watchedit{display:inline-flex;gap:8px;flex-wrap:wrap}
+.watchedit label{display:inline-flex;gap:6px;align-items:center;font-size:12.5px;color:var(--muted)}
+.watchedit input{border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:5px 7px;color:var(--fg);width:110px}
+.assetsw button{font-size:13px}
+.metric.hit{background:var(--up-soft);color:var(--up);font-weight:600}
+.codesc{margin:0 0 12px;max-width:80ch;font-size:14.5px;line-height:1.55}
+.cokv{max-width:620px} .cokv dd{font-family:var(--f-body);text-align:right}
 .impbox{margin-top:14px;padding:12px 14px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:6px}
 .impbox p{margin:0 0 10px} .impbox .hint{margin:10px 0 0}
 .advbar{align-items:center;margin-top:14px}
@@ -282,7 +291,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
   .viewsw{display:none}
 }
 /* Anlageklasse + gruppierte Filter */
-.assetsw{display:grid;grid-template-columns:repeat(3,1fr);margin:0 16px 10px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel-2)}
+.assetsw{display:grid;grid-template-columns:repeat(4,1fr);margin:0 16px 10px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel-2)}
 .assetsw button{border:0;background:none;padding:8px 4px;font-weight:600;color:var(--muted);cursor:pointer;border-right:1px solid var(--line)}
 .assetsw button:last-child{border-right:0}
 .assetsw button[aria-pressed="true"]{background:var(--accent);color:#fff}
@@ -353,7 +362,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v6.1</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v6.2</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -371,7 +380,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
     </div>
     <div class="stamp" id="stamp">Lade Daten …</div>
     <div class="assetsw" id="assetSeg" role="group" aria-label="Anlageklasse">
-      <button type="button" data-a="aktie">Aktien</button><button type="button" data-a="etf">ETFs</button><button type="button" data-a="krypto">Kryptos</button>
+      <button type="button" data-a="aktie">Aktien</button><button type="button" data-a="etf">ETFs</button><button type="button" data-a="krypto">Kryptos</button><button type="button" data-a="watch">Watchlist</button>
     </div>
     <div class="tabs" role="tablist" id="regionTabs">
       <button class="tab" role="tab" data-region="europa" id="tab-europa">Europa</button>
@@ -413,6 +422,9 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
           <h2 id="stName">–</h2>
           <div class="sub" id="stSub">–</div>
           <div id="stTrendPill"></div>
+          <div class="watchrow"><button type="button" class="btn" id="watchBtn" aria-pressed="false">☆ Zur Watchlist</button>
+            <span id="watchEdit" class="watchedit" hidden><label>Wunschkurs<input id="wTarget" type="number" min="0" step="any" inputmode="decimal" placeholder="optional"></label>
+            <label>Notiz<input id="wNote" maxlength="80" placeholder="optional"></label></span></div>
         </div>
         <div class="bigpx">
           <div class="p" id="stPx">–</div>
@@ -431,6 +443,11 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
         </div>
       </div>
       <div id="chart"><div class="chart-msg" id="chartMsg">Chart wird geladen …</div></div>
+    </section>
+
+    <section class="card">
+      <h3 id="coTitle">Über das Unternehmen</h3>
+      <div id="coBody"></div>
     </section>
 
     <div class="grid3">
@@ -756,7 +773,7 @@ const store = {get(k,d){try{const v=localStorage.getItem("kr_"+k);return v==null
 const S = {
   mode:"demo", region:store.get("region","welt"), asset:store.get("asset","aktie"), fOpen:store.get("fOpen",!matchMedia("(max-width: 700px)").matches), journal:[], filter:store.get("filter","mcap"), sel:store.get("sel","NVDA"),
   range:store.get("range","1y"), ctype:store.get("ctype","candle"),
-  daily:{}, meta:{}, metrics:{}, live:{}, fx:{...FX_FALLBACK}, extra:{}, updated:null, busy:false,
+  daily:{}, meta:{}, metrics:{}, live:{}, fx:{...FX_FALLBACK}, extra:{}, updated:null, busy:false, watch:[],
   server:false, view:store.get("view","markt"), portfolio:[], symInfo:{},
   dType:store.get("dType","alle"), dSort:store.get("dSort",{k:"value",dir:-1}), editId:null, delId:null,
 };
@@ -829,7 +846,7 @@ async function pool(items,n,fn){const out=[];let i=0;await Promise.all(Array.fro
 async function loadLiveExtras(){
   // Marktkapitalisierung (für das Ranking) + Wechselkurse
   try{
-    const qs=[...new Set([...U.map(x=>x.s),...S.portfolio.filter(p=>!p.manual).map(p=>p.sym)])];
+    const qs=[...new Set([...U.map(x=>x.s),...S.portfolio.filter(p=>!p.manual).map(p=>p.sym),...S.watch.map(w=>w.sym)])];
     const parts=[];for(let i=0;i<qs.length;i+=60)parts.push(qs.slice(i,i+60));
     for(const part of parts){const j=await api("/api/quote?symbols="+encodeURIComponent(part.join(",")));
       for(const q of j?.quoteResponse?.result||[])S.live[q.symbol]={mcap:q.marketCap,cur:q.currency,name:q.longName||q.shortName,
@@ -1104,7 +1121,7 @@ async function ensureFx(curs,force=false){ // Wechselkurse (Wert in USD je Einhe
 async function refreshAll(full=true){
   if(S.busy)return;S.busy=true;const b=$("#refreshBtn");b.classList.add("busy");b.disabled=true;
   try{
-    const syms=[...new Set([...U.map(x=>x.s),S.sel,...Object.keys(S.extra),...S.portfolio.filter(p=>!p.manual).map(p=>p.sym)])];
+    const syms=[...new Set([...U.map(x=>x.s),S.sel,...Object.keys(S.extra),...S.portfolio.filter(p=>!p.manual).map(p=>p.sym),...S.watch.map(w=>w.sym)])];
     if(S.mode==="live"){
       if(full)await loadLiveExtras();
       const res=await pool(syms,6,liveDaily);let ok=0;
@@ -1121,6 +1138,8 @@ async function refreshAll(full=true){
 
 /* ---------- Sidebar ---------- */
 function regionList(reg){
+  if(S.asset==="watch"){const L=S.watch.map(w=>S.metrics[w.sym]).filter(Boolean);const f=FILTERS.find(x=>x.id===S.filter);
+    return S.filter==="mcap"?L:[...L].sort((a,b)=>f.key(b)-f.key(a))}
   const pool=U.filter(x=>x.a===S.asset&&(S.asset!=="aktie"||reg==="welt"||x.reg===reg));
   const cands=pool.map(x=>S.metrics[x.s]).filter(Boolean);
   const top=cands.sort((a,b)=>b.mcapUSD-a.mcapUSD).slice(0,10);
@@ -1137,16 +1156,19 @@ function renderSide(){
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.region===S.region));
   document.querySelectorAll("#assetSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.a===S.asset));
   $("#regionTabs").hidden=S.asset!=="aktie";
+  document.querySelector('#assetSeg button[data-a="watch"]').textContent=S.watch.length?`Watchlist ${S.watch.length}`:"Watchlist";
   $("#fgroups").innerHTML=FGROUPS.map(g=>`<div class="fgroup"><div class="flabel">${g.t}</div><div class="chips">${g.ids.map(id=>{const f=FILTERS.find(x=>x.id===id);
     return `<button class="chip" type="button" data-f="${f.id}" aria-pressed="${f.id===S.filter}">${f.name}</button>`}).join("")}</div></div>`).join("");
   const f=FILTERS.find(x=>x.id===S.filter);$("#fdesc").textContent=f.desc;$("#fActive").textContent=f.name;
   $("#fToggle").setAttribute("aria-expanded",S.fOpen);$("#fgroups").hidden=!S.fOpen;$("#fdesc").hidden=!S.fOpen;
   const list=regionList(S.region);
-  $("#list").innerHTML=list.map((m,i)=>{const info=BY[m.sym];return `<button class="row" role="listitem" data-s="${m.sym}" aria-current="${m.sym===S.sel}">
+  const W=S.asset==="watch";
+  $("#list").innerHTML=list.map((m,i)=>{const info=BY[m.sym],ci=companyInfo(m.sym),wm=W?watchMetric(m):"";const hit=W&&/erreicht/.test(wm);
+    return `<button class="row" role="listitem" data-s="${m.sym}" aria-current="${m.sym===S.sel}">
     <span class="rk">${i+1}</span>
-    <span class="nm"><b>${esc(info?.n||m.sym)}</b><small>${esc(m.sym)} · ${info?.c||""}</small>${S.filter!=="mcap"?`<br><span class="metric">${esc(f.fmt(m))}</span>`:""}</span>
+    <span class="nm"><b>${esc(info?.n||S.watch.find(w=>w.sym===m.sym)?.name||m.sym)}</b><small>${esc(m.sym)}${ci.country?" · "+esc(ci.country):""}</small>${S.filter!=="mcap"?`<br><span class="metric">${esc(f.fmt(m))}</span>`:""}${wm?`<br><span class="metric${hit?" hit":""}">${esc(wm)}</span>`:""}</span>
     ${spark(m.spark)}
-    <span class="px"><span class="num">${fmtPx(m.p)}</span><span class="num ${cls(m.c1d)}">${pct(m.c1d)}</span></span></button>`}).join("")||`<p class="muted" style="padding:8px">Keine Daten.</p>`;
+    <span class="px"><span class="num">${fmtPx(m.p)}</span><span class="num ${cls(m.c1d)}">${pct(m.c1d)}</span></span></button>`}).join("")||`<p class="muted" style="padding:8px 10px">${W?"Deine Watchlist ist leer. Öffne eine Aktie und tippe auf „☆ Zur Watchlist“.":"Keine Daten."}</p>`;
   const t=S.updated?S.updated.toLocaleTimeString("de-DE"):"–";
   $("#stamp").textContent=(S.mode==="live"?"Live · Yahoo Finance · Stand ":"Simulierte Daten · Stand ")+t;
 }
@@ -1154,10 +1176,11 @@ function renderSide(){
 /* ---------- Bestenliste ---------- */
 function renderBoard(){
   const f=FILTERS.find(x=>x.id===S.filter);
-  const L=Object.values(S.metrics).filter(m=>BY[m.sym]?.a===S.asset).sort((a,b)=>f.key(b)-f.key(a)).slice(0,15);
-  $("#boardTitle").textContent=`Bestenliste ${ASSET_NAME[S.asset]}${S.asset==="aktie"?" (alle Regionen)":""} · ${f.name}`;$("#boardMetricTh").textContent=f.th;
-  $("#board").innerHTML=L.map((m,i)=>`<tr data-s="${m.sym}" tabindex="0"><td class="num">${i+1}</td><td><b>${esc(BY[m.sym].n)}</b> <span class="muted num">${esc(m.sym)}</span></td>
-    <td><span class="rg">${REG_NAME[BY[m.sym].reg]}</span></td><td class="num">${fmtPx(m.p)} <span class="muted">${m.cur}</span></td>
+  const ws=new Set(S.watch.map(w=>w.sym));
+  const L=Object.values(S.metrics).filter(m=>S.asset==="watch"?ws.has(m.sym):BY[m.sym]?.a===S.asset).sort((a,b)=>f.key(b)-f.key(a)).slice(0,15);
+  $("#boardTitle").textContent=`Bestenliste ${S.asset==="watch"?"Watchlist":ASSET_NAME[S.asset]}${S.asset==="aktie"?" (alle Regionen)":""} · ${f.name}`;$("#boardMetricTh").textContent=f.th;
+  $("#board").innerHTML=L.map((m,i)=>`<tr data-s="${m.sym}" tabindex="0"><td class="num">${i+1}</td><td><b>${esc(BY[m.sym]?.n||S.watch.find(w=>w.sym===m.sym)?.name||m.sym)}</b> <span class="muted num">${esc(m.sym)}</span></td>
+    <td><span class="rg">${esc(BY[m.sym]?REG_NAME[BY[m.sym].reg]:companyInfo(m.sym).country||"–")}</span></td><td class="num">${fmtPx(m.p)} <span class="muted">${m.cur}</span></td>
     <td class="num ${cls(m.c1d)}">${pct(m.c1d,1)}</td><td class="num ${cls(m.c1m)}">${pct(m.c1m,1)}</td><td class="num ${cls(m.c1y)}">${pct(m.c1y,1)}</td>
     <td class="num">${pct(m.divYield,1,false)}</td><td class="num">${m.rsi.toFixed(0)}</td><td class="${m.trend.cls==="side-t"?"":m.trend.cls}">${m.trend.short}</td><td class="num"><b>${esc(f.fmt(m))}</b></td></tr>`).join("");
 }
@@ -1226,7 +1249,7 @@ async function renderStock(keepView=false){
   if(!keepView||rb.intraday||!rb.from){rb.from?chart.timeScale().setVisibleRange({from:rb.from,to:bars[bars.length-1].t}):chart.timeScale().fitContent()}
 }
 function renderAnalysis(m){
-  renderStrategies(m);fillRisk(m);renderForecast(m);
+  renderStrategies(m);fillRisk(m);renderForecast(m);renderCompany(m);renderWatchBtn();
   $("#trTitle").innerHTML=`<span class="${m.trend.cls==="side-t"?"":m.trend.cls}">${esc(m.trend.t)}</span>`;
   $("#trText").textContent=m.trend.x;
   const sig=[];const a200=m.p/m.s200-1,a50=m.p/m.s50-1;
@@ -1352,17 +1375,18 @@ function guessType(sym){if(BY[sym])return BY[sym].a;const p=PRESETS[sym];if(p)re
 async function loadPortfolio(){
   let list=null;
   let jr=null;
-  if(S.server){try{const j=await api("/api/portfolio");list=j.positions;jr=j.journal;S.pfPath=j.path}catch(e){console.warn("Depot-Datei nicht lesbar",e)}}
+  if(S.server){try{const j=await api("/api/portfolio");list=j.positions;jr=j.journal;S._wl=j.watchlist;S.pfPath=j.path}catch(e){console.warn("Depot-Datei nicht lesbar",e)}}
   S.journal=Array.isArray(jr)&&jr.length?jr:store.get("journal",[]);
+  S.watch=Array.isArray(S._wl)&&S._wl.length?S._wl:store.get("watchlist",[]);
   const local=store.get("portfolio",[]);
   if(!list||(!list.length&&local.length))list=local; // ältere Browser-Daten übernehmen
   S.portfolio=(list||[]).filter(p=>p&&p.sym&&p.qty>0);
   updateSaveInfo();
 }
 async function savePortfolio(){
-  store.set("portfolio",S.portfolio);store.set("journal",S.journal); // Kopie im Browser
+  store.set("portfolio",S.portfolio);store.set("journal",S.journal);store.set("watchlist",S.watch); // Kopie im Browser
   if(S.server){
-    try{const r=await http("PUT","/api/portfolio",{version:1,positions:S.portfolio,journal:S.journal});
+    try{const r=await http("PUT","/api/portfolio",{version:1,positions:S.portfolio,journal:S.journal,watchlist:S.watch});
       if(!r.ok)throw new Error("HTTP "+r.status);S.pfPath=(await r.json()).path;S.pfErr=null}
     catch(e){S.pfErr=e.message}
   }
@@ -1482,7 +1506,8 @@ function normFund(sum,ts,divs){
     const ys=Object.keys(y).map(Number).sort((a,b)=>a-b);divYears=0;for(let i=ys.length-1;i>0;i--){if(y[ys[i]]>y[ys[i-1]]*1.001&&ys[i]-ys[i-1]===1)divYears++;else break}}
   const F={pe:rv(sd.trailingPE),fpe:rv(sd.forwardPE),pb:rv(ks.priceToBook),divY:rv(sd.dividendYield)??rv(sd.trailingAnnualDividendYield),payout:rv(sd.payoutRatio),
     beta:rv(sd.beta)??rv(ks.beta),mcap:rv(sd.marketCap),ev:rv(ks.enterpriseValue),peg:rv(ks.pegRatio),cur:sd.currency||null,finCur:fd.financialCurrency||null,
-    sector:SECTOR_DE[ap.sector]||ap.sector||null,industry:ap.industry||null,
+    sector:SECTOR_DE[ap.sector]||ap.sector||null,industry:ap.industry||null,country:ap.country||null,city:ap.city||null,
+    summary:ap.longBusinessSummary||null,web:ap.website||null,emp:rv(ap.fullTimeEmployees)??(Number.isFinite(ap.fullTimeEmployees)?ap.fullTimeEmployees:null),
     gm:rv(fd.grossMargins),om:rv(fd.operatingMargins),pm:rv(fd.profitMargins),roa:rv(fd.returnOnAssets),roe:rv(fd.returnOnEquity),
     de:rv(fd.debtToEquity)!=null?rv(fd.debtToEquity)/100:null,cr:rv(fd.currentRatio),ocf:rv(fd.operatingCashflow),fcf:rv(fd.freeCashflow),
     revG:rv(fd.revenueGrowth),epsG:rv(fd.earningsGrowth),tgtMean:rv(fd.targetMeanPrice),tgtLow:rv(fd.targetLowPrice),tgtHigh:rv(fd.targetHighPrice),
@@ -1838,6 +1863,143 @@ $("#stratCats").addEventListener("click",e=>{const c=e.target.closest(".chip");i
 $("#stratMine").addEventListener("change",e=>{S.stratMine=e.target.checked;store.set("stratMine",S.stratMine);renderStrats(false)});
 $("#fundReload").addEventListener("click",async()=>{await loadFund(stratPool(),true,(d,n)=>{$("#fundState").textContent=`Lade Unternehmensdaten … ${d}/${n}`});renderStrats(false)});
 
+/* ---------- Unternehmensprofile: Herkunft und Geschäft (Kurzbeschreibungen auf Deutsch) ---------- */
+const COUNTRY={US:"USA",DE:"Deutschland",FR:"Frankreich",NL:"Niederlande",CH:"Schweiz",GB:"Großbritannien",DK:"Dänemark",SA:"Saudi-Arabien",TW:"Taiwan",CN:"China",
+  KR:"Südkorea",JP:"Japan",IN:"Indien",IE:"Irland",LU:"Luxemburg",ES:"Spanien",IT:"Italien",SE:"Schweden",CA:"Kanada",AU:"Australien",HK:"Hongkong"};
+const COUNTRY_EN={"United States":"USA","Germany":"Deutschland","France":"Frankreich","Netherlands":"Niederlande","Switzerland":"Schweiz","United Kingdom":"Großbritannien",
+  "Denmark":"Dänemark","Saudi Arabia":"Saudi-Arabien","Taiwan":"Taiwan","China":"China","South Korea":"Südkorea","Japan":"Japan","India":"Indien","Ireland":"Irland",
+  "Luxembourg":"Luxemburg","Spain":"Spanien","Italy":"Italien","Sweden":"Schweden","Canada":"Kanada","Australia":"Australien","Hong Kong":"Hongkong","Belgium":"Belgien","Norway":"Norwegen","Finland":"Finnland","Austria":"Österreich"};
+// [Land, Sitz, Beschreibung]
+const COMPANY={
+  "ASML.AS":["NL","Veldhoven","Baut als einziger Hersteller weltweit EUV-Lithografiemaschinen, mit denen die modernsten Computerchips belichtet werden. Kunden sind TSMC, Samsung und Intel."],
+  "SAP.DE":["DE","Walldorf","Größter europäischer Softwarekonzern: Unternehmenssoftware (ERP) für Buchhaltung, Einkauf, Personal und Logistik, zunehmend als Cloud-Abo."],
+  "MC.PA":["FR","Paris","LVMH ist der weltgrößte Luxuskonzern mit rund 75 Marken, u. a. Louis Vuitton, Dior, Moët & Chandon, Hennessy, Tiffany und Sephora."],
+  "RMS.PA":["FR","Paris","Hermès stellt Luxus-Lederwaren (Birkin- und Kelly-Taschen), Seidentücher, Mode und Parfum her – bewusst knapp gehalten und mit sehr hohen Margen."],
+  "ROG.SW":["CH","Basel","Roche ist ein Pharma- und Diagnostikkonzern, führend bei Krebsmedikamenten und weltgrößter Anbieter von Labordiagnostik."],
+  "NESN.SW":["CH","Vevey","Nestlé ist der größte Lebensmittelkonzern der Welt: Kaffee (Nescafé, Nespresso), Tiernahrung (Purina), Süßwaren, Wasser und Babynahrung."],
+  "AZN.L":["GB","Cambridge","AstraZeneca entwickelt Medikamente, vor allem gegen Krebs, Herz-Kreislauf-, Nieren- und Atemwegserkrankungen sowie seltene Krankheiten."],
+  "NOVO-B.CO":["DK","Bagsværd","Novo Nordisk ist Weltmarktführer bei Diabetes-Medikamenten (Insulin) und Abnehmspritzen (Ozempic, Wegovy)."],
+  "NOVN.SW":["CH","Basel","Novartis ist ein forschender Pharmakonzern mit Schwerpunkt Herz-Kreislauf, Krebs, Immunologie und Neurowissenschaften."],
+  "HSBA.L":["GB","London","HSBC ist eine der größten Banken der Welt mit Schwerpunkt Asien (v. a. Hongkong): Privatkunden, Firmenkunden, Vermögensverwaltung."],
+  "OR.PA":["FR","Clichy","L'Oréal ist der weltgrößte Kosmetikkonzern: Haarpflege, Make-up, Hautpflege und Parfum (L'Oréal Paris, Garnier, Lancôme, La Roche-Posay)."],
+  "SIE.DE":["DE","München","Siemens ist ein Technologiekonzern für Industrieautomatisierung, Digitalisierung von Fabriken, Gebäudetechnik, Stromnetze und Bahntechnik (Mobility)."],
+  "SHEL.L":["GB","London","Shell fördert Öl und Gas, betreibt Raffinerien und Tankstellen und ist einer der größten Händler von Flüssiggas (LNG)."],
+  "ALV.DE":["DE","München","Allianz ist einer der größten Versicherer der Welt (Sach-, Lebens- und Krankenversicherung) und Vermögensverwalter (PIMCO, Allianz Global Investors)."],
+  "TTE.PA":["FR","Courbevoie","TotalEnergies fördert Öl und Gas, betreibt Raffinerien und Tankstellen und baut ein wachsendes Geschäft mit Strom aus Wind und Sonne auf."],
+  NVDA:["US","Santa Clara","NVIDIA entwickelt Grafik- und KI-Chips (GPUs). Die Rechenzentrums-Chips sind das Herz der meisten KI-Systeme; dazu Grafikkarten für Gaming."],
+  MSFT:["US","Redmond","Microsoft verkauft Windows, Office/Microsoft 365, die Cloud-Plattform Azure, LinkedIn und Xbox und ist eng mit OpenAI verbunden."],
+  AAPL:["US","Cupertino","Apple verkauft iPhone, Mac, iPad, Apple Watch und AirPods und verdient zunehmend an Diensten wie App Store, iCloud und Apple Music."],
+  GOOGL:["US","Mountain View","Alphabet ist die Mutter von Google: Suchmaschine und Werbung, YouTube, Android, Google Cloud sowie Waymo (selbstfahrende Autos)."],
+  AMZN:["US","Seattle","Amazon betreibt den größten Onlinehandel der westlichen Welt, die Cloud AWS (größter Gewinnbringer), Prime Video und ein Werbegeschäft."],
+  META:["US","Menlo Park","Meta betreibt Facebook, Instagram, WhatsApp und Messenger und verdient fast nur an Werbung; dazu VR-Brillen (Quest) und KI-Modelle."],
+  AVGO:["US","Palo Alto","Broadcom stellt Chips für Netzwerke, Rechenzentren, KI-Beschleuniger und Smartphones her und verkauft Infrastruktur-Software (VMware)."],
+  TSLA:["US","Austin","Tesla baut Elektroautos, Batteriespeicher und Solaranlagen und arbeitet an autonomem Fahren und humanoiden Robotern."],
+  "BRK-B":["US","Omaha","Berkshire Hathaway ist die Holding von Warren Buffett: Versicherungen (GEICO), Eisenbahn (BNSF), Energie und große Aktienbeteiligungen."],
+  JPM:["US","New York","JPMorgan Chase ist die größte Bank der USA: Privatkunden (Chase), Investmentbanking, Vermögensverwaltung und Zahlungsverkehr."],
+  ORCL:["US","Austin","Oracle verkauft Datenbanken und Unternehmenssoftware und baut stark Cloud-Rechenzentren aus, auch für KI-Anwendungen."],
+  WMT:["US","Bentonville","Walmart ist der größte Einzelhändler der Welt mit Supermärkten in den USA, Sam's Club und einem wachsenden Onlinehandel."],
+  LLY:["US","Indianapolis","Eli Lilly ist ein Pharmakonzern, bekannt für Diabetes- und Abnehm-Medikamente (Mounjaro, Zepbound) sowie Alzheimer- und Krebstherapien."],
+  V:["US","San Francisco","Visa betreibt das größte Kartenzahlungsnetz der Welt und verdient an jeder Transaktion – ohne selbst Kredite zu vergeben."],
+  NFLX:["US","Los Gatos","Netflix ist der größte Video-Streamingdienst der Welt mit über 300 Mio. Abos, eigenen Serien, Filmen und zunehmend Werbung und Live-Sport."],
+  "2222.SR":["SA","Dhahran","Saudi Aramco ist der staatliche Ölkonzern Saudi-Arabiens und der größte Ölförderer der Welt – mit sehr hohen Dividenden."],
+  "2330.TW":["TW","Hsinchu","TSMC ist der größte Auftragsfertiger von Chips der Welt und produziert u. a. für Apple, NVIDIA und AMD die modernsten Prozessoren."],
+  "0700.HK":["CN","Shenzhen","Tencent betreibt WeChat (Chinas wichtigste App für Chat und Bezahlen), ist der größte Videospielkonzern der Welt und bietet Cloud-Dienste an."],
+  "005930.KS":["KR","Suwon","Samsung Electronics ist größter Hersteller von Speicherchips (DRAM, NAND) und Smartphones und baut Fernseher und Haushaltsgeräte."],
+  "9988.HK":["CN","Hangzhou","Alibaba betreibt Chinas größte Online-Marktplätze (Taobao, Tmall), die Cloud Alibaba Cloud und internationale Shops (AliExpress)."],
+  "1398.HK":["CN","Peking","ICBC (Industrial and Commercial Bank of China) ist nach Bilanzsumme die größte Bank der Welt; mehrheitlich im Staatsbesitz."],
+  "7203.T":["JP","Toyota (Aichi)","Toyota ist der meistverkaufende Autohersteller der Welt, führend bei Hybridantrieben; Marken Toyota, Lexus, Daihatsu."],
+  "600519.SS":["CN","Renhuai (Guizhou)","Kweichow Moutai stellt den gleichnamigen Edel-Schnaps (Baijiu) her – in China ein Statussymbol mit sehr hohen Margen."],
+  "RELIANCE.NS":["IN","Mumbai","Reliance Industries ist Indiens größter Konzern: Ölraffinerien, Petrochemie, Mobilfunk (Jio) und Einzelhandel."],
+  "000660.KS":["KR","Icheon","SK Hynix ist der zweitgrößte Speicherchip-Hersteller und führend bei HBM-Speicher, der in KI-Beschleunigern von NVIDIA steckt."],
+  "HDFCBANK.NS":["IN","Mumbai","HDFC Bank ist die größte private Bank Indiens: Privatkunden, Kredite, Kreditkarten und Firmenkundengeschäft."],
+  "6758.T":["JP","Tokio","Sony Group: PlayStation, Bildsensoren für Smartphone-Kameras, Musik (Sony Music), Filme (Sony Pictures) und Unterhaltungselektronik."],
+  "8306.T":["JP","Tokio","Mitsubishi UFJ Financial Group ist die größte Bankengruppe Japans und an Morgan Stanley beteiligt."],
+  "RWE.DE":["DE","Essen","RWE erzeugt Strom – zunehmend aus Wind (an Land und auf See) und Sonne, dazu Gaskraftwerke und Energiehandel."],
+  "BNP.PA":["FR","Paris","BNP Paribas ist die größte Bank der Eurozone: Privatkunden (u. a. Consorsbank in Deutschland), Firmenkunden, Investmentbanking."],
+  "BMW.DE":["DE","München","BMW baut Premiumautos und Motorräder unter den Marken BMW, Mini und Rolls-Royce und investiert in Elektroautos (Neue Klasse)."],
+  "SAN.PA":["FR","Paris","Sanofi ist ein Pharmakonzern mit Schwerpunkt Immunologie (Dupixent), Impfstoffe und seltene Krankheiten."],
+  "VOW3.DE":["DE","Wolfsburg","Volkswagen ist einer der größten Autobauer der Welt: VW, Audi, Porsche, Škoda, Seat/Cupra, Lkw (Traton) und Finanzdienste. Vorzugsaktie ohne Stimmrecht."],
+  "MBG.DE":["DE","Stuttgart","Mercedes-Benz baut Premium-Pkw und Transporter (Mercedes-Benz, AMG, Maybach) und bietet Finanzierung und Leasing an."],
+  ISRG:["US","Sunnyvale","Intuitive Surgical stellt das Operationsroboter-System da Vinci her und verdient vor allem an Instrumenten und Service pro Operation."],
+  IONQ:["US","College Park (Maryland)","IonQ entwickelt Quantencomputer auf Basis gefangener Ionen und bietet Rechenzeit über die Clouds von Amazon, Microsoft und Google an. Noch Verluste, sehr spekulativ."],
+  // ETFs: Land = Fondssitz
+  "SXR8.DE":["IE","iShares (BlackRock)","ETF auf den S&P 500: die 500 größten US-Unternehmen, gewichtet nach Börsenwert. Thesaurierend."],
+  "EUNL.DE":["IE","iShares (BlackRock)","ETF auf den MSCI World: rund 1.400 große und mittlere Firmen aus 23 Industrieländern, etwa 70 % USA. Thesaurierend."],
+  "VUSA.DE":["IE","Vanguard","ETF auf den S&P 500 (500 größte US-Unternehmen), schüttet die Dividenden aus."],
+  "VWCE.DE":["IE","Vanguard","ETF auf den FTSE All-World: rund 4.000 Firmen aus Industrie- und Schwellenländern – fast der ganze Weltaktienmarkt in einem Produkt."],
+  "IS3N.DE":["IE","iShares (BlackRock)","ETF auf den MSCI Emerging Markets IMI: rund 3.000 Firmen aus Schwellenländern wie China, Indien, Taiwan, Korea und Brasilien."],
+  "SXRV.DE":["IE","iShares (BlackRock)","ETF auf den Nasdaq 100: die 100 größten Nicht-Finanzwerte der US-Technologiebörse Nasdaq, stark von Tech geprägt."],
+  "XDWD.DE":["IE","Xtrackers (DWS)","ETF auf den MSCI World (rund 1.400 Firmen aus Industrieländern). Thesaurierend, günstige Alternative zu iShares."],
+  "EXSA.DE":["DE","iShares (BlackRock)","ETF auf den STOXX Europe 600: 600 große und mittlere Unternehmen aus 17 europäischen Ländern."],
+  "EXS1.DE":["DE","iShares (BlackRock)","ETF auf den DAX: die 40 größten deutschen Börsenunternehmen."],
+  "IUSN.DE":["IE","iShares (BlackRock)","ETF auf den MSCI World Small Cap: rund 4.000 kleinere Unternehmen aus Industrieländern."],
+  "USPY.DE":["IE","L&G (Legal & General)","ETF auf Firmen für Cybersicherheit (Netzwerkschutz, Identitätsmanagement, Cloud-Sicherheit), weltweit gestreut."],
+  "XAIX.DE":["IE","Xtrackers (DWS)","ETF auf Unternehmen, die von Künstlicher Intelligenz und Big Data profitieren – Chips, Software, Cloud."],
+  "LYPS.DE":["LU","Amundi","ETF auf den S&P 500 (500 größte US-Unternehmen), bildet den Index per Swap nach und schüttet aus."],
+  "VNRT.DE":["IE","Vanguard","ETF auf den FTSE North America: große und mittlere Unternehmen aus den USA und Kanada, ausschüttend."],
+  "GERD.DE":["IE","L&G (Legal & General)","Gerd-Kommer-ETF: weltweite Aktien mit Faktor-Tilt (Value, Profitabilität, kleinere Firmen), gemeinsam mit Gerd Kommer entwickelt."],
+  "PRAJ.DE":["LU","Amundi","ETF auf den MSCI Japan: große und mittlere japanische Unternehmen."],
+  "XB0T.DE":["IE","Global X","ETF auf Unternehmen aus Robotik und Künstlicher Intelligenz (Industrieroboter, Automatisierung, KI-Software)."],
+  "IQQE.DE":["IE","iShares (BlackRock)","ETF auf den MSCI Emerging Markets: große und mittlere Firmen aus Schwellenländern, ausschüttend."],
+  "XEON.DE":["LU","Xtrackers (DWS)","Geldmarkt-ETF: bildet den Euro-Tagesgeldzins (€STR) nach – quasi Tagesgeld an der Börse."],
+  "EUNA.DE":["IE","iShares (BlackRock)","ETF auf weltweite Anleihen guter Bonität (Staaten und Unternehmen), in Euro abgesichert."],
+  // Kryptos: kein Herkunftsland
+  "BTC-EUR":[null,null,"Bitcoin ist die erste und größte Kryptowährung: digitales Geld ohne Zentralbank, auf 21 Mio. Einheiten begrenzt, oft „digitales Gold“ genannt."],
+  "ETH-EUR":[null,null,"Ethereum ist eine Blockchain für Smart Contracts, auf der viele Apps, Stablecoins und Tokens laufen; Ether ist ihre Währung."],
+  "XRP-EUR":[null,null,"XRP ist die Kryptowährung des XRP Ledger, entwickelt von Ripple Labs für schnelle internationale Zahlungen."],
+  "BNB-EUR":[null,null,"BNB ist die Kryptowährung der Börse Binance und ihrer BNB Chain; sie senkt dort Handelsgebühren."],
+  "SOL-EUR":[null,null,"Solana ist eine sehr schnelle Blockchain für Apps, Handel und Tokens; SOL bezahlt die Gebühren."],
+  "DOGE-EUR":[null,null,"Dogecoin entstand 2013 als Spaß-Kryptowährung mit Hunde-Meme und ist durch die Community und Elon Musk bekannt geworden."],
+  "TRX-EUR":[null,null,"TRON ist eine Blockchain, über die vor allem der Stablecoin USDT (Tether) verschickt wird."],
+  "ADA-EUR":[null,null,"Cardano ist eine forschungsorientierte Blockchain für Smart Contracts; ADA ist ihre Währung."],
+  "LINK-EUR":[null,null,"Chainlink liefert Blockchains Daten aus der echten Welt (z. B. Kurse) – sogenannte Orakel."],
+  "AVAX-EUR":[null,null,"Avalanche ist eine Blockchain-Plattform für schnelle Apps und eigene Teil-Netze (Subnets)."],
+  "POWR-USD":[null,null,"Powerledger ist eine australische Blockchain-Plattform für den Handel mit Strom zwischen Haushalten und Erzeugern."],
+  "POL-USD":[null,null,"Polygon (früher MATIC) ist ein Netzwerk, das Ethereum schneller und günstiger macht."],
+  "ANKR-USD":[null,null,"Ankr bietet Infrastruktur für Blockchains an (Zugangsknoten, Staking)."],
+  "S32684-USD":[null,null,"Sonic (früher Fantom) ist eine schnelle Blockchain für Apps und Handel."],
+};
+function companyInfo(sym){
+  const st=COMPANY[sym],f=S.fund[sym],a=assetOf(sym);
+  const country=st?(st[0]?COUNTRY[st[0]]||st[0]:null):f?.country?(COUNTRY_EN[f.country]||f.country):BY[sym]?.c?(COUNTRY[BY[sym].c]||BY[sym].c):null;
+  return {country,city:st?st[1]:f?.city||null,desc:st?st[2]:f?.summary||null,descEn:!st&&!!f?.summary,sector:sectorOf(sym),industry:f?.industry||null,
+    emp:f?.emp||null,web:f?.web||null,asset:a};
+}
+function renderCompany(m){
+  const el=$("#coBody");if(!el)return;const i=companyInfo(m.sym),name=BY[m.sym]?.n||S.portfolio.find(p=>p.sym===m.sym)?.name||S.daily[m.sym]?.meta?.longName||m.sym;
+  $("#coTitle").textContent=i.asset==="etf"?"Über diesen ETF":i.asset==="krypto"?"Über diese Kryptowährung":`Über ${name}`;
+  const row=(k,v)=>v?`<dt>${k}</dt><dd>${v}</dd>`:"";
+  const web=safeUrl(i.web);
+  el.innerHTML=`${i.desc?`<p class="codesc">${esc(i.desc)}</p>${i.descEn?'<p class="hint" style="margin-top:-4px">Beschreibung von Yahoo Finance (Englisch).</p>':""}`
+      :`<p class="muted">${S.mode==="live"?"Keine Beschreibung verfügbar.":"Für diesen Wert ist keine Beschreibung hinterlegt; mit Live-Daten kommt sie von Yahoo Finance."}</p>`}
+    <dl class="kv cokv">${row(i.asset==="etf"?"Fondssitz":"Herkunft",i.country?esc(i.country)+(i.city&&i.asset!=="etf"?` · ${esc(i.city)}`:""):null)}
+      ${row("Anbieter",i.asset==="etf"&&i.city?esc(i.city):null)}${row("Branche",i.sector?esc(i.sector)+(i.industry?` · ${esc(i.industry)}`:""):null)}
+      ${row("Mitarbeiter",i.emp?new Intl.NumberFormat("de-DE").format(i.emp):null)}${row("Website",web?`<a href="${esc(web)}" target="_blank" rel="noopener noreferrer">${esc(web.replace(/^https?:\/\/(www\.)?/,"").replace(/\/$/,""))}</a>`:null)}
+      ${row("Börsenkürzel",esc(m.sym))}</dl>`;
+  if(!i.desc&&S.mode==="live"&&!S.fund[m.sym]&&!coLoading.has(m.sym)){coLoading.add(m.sym);loadFund([m.sym]).then(()=>{coLoading.delete(m.sym);if(S.sel===m.sym)renderCompany(S.metrics[m.sym]||m)})}
+}
+const coLoading=new Set();
+
+/* ---------- Watchlist ---------- */
+function onWatch(sym){return S.watch.some(w=>w.sym===sym)}
+async function toggleWatch(sym){
+  if(onWatch(sym))S.watch=S.watch.filter(w=>w.sym!==sym);
+  else{const m=S.metrics[sym];S.watch.push({sym,name:BY[sym]?.n||S.portfolio.find(p=>p.sym===sym)?.name||S.daily[sym]?.meta?.longName||sym,added:today(),addPx:m?.p??null,cur:m?.cur||curOf(sym),target:null,note:""})}
+  await savePortfolio();renderWatchBtn();renderSide();if(S.asset==="watch")renderBoard();
+}
+function renderWatchBtn(){
+  const b=$("#watchBtn");if(!b)return;const on=onWatch(S.sel);b.setAttribute("aria-pressed",on);b.innerHTML=on?"★ Auf der Watchlist":"☆ Zur Watchlist";
+  const w=S.watch.find(x=>x.sym===S.sel);$("#watchEdit").hidden=!on;if(w){$("#wTarget").value=w.target??"";$("#wNote").value=w.note||""}
+}
+$("#watchBtn").addEventListener("click",()=>toggleWatch(S.sel));
+$("#watchEdit").addEventListener("change",async()=>{const w=S.watch.find(x=>x.sym===S.sel);if(!w)return;
+  const t=parseFloat(String($("#wTarget").value).replace(",","."));w.target=t>0?t:null;w.note=$("#wNote").value.trim();await savePortfolio();renderSide()});
+function watchMetric(m){const w=S.watch.find(x=>x.sym===m.sym);if(!w)return"";const parts=[];
+  if(w.addPx)parts.push(`seit ${new Date(w.added).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}: ${pct(m.p/w.addPx-1,1)}`);
+  if(w.target)parts.push(m.p<=w.target?"Wunschkurs erreicht!":`Wunschkurs ${fmtPx(w.target)} (${pct(w.target/m.p-1,0)})`);
+  return parts.join(" · ");
+}
+
 /* ---------- Trade-Tagebuch ---------- */
 const today=()=>new Date().toISOString().slice(0,10);
 function openJournalForm(pre){
@@ -1975,7 +2137,7 @@ $("#dSample").addEventListener("click",async()=>{
 /* Export: Depot + Trade-Tagebuch als Datei (App: Speichern-Dialog von Android, PC: Download) */
 $("#dExport").addEventListener("click",()=>{
   const name=`owlgo-depot-${today()}.json`;
-  const json=JSON.stringify({version:1,app:"Owlgo",exported:new Date().toISOString(),positions:S.portfolio,journal:S.journal||[]},null,1);
+  const json=JSON.stringify({version:1,app:"Owlgo",exported:new Date().toISOString(),positions:S.portfolio,journal:S.journal||[],watchlist:S.watch||[]},null,1);
   if(NATIVE){
     if(typeof NATIVE.saveFile==="function"){NATIVE.saveFile(name,json);return}
     $("#dSaveInfo").textContent="Exportieren braucht die neue App-Version: Versionsnummer oben links antippen und das App-Update installieren.";return;
@@ -1997,21 +2159,21 @@ $("#dImport").addEventListener("change",async e=>{
   const f=e.target.files?.[0];e.target.value="";if(!f)return;
   try{
     const j=JSON.parse(await f.text());const list=Array.isArray(j)?j:j.positions;if(!Array.isArray(list))throw new Error("keine Positionen gefunden");
-    const valid=list.filter(x=>x&&x.sym&&x.qty>0&&x.buy>0),jr=Array.isArray(j.journal)?j.journal:null;
-    pendingImport={valid,jr};
+    const valid=list.filter(x=>x&&x.sym&&x.qty>0&&x.buy>0),jr=Array.isArray(j.journal)?j.journal:null,wl=Array.isArray(j.watchlist)?j.watchlist.filter(w=>w&&w.sym):null;
+    pendingImport={valid,jr,wl};
     const when=j.exported?` vom ${new Date(j.exported).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"})}`:"";
     $("#impBox").hidden=false;
-    $("#impBox").innerHTML=`<p><b>${esc(f.name)}</b>${esc(when)}: ${valid.length} Positionen${jr?`, ${jr.length} Trade${jr.length===1?"":"s"} im Tagebuch`:""}.</p>
+    $("#impBox").innerHTML=`<p><b>${esc(f.name)}</b>${esc(when)}: ${valid.length} Positionen${jr?`, ${jr.length} Trade${jr.length===1?"":"s"} im Tagebuch`:""}${wl?`, ${wl.length} Werte auf der Watchlist`:""}.</p>
       <div class="factions"><button class="btn primary" type="button" data-imp="replace">Depot ersetzen</button>
       <button class="btn" type="button" data-imp="add">Nur neue Positionen hinzufügen</button><button class="btn" type="button" data-imp="cancel">Abbrechen</button></div>
       <p class="hint">„Ersetzen“ übernimmt den Stand aus der Datei komplett${jr?" (inkl. Tagebuch)":""} – z. B. vom Handy auf den PC. Der bisherige Stand bleibt als Sicherung (portfolio.bak.json) erhalten.</p>`;
   }catch(err){$("#dSaveInfo").textContent="Import fehlgeschlagen: "+err.message+". Erwartet wird eine JSON-Datei von Owlgo (oder Kursradar)."}
 });
 $("#impBox").addEventListener("click",async e=>{
-  const b=e.target.closest("button[data-imp]");if(!b||!pendingImport)return;const {valid,jr}=pendingImport,mode=b.dataset.imp;
+  const b=e.target.closest("button[data-imp]");if(!b||!pendingImport)return;const {valid,jr,wl}=pendingImport,mode=b.dataset.imp;
   $("#impBox").hidden=true;pendingImport=null;if(mode==="cancel")return;let msg;
   if(mode==="replace"){
-    S.portfolio=valid.map(x=>({...x,id:x.id||Math.random().toString(36).slice(2,10)}));if(jr)S.journal=jr;
+    S.portfolio=valid.map(x=>({...x,id:x.id||Math.random().toString(36).slice(2,10)}));if(jr)S.journal=jr;if(wl)S.watch=wl;
     msg=`Depot ersetzt: ${S.portfolio.length} Positionen${jr?` und ${jr.length} Trade${jr.length===1?"":"s"}`:""} übernommen.`;
   }else{
     const key=x=>x.sym+"|"+x.qty+"|"+x.buy;const have=new Set(S.portfolio.map(key));let n=0;

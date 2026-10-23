@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Owlgo v6.1 – lokaler Server mit Live-Daten von Yahoo Finance.
+"""Owlgo v6.2 – lokaler Server mit Live-Daten von Yahoo Finance.
 
 Start:  python3 server.py   →  http://localhost:8765
 Nur Python-Standardbibliothek nötig.
@@ -16,7 +16,7 @@ import urllib.request
 import webbrowser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-VERSION = "6.1"
+VERSION = "6.2"
 PORT = int(os.environ.get("PORT", "8765"))
 ROOT = os.path.dirname(os.path.abspath(__file__))
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -138,7 +138,8 @@ def write_portfolio(data):
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump({"version": 1, "saved": time.strftime("%Y-%m-%d %H:%M:%S"),
-                   "positions": data["positions"], "journal": data.get("journal") or []},
+                   "positions": data["positions"], "journal": data.get("journal") or [],
+                   "watchlist": data.get("watchlist") or []},
                   f, ensure_ascii=False, indent=2)
     os.replace(tmp, path)
     return path

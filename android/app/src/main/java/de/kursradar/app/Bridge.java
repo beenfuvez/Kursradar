@@ -178,8 +178,9 @@ public class Bridge {
             f.renameTo(new File(act.getFilesDir(), "portfolio.bak.json"));
         File tmp = new File(act.getFilesDir(), "portfolio.json.tmp");
         try (FileOutputStream o = new FileOutputStream(tmp)) {
-            JSONArray jr = in.optJSONArray("journal");
+            JSONArray jr = in.optJSONArray("journal"), wl = in.optJSONArray("watchlist");
             o.write(new JSONObject().put("version", 1).put("positions", pos).put("journal", jr == null ? new JSONArray() : jr)
+                    .put("watchlist", wl == null ? new JSONArray() : wl)
                     .toString(1).getBytes(StandardCharsets.UTF_8));
         }
         if (!tmp.renameTo(f)) throw new IOException("Speichern fehlgeschlagen");

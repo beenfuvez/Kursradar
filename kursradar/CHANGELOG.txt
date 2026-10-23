@@ -3,6 +3,10 @@ Schema: Hauptversion.Änderung
   kleine Änderung  -> zweite Stelle +1   (z. B. 3.1 -> 3.2)
   große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 3.5 -> 4.1)
 
+6.2      Unternehmensprofil je Wert: Herkunft (Land, Sitz), Branche und deutsche Kurzbeschreibung für rund
+         85 Aktien, ETFs und Kryptos; für weitere Werte Beschreibung, Mitarbeiter und Website von Yahoo.
+         Watchlist: Werte mit ☆ merken, optional Wunschkurs und Notiz, eigene Liste in der Seitenleiste,
+         Wertentwicklung seit Aufnahme, Hinweis „Wunschkurs erreicht“; Teil von Export/Import.
 6.1      NEU: Bereich „Strategien“ mit 35 Anlagestrategien – Faktoren (Momentum, Value, Quality, Low Vol,
          Profitability, Multi-Faktor, Small Cap Value, Quality-Momentum, Shareholder Yield, Low Asset Growth),
          Piotroski, Magic Formula, Earnings Momentum, PEAD, Insider, Rückkäufe, Dividendenwachstum, Net-Net,
