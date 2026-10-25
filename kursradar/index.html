@@ -245,6 +245,15 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .metric.hit{background:var(--up-soft);color:var(--up);font-weight:600}
 .codesc{margin:0 0 12px;max-width:80ch;font-size:14.5px;line-height:1.55}
 .cokv{max-width:620px} .cokv dd{font-family:var(--f-body);text-align:right}
+.stabs{display:flex;margin-top:12px;width:max-content;max-width:100%}
+.stabs button{padding:7px 14px;font-weight:600}
+.avoid{font-size:10.5px;font-weight:600;padding:1px 6px;border-radius:4px;background:var(--down-soft);color:var(--down);vertical-align:2px;margin-left:4px}
+.sp.warn{background:var(--down-soft);color:var(--down);border-color:var(--down)}
+.mine.wl{background:var(--warn-soft);color:var(--warn)}
+.hb{height:5px;margin-top:4px;min-width:50px}
+.ttbl td.hl{white-space:normal;min-width:440px;text-align:left} .ttbl td.hl .sp,.ttbl td .sp{display:inline-block;margin:0 4px 4px 0}
+.ttbl td:nth-child(5){white-space:normal;min-width:150px;text-align:left}
+.ttbl td:nth-child(3){vertical-align:middle}
 .impbox{margin-top:14px;padding:12px 14px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:6px}
 .impbox p{margin:0 0 10px} .impbox .hint{margin:10px 0 0}
 .advbar{align-items:center;margin-top:14px}
@@ -362,7 +371,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v6.2</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v6.3</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -592,12 +601,23 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
     <div id="viewStrat" class="view" hidden>
       <section class="card">
         <div class="ctitle"><h2 class="vtitle">Strategien</h2><button class="btn" type="button" id="fundReload">Daten neu laden</button></div>
-        <div class="honest" style="margin-top:10px"><b>Realistisch bleiben:</b> Auch gut belegte Faktoren bringen im Schnitt nur wenige Prozentpunkte Mehrrendite pro Jahr – und können zehn Jahre hinter dem Markt liegen (Value 2010–2020). Keine Strategie ersetzt Streuung und Geduld. Die Prognosen sind Modelle, keine Vorhersagen.</div>
-        <div class="sbar"><div class="chips" id="stratCats"><button class="chip" type="button" data-c="alle">Alle 35</button><button class="chip" type="button" data-c="A">Sehr gut belegt</button><button class="chip" type="button" data-c="B">Gut belegt</button><button class="chip" type="button" data-c="C">Klassisch</button></div>
+        <div class="seg stabs" id="stratTabs" role="tablist"><button type="button" data-t="katalog">Alle Strategien</button><button type="button" data-t="top">Top-Treffer</button></div>
+        <div class="honest" style="margin-top:10px"><b>Realistisch bleiben:</b> Auch gut belegte Faktoren bringen im Schnitt nur wenige Prozentpunkte Mehrrendite pro Jahr – und können zehn Jahre hinter dem Markt liegen (Value 2010–2020). Keine Strategie ersetzt Streuung und Geduld. Die Prognosen sind Modelle, keine Vorhersagen.
+          <br><br>Viele Anomalien wurden nach ihrer Veröffentlichung deutlich schwächer, weil Investoren sie ausnutzen. Die Punkte 60–70 sind für Privatanleger oft schwer umzusetzen (Daten, häufiges Umschichten, Leerverkäufe). Am praktikabelsten bleiben Momentum, Value, Quality und Low Volatility – die gibt es auch als ETFs. Keine Anlageberatung.</div>
+        <div class="sbar"><div class="chips" id="stratCats"><button class="chip" type="button" data-c="alle">Alle</button><button class="chip" type="button" data-c="A">Sehr gut belegt</button><button class="chip" type="button" data-c="B">Gut belegt</button><button class="chip" type="button" data-c="C">Klassisch</button>
+          <button class="chip" type="button" data-c="D">Momentum-Varianten</button><button class="chip" type="button" data-c="E">Bewertung &amp; Bilanz</button><button class="chip" type="button" data-c="F">Kapitalmarkt</button>
+          <button class="chip" type="button" data-c="G">Risiko &amp; Verhalten</button><button class="chip" type="button" data-c="H">Informationen</button><button class="chip" type="button" data-c="I">Kalender</button></div>
           <label class="tg"><input type="checkbox" id="stratMine"> Nur meine Depotwerte</label></div>
         <p class="muted" id="fundState" style="font-size:12.5px;margin:8px 0 0"></p>
       </section>
       <div id="stratList" class="stratlist"></div>
+      <section class="card" id="topCard" hidden>
+        <div class="ctitle"><h3>Top-Treffer: Aktien, auf die die meisten Strategien zutreffen</h3></div>
+        <p class="hint" style="margin-top:0">Gezählt werden alle prüfbaren Strategien, die für eine Aktie sprechen. „Meiden“-Strategien (M-Score, Distress, Emissionen, IPO, MAX-Effekt, Short-Quote) zählen nicht als Treffer, sondern erscheinen als Warnsignal. Aktien mit mehr Daten können mehr Treffer sammeln – die Quote (Balken) zeigt den Anteil.</p>
+        <div class="sbar"><div class="chips" id="topFilters"><button class="chip" type="button" data-f="alle">Alle Aktien</button><button class="chip" type="button" data-f="depot">Mein Depot</button><button class="chip" type="button" data-f="watch">Watchlist</button></div>
+          <label class="tg"><input type="checkbox" id="topAB"> Nur gut belegte Strategien (1–25)</label></div>
+        <div id="topList" style="margin-top:10px"></div>
+      </section>
     </div>
 
     <div id="viewInfo" class="view" hidden>
@@ -1489,11 +1509,12 @@ const sectorOf=sym=>S.fund[sym]?.sector||SECTOR[sym]||null;
 const DOW=["AAPL","AMGN","AMZN","AXP","BA","CAT","CRM","CSCO","CVX","DIS","GS","HD","HON","IBM","JNJ","JPM","KO","MCD","MMM","MRK","MSFT","NKE","NVDA","PG","SHW","TRV","UNH","V","VZ","WMT"];
 const FUND_MODULES="summaryDetail,defaultKeyStatistics,financialData,assetProfile,earningsTrend,earningsHistory,netSharePurchaseActivity";
 const TS_KEYS=["TotalAssets","CurrentAssets","CurrentLiabilities","TotalLiabilitiesNetMinorityInterest","StockholdersEquity","LongTermDebt","GrossProfit","TotalRevenue",
-  "NetIncome","OperatingCashFlow","EBIT","RepurchaseOfCapitalStock","CashDividendsPaid","OrdinarySharesNumber"];
+  "NetIncome","OperatingCashFlow","EBIT","RepurchaseOfCapitalStock","CashDividendsPaid","OrdinarySharesNumber",
+  "AccountsReceivable","CostOfRevenue","SellingGeneralAndAdministration","ReconciledDepreciation","NetPPE","RetainedEarnings","WorkingCapital","ResearchAndDevelopment"];
 
 /* ---------- Unternehmensdaten laden und vereinheitlichen ---------- */
 const rv=x=>x&&typeof x==="object"?(Number.isFinite(x.raw)?x.raw:null):(Number.isFinite(x)?x:null);
-function normFund(sum,ts,divs){
+function normFund(sum,ts,divs,firstTrade){
   const r=sum?.quoteSummary?.result?.[0]||{},sd=r.summaryDetail||{},ks=r.defaultKeyStatistics||{},fd=r.financialData||{},ap=r.assetProfile||{};
   const tr=(r.earningsTrend?.trend||[]),t0=tr.find(t=>t.period==="0y")||{},t1=tr.find(t=>t.period==="+1y")||{};
   const eh=(r.earningsHistory?.history||[]).filter(h=>rv(h.surprisePercent)!=null).sort((a,b)=>(rv(a.quarter)||0)-(rv(b.quarter)||0));
@@ -1504,7 +1525,10 @@ function normFund(sum,ts,divs){
   // Dividendenwachstum: aufeinanderfolgende Jahre mit steigender Jahresdividende (abgeschlossene Jahre)
   let divYears=null;if(divs&&divs.length){const y={},now=new Date().getFullYear();for(const d of divs){const yr=new Date(d.t*1000).getFullYear();if(yr<now)y[yr]=(y[yr]||0)+d.a}
     const ys=Object.keys(y).map(Number).sort((a,b)=>a-b);divYears=0;for(let i=ys.length-1;i>0;i--){if(y[ys[i]]>y[ys[i-1]]*1.001&&ys[i]-ys[i-1]===1)divYears++;else break}}
-  const F={pe:rv(sd.trailingPE),fpe:rv(sd.forwardPE),pb:rv(ks.priceToBook),divY:rv(sd.dividendYield)??rv(sd.trailingAnnualDividendYield),payout:rv(sd.payoutRatio),
+  const divFirst=divs&&divs.length?Math.min(...divs.map(d=>d.t)):null;
+  const F={v:2,firstTrade:firstTrade||null,divFirst,ps:rv(sd.priceToSalesTrailing12Months),evEbitda:rv(ks.enterpriseToEbitda),
+    shortPct:rv(ks.shortPercentOfFloat),shortRatio:rv(ks.shortRatio),
+    pe:rv(sd.trailingPE),fpe:rv(sd.forwardPE),pb:rv(ks.priceToBook),divY:rv(sd.dividendYield)??rv(sd.trailingAnnualDividendYield),payout:rv(sd.payoutRatio),
     beta:rv(sd.beta)??rv(ks.beta),mcap:rv(sd.marketCap),ev:rv(ks.enterpriseValue),peg:rv(ks.pegRatio),cur:sd.currency||null,finCur:fd.financialCurrency||null,
     sector:SECTOR_DE[ap.sector]||ap.sector||null,industry:ap.industry||null,country:ap.country||null,city:ap.city||null,
     summary:ap.longBusinessSummary||null,web:ap.website||null,emp:rv(ap.fullTimeEmployees)??(Number.isFinite(ap.fullTimeEmployees)?ap.fullTimeEmployees:null),
@@ -1524,14 +1548,17 @@ function demoFund(sym){
   const r=rng(hash(sym+"|fund")),u=(a,b)=>a+r()*(b-a),m=S.metrics[sym];const mc=(m?.mcapUSD||50)*1e9;
   const ta=mc*u(0.4,1.6),gp=ta*u(0.1,0.5),rev=gp/u(0.25,0.7),ni=rev*u(0.03,0.25),ocf=ni*u(0.8,1.5);
   const g=()=>u(0.92,1.15);const yrs=k=>[k/g()/g(),k/g(),k];
-  return {sim:true,ok:true,pe:u(7,45),fpe:u(7,35),pb:u(0.8,14),divY:m?.divYield||u(0,0.05),payout:u(0.1,0.9),beta:u(0.6,1.6),mcap:mc,ev:mc*u(0.9,1.3),peg:u(0.6,3),cur:"USD",finCur:"USD",
+  const yrsAgo=y=>Date.now()/1000-y*31557600;
+  return {sim:true,ok:true,v:2,firstTrade:yrsAgo(u(1,40)),divFirst:r()<0.1?yrsAgo(u(0.5,2)):yrsAgo(10),ps:u(1,15),evEbitda:u(5,30),shortPct:u(0,0.12),shortRatio:u(0.5,6),pe:u(7,45),fpe:u(7,35),pb:u(0.8,14),divY:m?.divYield||u(0,0.05),payout:u(0.1,0.9),beta:u(0.6,1.6),mcap:mc,ev:mc*u(0.9,1.3),peg:u(0.6,3),cur:"USD",finCur:"USD",
     sector:SECTOR[sym]||null,gm:u(0.2,0.75),om:u(0.05,0.4),pm:u(0.03,0.3),roa:u(0.01,0.2),roe:u(0.04,0.4),de:u(0.05,2),cr:u(0.8,2.5),ocf,fcf:ocf*u(0.4,0.9),
     revG:u(-0.05,0.25),epsG:u(-0.1,0.4),tgtMean:m?m.p*u(0.9,1.3):null,tgtLow:m?m.p*u(0.65,0.95):null,tgtHigh:m?m.p*u(1.2,1.7):null,nAn:Math.round(u(5,40)),recMean:u(1.6,3.2),recKey:null,
     eps:{cur:u(2,10),ago90:u(2,10),up30:Math.round(u(0,8)),down30:Math.round(u(0,6)),g0:u(-0.05,0.3),g1:u(0,0.25)},surprise:{pct:u(-0.1,0.15),t:Date.now()/1000-u(5,80)*86400},
     insider:{net:u(-1e5,1e5),buy:Math.round(u(0,10)),sell:Math.round(u(0,12)),pct:u(-0.02,0.02)},divYears:Math.floor(u(0,10)),
     ann:{TotalAssets:yrs(ta),CurrentAssets:yrs(ta*0.35),CurrentLiabilities:yrs(ta*u(0.15,0.3)),TotalLiabilitiesNetMinorityInterest:yrs(ta*u(0.3,0.7)),LongTermDebt:yrs(ta*u(0.05,0.3)),
       GrossProfit:yrs(gp),TotalRevenue:yrs(rev),NetIncome:yrs(ni),OperatingCashFlow:yrs(ocf),EBIT:yrs(ni*1.3),RepurchaseOfCapitalStock:yrs(-mc*u(0,0.03)),
-      CashDividendsPaid:yrs(-mc*(m?.divYield||0.01)),OrdinarySharesNumber:yrs(1e9*u(0.5,5)).map((x,i,a)=>a[0]*(1-i*u(-0.01,0.02)))},ts:Date.now()};
+      CashDividendsPaid:yrs(-mc*(m?.divYield||0.01)),OrdinarySharesNumber:yrs(1e9*u(0.5,5)).map((x,i,a)=>a[0]*(1-i*u(-0.02,0.03))),
+      AccountsReceivable:yrs(rev*u(0.08,0.2)),CostOfRevenue:yrs(rev-gp),SellingGeneralAndAdministration:yrs(rev*u(0.1,0.3)),ReconciledDepreciation:yrs(ta*u(0.02,0.06)),
+      NetPPE:yrs(ta*u(0.1,0.4)),RetainedEarnings:yrs(ta*u(0.05,0.6)),WorkingCapital:yrs(ta*u(-0.05,0.2)),ResearchAndDevelopment:yrs(rev*u(0,0.2))},ts:Date.now()};
 }
 let fundBusy=false,fundErr=null;
 async function loadFund(syms,force=false,onProgress){
@@ -1539,7 +1566,7 @@ async function loadFund(syms,force=false,onProgress){
   try{
     await pool(syms,4,async sym=>{
       const old=S.fund[sym];
-      if(!force&&old&&Date.now()-old.ts<12*3600e3&&!(old.sim&&S.mode==="live")){done++;onProgress?.(done,syms.length);return}
+      if(!force&&old&&old.v===2&&Date.now()-old.ts<12*3600e3&&!(old.sim&&S.mode==="live")){done++;onProgress?.(done,syms.length);return}
       if(S.mode!=="live"){S.fund[sym]=demoFund(sym)}
       else{
         try{
@@ -1547,7 +1574,7 @@ async function loadFund(syms,force=false,onProgress){
             api(`/api/summary?symbol=${encodeURIComponent(sym)}&modules=${FUND_MODULES}`).catch(()=>null),
             api(`/api/timeseries?symbol=${encodeURIComponent(sym)}&types=${TS_KEYS.map(k=>"annual"+k).join(",")}`).catch(()=>null),
             api(`/api/chart?symbol=${encodeURIComponent(sym)}&range=10y&interval=1mo`).catch(()=>null)]);
-          const divs=mon?parseChart(mon).divs:null;S.fund[sym]=normFund(sum,ts,divs);
+          const pcm=mon?parseChart(mon):null;S.fund[sym]=normFund(sum,ts,pcm?.divs||null,pcm?.meta?.firstTradeDate||null);
           if(mon){const pc=parseChart(mon);S.monthly[sym]=pc.bars}
           if(!S.fund[sym].ok)fail++;
         }catch(e){fail++}
@@ -1756,9 +1783,12 @@ function renderForecast(m){
   // Strategie-Profil: in welchen Strategien ist die Aktie vorn?
   const prof=$("#spBody");if(!prof)return;
   if(assetOf(m.sym)!=="aktie"){prof.innerHTML='<p class="muted">Die Faktor-Strategien gelten für Einzelaktien. Für ETFs siehe „Buy & Hold“, „Sparplan“, „Dual Momentum“ und „Core-Satellite“ unter Strategien.</p>';return}
-  const P=stratPool();if(!P.includes(m.sym))P.push(m.sym);const X=S.stratX||stratContext(P);const hits=[],misses=[];
-  for(const st of STRATS.filter(x=>x.screen)){let r=null;try{r=st.screen(m.sym,X)}catch{}if(!r){continue}(r.ok?hits:misses).push([st,r])}
-  prof.innerHTML=`<p class="sp-sum"><b>${hits.length}</b> von ${hits.length+misses.length} prüfbaren Strategien sprechen für diese Aktie${Object.keys(S.fund).length?"":" (Unternehmensdaten noch nicht geladen – Bereich „Strategien“ öffnen)"}.</p>
+  const P=stratPool();if(!P.includes(m.sym))P.push(m.sym);const X=S.stratX||stratContext(P);
+  const H=strategyHits(m.sym,X),hitIds=new Set(H.hits.map(([st])=>st.id));
+  const misses=STRATS.filter(st=>st.screen&&!st.avoid&&st.pool!=="etf"&&(st.pool!=="supplier"||SUPPLY[m.sym])).map(st=>{let r=null;try{r=st.screen(m.sym,X)}catch{}return r&&!hitIds.has(st.id)?[st,r]:null}).filter(Boolean);
+  const hits=H.hits;
+  prof.innerHTML=`<p class="sp-sum"><b>${hits.length}</b> von ${H.n} prüfbaren Strategien sprechen für diese Aktie${H.warns.length?`, <b class="down">${H.warns.length} Warnsignal${H.warns.length>1?"e":""}</b>`:""}${Object.keys(S.fund).length?"":" (Unternehmensdaten noch nicht geladen – Bereich „Strategien“ öffnen)"}.</p>
+    ${H.warns.length?`<div class="sp-list" style="margin-bottom:8px">${H.warns.map(([st,r])=>`<span class="sp warn" title="${esc(r.t)}">⚠ ${st.n}. ${esc(st.name)}: ${esc(r.t)}</span>`).join("")}</div>`:""}
     <div class="sp-list">${hits.map(([st,r])=>`<span class="sp ok" title="${esc(r.t)}">${st.n}. ${esc(st.name)}</span>`).join("")}${misses.map(([st,r])=>`<span class="sp" title="${esc(r.t)}">${st.n}. ${esc(st.name)}</span>`).join("")}</div>`;
 }
 
@@ -1766,28 +1796,33 @@ function renderForecast(m){
 S.fund=store.get("fund",{});S.monthly={};S.stratOpen=store.get("stratOpen","multi");S.stratCat=store.get("stratCat","alle");S.stratMine=store.get("stratMine",false);
 async function renderStrats(loadIfNeeded=true){
   if($("#viewStrat").hidden)return;
-  const P=stratPool(),need=P.filter(s=>!S.fund[s]||(S.fund[s].sim&&S.mode==="live"));
+  const P=stratPool(),need=P.filter(s=>!S.fund[s]||S.fund[s].v!==2||(S.fund[s].sim&&S.mode==="live"));
   $("#fundState").textContent=fundBusy?"Lade Unternehmensdaten …":`Unternehmensdaten: ${P.length-need.length} von ${P.length} Aktien${S.mode!=="live"?" (simuliert)":""}${fundErr?" · "+fundErr:""}`;
   S.stratX=stratContext(P);
   document.querySelectorAll("#stratCats .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.c===S.stratCat));$("#stratMine").checked=S.stratMine;
   const mine=new Set(S.portfolio.map(p=>p.sym));
-  $("#stratList").innerHTML=["A","B","C"].filter(c=>S.stratCat==="alle"||S.stratCat===c).map(c=>`<h3 class="scat">${CAT_NAME[c]}</h3>`+STRATS.filter(st=>st.cat===c).map(st=>{
+  const tab=S.stratTab;document.querySelectorAll("#stratTabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===tab));
+  $("#stratList").hidden=tab!=="katalog";$("#stratCats").hidden=tab!=="katalog";$("#stratMine").closest("label").hidden=tab!=="katalog";$("#topCard").hidden=tab!=="top";
+  document.querySelector('#stratCats .chip[data-c="alle"]').textContent=`Alle ${STRATS.length}`;
+  if(tab==="top")renderTop();
+  $("#stratList").innerHTML=tab!=="katalog"?"":["A","B","C","D","E","F","G","H","I"].filter(c=>S.stratCat==="alle"||S.stratCat===c).map(c=>`<h3 class="scat">${CAT_NAME[c]}</h3>`+STRATS.filter(st=>st.cat===c).map(st=>{
     const open=S.stratOpen===st.id;let body="";
     if(open){
-      if(st.screen){let rows=runStrategy(st,P,S.stratX);if(S.stratMine)rows=rows.filter(r=>mine.has(r.s));const nOk=rows.filter(r=>r.ok).length;
-        body=rows.length?`<p class="muted">${nOk} von ${rows.length} Aktien erfüllen die Regel${S.stratMine?" (nur Depot)":""}. Sortiert nach Stärke.</p>
+      if(st.screen){let rows=runStrategy(st,poolFor(st,P),S.stratX);if(S.stratMine)rows=rows.filter(r=>mine.has(r.s));const nOk=rows.filter(r=>r.ok).length;
+        const nW=rows.filter(r=>r.warn).length,what=st.pool==="etf"?"ETFs":"Aktien";
+        body=rows.length?`<p class="muted">${st.avoid?`${nW} von ${rows.length} ${what} zeigen ein Warnsignal, ${nOk} sind unbedenklich. Oben die unbedenklichsten.`:`${nOk} von ${rows.length} ${what} erfüllen die Regel`}${S.stratMine?" (nur Depot)":""}${st.avoid?"":". Sortiert nach Stärke."}</p>
           <div class="tbl-wrap"><table class="stbl"><thead><tr><th>#</th><th>Aktie</th><th>Kennzahl</th><th>Regel</th><th>Trend</th><th>Prognose 12 M</th></tr></thead><tbody>${rows.slice(0,S.stratMine?50:12).map((r,i)=>{
             const fc=forecast(r.s),info=BY[r.s];return `<tr data-s="${esc(r.s)}" tabindex="0"><td class="num">${i+1}</td><td><b>${esc(info?.n||S.portfolio.find(p=>p.sym===r.s)?.name||r.s)}</b> <small>${esc(r.s)}</small>${mine.has(r.s)?' <span class="mine">Depot</span>':""}</td>
-            <td>${esc(r.t)}</td><td>${r.ok?'<span class="sig up">erfüllt</span>':'<span class="sig neutral">nein</span>'}</td><td class="${S.metrics[r.s].trend.cls==="side-t"?"":S.metrics[r.s].trend.cls}">${S.metrics[r.s].trend.short}</td>
+            <td>${esc(r.t)}</td><td>${st.avoid?(r.warn?'<span class="sig down">Warnsignal</span>':r.ok?'<span class="sig up">unbedenklich</span>':'<span class="sig neutral">grenzwertig</span>'):r.ok?'<span class="sig up">erfüllt</span>':'<span class="sig neutral">nein</span>'}</td><td class="${S.metrics[r.s].trend.cls==="side-t"?"":S.metrics[r.s].trend.cls}">${S.metrics[r.s].trend.short}</td>
             <td class="num ${fc?cls(fc.mu):""}">${fc?pct(fc.mu,1):"–"}</td></tr>`}).join("")}</tbody></table></div>`
           :`<p class="muted">${st.need&&st.need!=="Kurse"?"Für diese Strategie fehlen noch Unternehmensdaten ("+st.need+").":"Keine Daten."}</p>`;
-        if(st.tool==="dual")body=toolDual()+body;
+        if(st.tool==="dual")body=toolDual()+body;if(st.tool==="volmom")body=TOOLS.volmom()+body;
       }else body=TOOLS[st.tool]();
     }
-    return `<article class="strat-card${open?" open":""}" data-id="${st.id}"><button type="button" class="sc-head" aria-expanded="${open}"><span class="sc-n">${st.n}</span><span class="sc-t"><b>${esc(st.name)}</b><small>${esc(st.rule)}</small></span><span class="caret">▾</span></button>${open?`<div class="sc-body">${body}</div>`:""}</article>`}).join("")).join("");
+    return `<article class="strat-card${open?" open":""}" data-id="${st.id}"><button type="button" class="sc-head" aria-expanded="${open}"><span class="sc-n">${st.n}</span><span class="sc-t"><b>${esc(st.name)}${st.avoid?' <span class="avoid">meiden</span>':""}</b><small>${esc(st.rule)}</small></span><span class="caret">▾</span></button>${open?`<div class="sc-body">${body}</div>`:""}</article>`}).join("")).join("");
   if(loadIfNeeded&&need.length&&!fundBusy){
     await loadFund(need,false,(d,n)=>{$("#fundState").textContent=`Lade Unternehmensdaten … ${d}/${n}`});
-    renderStrats(false);if(S.metrics[S.sel])renderForecast(S.metrics[S.sel]);
+    S.stratX=null;renderStrats(false);if(S.metrics[S.sel])renderForecast(S.metrics[S.sel]);
   }
 }
 const TOOLS={
@@ -1859,9 +1894,179 @@ $("#stratList").addEventListener("click",async e=>{
   if(["buyhold","sparplan"].includes(S.stratOpen)&&!S.monthly["EUNL.DE"]&&S.mode==="live"){try{S.monthly["EUNL.DE"]=parseChart(await api("/api/chart?symbol=EUNL.DE&range=10y&interval=1mo")).bars}catch{}}
   renderStrats(false);h.closest(".strat-card")?.scrollIntoView({block:"nearest"});
 });
+$("#stratTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.stratTab=b.dataset.t;store.set("stratTab",S.stratTab);renderStrats(false)});
+$("#topFilters").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;S.topFilter=c.dataset.f;store.set("topFilter",S.topFilter);renderTop()});
+$("#topAB").addEventListener("change",e=>{S.topAB=e.target.checked;store.set("topAB",S.topAB);renderTop()});
+$("#topList").addEventListener("click",async e=>{const tr=e.target.closest("tr[data-s]");if(tr&&await ensureData(tr.dataset.s)){S.extra[tr.dataset.s]=1;select(tr.dataset.s)}});
 $("#stratCats").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;S.stratCat=c.dataset.c;store.set("stratCat",S.stratCat);renderStrats(false)});
 $("#stratMine").addEventListener("change",e=>{S.stratMine=e.target.checked;store.set("stratMine",S.stratMine);renderStrats(false)});
 $("#fundReload").addEventListener("click",async()=>{await loadFund(stratPool(),true,(d,n)=>{$("#fundState").textContent=`Lade Unternehmensdaten … ${d}/${n}`});renderStrats(false)});
+
+/* ---------- Erweiterte Strategien 51–72 ---------- */
+Object.assign(CAT_NAME,{D:"Verbesserte Momentum-Varianten",E:"Bewertung und Bilanzqualität",F:"Kapitalmarktverhalten von Firmen",G:"Risiko- und Verhaltensanomalien",H:"Informationsbasierte Ansätze",I:"Kalendereffekte"});
+// Bekannte Lieferbeziehungen innerhalb des Owlgo-Universums (Zulieferer → große Kunden), zur Veranschaulichung
+const SUPPLY={"2330.TW":["AAPL","NVDA","AVGO"],"ASML.AS":["2330.TW","005930.KS"],"000660.KS":["NVDA"],"005930.KS":["AAPL"],"AVGO":["AAPL","GOOGL","META"],
+  "NVDA":["MSFT","META","AMZN","GOOGL","ORCL"],"SAP.DE":["SIE.DE"]};
+// Wöchentliche Renditen gegen den Weltmarkt (MSCI World): Beta, Rest-Momentum, firmeneigene Schwankung
+function residStats(sym,X){
+  if(X.resid[sym]!==undefined)return X.resid[sym];
+  const sb=S.daily[sym]?.bars,mb=S.daily["EUNL.DE"]?.bars;let out=null;
+  if(sb&&mb&&sym!=="EUNL.DE"){
+    const wk=bars=>{const m=new Map();for(const b of bars)m.set(Math.floor((b.t/86400+3)/7),b.c);return m};
+    const ws=wk(sb.slice(-270)),wm=wk(mb.slice(-280));const keys=[...ws.keys()].filter(k=>wm.has(k)&&ws.has(k-1)&&wm.has(k-1)).sort((a,b)=>a-b).slice(-52);
+    if(keys.length>=30){
+      const rs=keys.map(k=>Math.log(ws.get(k)/ws.get(k-1))),rm=keys.map(k=>Math.log(wm.get(k)/wm.get(k-1)));
+      const ms=rs.reduce((a,b)=>a+b,0)/rs.length,mm=rm.reduce((a,b)=>a+b,0)/rm.length;
+      let cov=0,vm=0;for(let i=0;i<rs.length;i++){cov+=(rs[i]-ms)*(rm[i]-mm);vm+=(rm[i]-mm)**2}
+      const beta=vm?cov/vm:1,alpha=ms-beta*mm,res=rs.map((r,i)=>r-alpha-beta*rm[i]);
+      const sd=Math.sqrt(res.reduce((a,b)=>a+b*b,0)/(res.length-2));const form=res.slice(0,-4).reduce((a,b)=>a+b,0);
+      out={beta,idio:sd*Math.sqrt(52),rmom:sd?form/(sd*Math.sqrt(res.length-4)):null,resRet:form};
+    }
+  }
+  return X.resid[sym]=out;
+}
+function dailyRets(m){const c=m.closes||[];const r=[];for(let i=1;i<c.length;i++)r.push(c[i]/c[i-1]-1);return r}
+const FIN=s=>["Finanzen","Versorger"].includes(sectorOf(s));
+function mScore(a){ // Beneish M-Score (8 Variablen); > −1,78 gilt als auffällig
+  const g=k=>[prev(a[k]),last(a[k])];const [rec0,rec1]=g("AccountsReceivable"),[rev0,rev1]=g("TotalRevenue"),[cogs0,cogs1]=g("CostOfRevenue"),[ca0,ca1]=g("CurrentAssets"),
+    [ppe0,ppe1]=g("NetPPE"),[ta0,ta1]=g("TotalAssets"),[dep0,dep1]=g("ReconciledDepreciation"),[sga0,sga1]=g("SellingGeneralAndAdministration"),
+    [cl0,cl1]=g("CurrentLiabilities"),[ltd0,ltd1]=g("LongTermDebt"),ni1=last(a.NetIncome),cfo1=last(a.OperatingCashFlow);
+  const need=[rec0,rec1,rev0,rev1,cogs0,cogs1,ca0,ca1,ppe0,ppe1,ta0,ta1,ni1,cfo1];if(need.some(x=>x==null)||!rev0||!rev1||!ta0||!ta1)return null;
+  const DSRI=(rec1/rev1)/(rec0/rev0),GMI=((rev0-cogs0)/rev0)/((rev1-cogs1)/rev1),AQI=(1-(ca1+ppe1)/ta1)/(1-(ca0+ppe0)/ta0),SGI=rev1/rev0;
+  const DEPI=dep0!=null&&dep1!=null&&ppe0&&ppe1?(dep0/(dep0+ppe0))/(dep1/(dep1+ppe1)):1,SGAI=sga0!=null&&sga1!=null?(sga1/rev1)/(sga0/rev0):1;
+  const LVGI=cl0!=null&&cl1!=null?((cl1+(ltd1||0))/ta1)/((cl0+(ltd0||0))/ta0):1,TATA=(ni1-cfo1)/ta1;
+  const M=-4.84+0.92*DSRI+0.528*GMI+0.404*AQI+0.892*SGI+0.115*DEPI-0.172*SGAI+4.679*TATA-0.327*LVGI;
+  return Number.isFinite(M)?M:null;
+}
+function zScore(f){ // Altman Z-Score; < 1,81 Gefahrenzone, > 2,99 sicher
+  const a=f.ann||{},ta=last(a.TotalAssets),tl=last(a.TotalLiabilitiesNetMinorityInterest);if(!ta||!tl)return null;
+  const wc=last(a.WorkingCapital)??((last(a.CurrentAssets)??null)!=null&&last(a.CurrentLiabilities)!=null?last(a.CurrentAssets)-last(a.CurrentLiabilities):null);
+  const re=last(a.RetainedEarnings),ebit=last(a.EBIT),sales=last(a.TotalRevenue);if([wc,re,ebit,sales].some(x=>x==null))return null;
+  const mv=f.mcap?toEUR(f.mcap,f.cur)/(toEUR(1,f.finCur||f.cur)||1):null;if(!mv)return null;
+  return 1.2*wc/ta+1.4*re/ta+3.3*ebit/ta+0.6*mv/tl+1.0*sales/ta;
+}
+const yrsSince=t=>t?(Date.now()/1000-t)/31557600:null;
+function monthlyOf(s){ // Monatsschlusskurse: 10 Jahre (live) oder aus den Tageskursen abgeleitet
+  if(S.monthly[s]?.length)return S.monthly[s];const b=S.daily[s]?.bars;if(!b)return null;
+  return b.filter((x,i)=>i===b.length-1||new Date(x.t*1000).getMonth()!==new Date(b[i+1].t*1000).getMonth());
+}
+STRATS.push(
+ {n:51,id:"resmom",cat:"D",name:"Residual Momentum",rule:"Momentum nach Herausrechnen der Marktbewegung (Regression gegen den MSCI World, wöchentlich, 12 Monate ohne den letzten Monat). Weniger Crash-Risiko als klassisches Momentum.",need:"Kurse",
+  screen:(s,X)=>{const r=residStats(s,X);return r?.rmom==null?null:{v:r.rmom,t:`Rest-Momentum ${nf(2).format(r.rmom)} · Beta ${nf(2).format(r.beta)}`,ok:r.rmom>0.25}}},
+ {n:52,id:"frog",cat:"D",name:"Frog-in-the-Pan",rule:"Gewinner bevorzugen, die stetig steigen statt in wenigen großen Sprüngen: viele kleine Plus-Tage werden von Anlegern unterschätzt („Information Discreteness“).",need:"Kurse",
+  screen:s=>{const m=S.metrics[s],r=dailyRets(m).slice(0,-21);if(r.length<150||m.mom121==null)return null;
+    const pos=r.filter(x=>x>0).length/r.length,neg=r.filter(x=>x<0).length/r.length,id=Math.sign(m.mom121)*(neg-pos);
+    return {v:m.mom121>0?-id+m.mom121/10:-1+m.mom121,t:`${pct(pos,0,false)} Plus-Tage · Momentum ${pc1(m.mom121)}`,ok:m.mom121>0.1&&id<-0.04}}},
+ {n:53,id:"volmom",cat:"D",name:"Volatilitätsgesteuertes Momentum",rule:"Momentum risikobereinigt (Rendite ÷ Schwankung) und die Positionsgröße in unruhigen Phasen verkleinern – das mildert die typischen Momentum-Einbrüche.",need:"Kurse",tool:"volmom",
+  screen:s=>{const m=S.metrics[s],v=m.mom121??m.c1y;if(v==null||!m.vol1y)return null;const ra=v/m.vol1y;return {v:ra,t:`${pc1(v)} ÷ Vola ${pct(m.vol1y,0,false)} = ${nf(2).format(ra)}`,ok:ra>0.8}}},
+ {n:54,id:"tsmom",cat:"D",name:"Time-Series Momentum",rule:"Märkte bzw. Index-ETFs halten, solange ihr eigener 12-Monats-Trend positiv ist (besser als Tagesgeld) – sonst in Geldmarkt oder Anleihen.",need:"Kurse",pool:"etf",
+  screen:(s,X)=>{const m=S.metrics[s],c=X.dual.cash??0;if(m.c1y==null)return null;return {v:m.c1y-c,t:`12 M ${pc1(m.c1y)} vs. Tagesgeld ${pc1(c)}`,ok:m.c1y>c&&m.p>m.s200}}},
+ {n:55,id:"evebit",cat:"E",name:"EV/EBIT (Enterprise Multiple)",rule:"Unternehmenswert (Börsenwert + Schulden − Cash) ÷ operativer Gewinn. Oft die stärkste einzelne Value-Kennzahl. Banken/Versicherer/Versorger ausgenommen.",need:"Bilanz",
+  screen:s=>{const f=S.fund[s];const e=last(f?.ann?.EBIT);if(!f||FIN(s)||!(e>0)||!(f.ev>0))return null;const r=ratioCur(f.ev,f.cur,e,f.finCur);return r==null?null:{v:-r,t:`EV/EBIT ${nf(1).format(r)}`,ok:r<12}}},
+ {n:56,id:"vcomp",cat:"E",name:"Value-Komposit (O'Shaughnessy)",rule:"Sechs Bewertungskennzahlen kombiniert: KGV, KBV, KUV, EV/EBITDA, Kurs/Cashflow und Shareholder Yield – robuster als jede einzelne.",need:"Fundamentaldaten",
+  screen:(s,X)=>X.vc2[s]==null?null:{v:X.vc2[s],t:`Rang ${X.vc2[s].toFixed(0)} · KUV ${S.fund[s]?.ps?nf(1).format(S.fund[s].ps):"–"} · EV/EBITDA ${S.fund[s]?.evEbitda?nf(1).format(S.fund[s].evEbitda):"–"}`,ok:X.vc2[s]>=70}},
+ {n:57,id:"cbop",cat:"E",name:"Cash-basierte Profitabilität",rule:"Operativer Cashflow ÷ Bilanzsumme: Profitabilität ohne buchhalterische Abgrenzungen (vereinfachte Form der Kennzahl von Ball u. a.).",need:"Cashflow",
+  screen:s=>{const a=S.fund[s]?.ann;if(!a||last(a.OperatingCashFlow)==null||!last(a.TotalAssets))return null;const v=last(a.OperatingCashFlow)/last(a.TotalAssets);return {v,t:"Cashflow/Vermögen "+pct(v,1,false),ok:v>0.1}}},
+ {n:58,id:"mscore",cat:"E",avoid:true,name:"Beneish M-Score",rule:"Acht Bilanzkennzahlen, die bei Bilanzmanipulation typisch auffällig werden. Über −1,78 gilt als Warnsignal – solche Firmen meiden. Banken ausgenommen.",need:"Bilanz",
+  screen:s=>{const f=S.fund[s];if(!f||FIN(s))return null;const M=mScore(f.ann||{});return M==null?null:{v:-M,t:`M-Score ${nf(2).format(M)}`,ok:M<-2.22,warn:M>-1.78}}},
+ {n:59,id:"distress",cat:"E",avoid:true,name:"Distress-Risiko meiden",rule:"Altman Z-Score schätzt das Insolvenzrisiko: unter 1,81 Gefahrenzone, über 2,99 sicher. Aktien mit hohem Insolvenzrisiko rentierten historisch schlecht. Banken ausgenommen.",need:"Bilanz",
+  screen:s=>{const f=S.fund[s];if(!f||FIN(s))return null;const z=zScore(f);return z==null?null:{v:z,t:`Z-Score ${nf(2).format(z)}`,ok:z>2.99,warn:z<1.81}}},
+ {n:60,id:"issuance",cat:"F",avoid:true,name:"Netto-Aktienemissionen meiden",rule:"Firmen, die viele neue Aktien ausgeben (Kapitalerhöhungen, großzügige Mitarbeiteraktien), hinkten oft hinterher. Betrachtet: Aktienzahl über bis zu 3 Jahre.",need:"Bilanz",
+  screen:s=>{const sh=S.fund[s]?.ann?.OrdinarySharesNumber;if(!sh||sh.length<2)return null;const n=Math.min(3,sh.length-1),g=last(sh)/sh[sh.length-1-n]-1;
+    return {v:-g,t:`Aktienzahl ${pc1(g)} in ${n} J.`,ok:g<=0.01,warn:g>0.03*n}}},
+ {n:61,id:"ipo",cat:"F",avoid:true,name:"IPO-Zurückhaltung",rule:"Neuemissionen schnitten in den ersten 3–5 Jahren im Schnitt schwach ab. Warnsignal: Börsengang vor weniger als 3 Jahren.",need:"Börsengang-Datum",
+  screen:s=>{const y=yrsSince(S.fund[s]?.firstTrade);return y==null?null:{v:Math.min(y,20),t:y<1?"Börsengang vor wenigen Monaten":`an der Börse seit ${nf(0).format(y)} J.`,ok:y>=5,warn:y<3}}},
+ {n:62,id:"divinit",cat:"F",name:"Dividenden-Initiierungen",rule:"Firmen, die erstmals eine Dividende zahlen, signalisieren Vertrauen in ihre Gewinne – die Aktien entwickelten sich danach oft besser.",need:"Dividendenhistorie",
+  screen:s=>{const f=S.fund[s];if(!f||f.divFirst===undefined)return null;const m=S.monthly[s],span=m&&m.length?yrsSince(m[0].t):10;
+    if(!f.divFirst)return {v:-1,t:"zahlt keine Dividende",ok:false};const y=yrsSince(f.divFirst);
+    const init=y<2&&span>=4;return {v:init?10-y:-y/10,t:init?`erste Dividende vor ${nf(0).format(y*12)} Monaten`:`zahlt seit über ${nf(0).format(Math.min(y,span))} J.`,ok:init}}},
+ {n:63,id:"indexdel",cat:"F",name:"Indexausschlüsse",rule:"Aktien, die aus einem Index fliegen, werden von Indexfonds zwangsverkauft und erholten sich danach häufig. Eine automatische Datenquelle gibt es nicht.",tool:"indexdel"},
+ {n:64,id:"idio",cat:"G",name:"Niedrige idiosynkratische Volatilität",rule:"Aktien mit wenig firmeneigener Schwankung (der Teil, der nicht vom Gesamtmarkt kommt) bevorzugen.",need:"Kurse",
+  screen:(s,X)=>{const r=residStats(s,X);return r?{v:-r.idio,t:`firmeneigene Vola ${pct(r.idio,0,false)}`,ok:r.idio<0.2}:null}},
+ {n:65,id:"maxeff",cat:"G",avoid:true,name:"Lotterieaktien meiden (MAX-Effekt)",rule:"Aktien mit extremen Tagesgewinnen im letzten Monat rentierten danach oft schlecht – Anleger überzahlen für die „Lotterie-Chance“.",need:"Kurse",
+  screen:s=>{const r=dailyRets(S.metrics[s]).slice(-21);if(r.length<15)return null;const mx=Math.max(...r);return {v:-mx,t:`größter Tagesgewinn ${pc1(mx)}`,ok:mx<0.05,warn:mx>0.1}}},
+ {n:66,id:"short",cat:"G",avoid:true,name:"Stark leerverkaufte Aktien meiden",rule:"Hohe Short-Quote (Anteil leerverkaufter Aktien am Streubesitz) gilt als Warnsignal. Daten gibt es vor allem für US-Werte.",need:"Short-Daten",
+  screen:s=>{const f=S.fund[s];if(f?.shortPct==null)return null;return {v:-f.shortPct,t:`Short-Quote ${pct(f.shortPct,1,false)}${f.shortRatio?` · ${nf(1).format(f.shortRatio)} Tage zum Eindecken`:""}`,ok:f.shortPct<0.03,warn:f.shortPct>0.1}}},
+ {n:67,id:"supply",cat:"H",name:"Kunden-Lieferanten-Verknüpfung",rule:"Nachrichten über große Kunden wirken verzögert auf die Aktien ihrer Zulieferer. Hier: bekannte Lieferbeziehungen im Owlgo-Universum – lief der Kunde zuletzt besser als der Zulieferer, kann dieser nachziehen.",need:"Kurse",pool:"supplier",
+  screen:s=>{const cs=(SUPPLY[s]||[]).map(c=>S.metrics[c]).filter(Boolean),m=S.metrics[s];if(!cs.length||m.c1m==null)return null;
+    const avg=cs.reduce((a,c)=>a+(c.c1m||0),0)/cs.length,gap=avg-m.c1m;return {v:gap,t:`Kunden (${cs.map(c=>BY[c.sym]?.n||c.sym).join(", ")}) ${pc1(avg)} vs. selbst ${pc1(m.c1m)} (1 M)`,ok:gap>0.04&&avg>0}}},
+ {n:68,id:"lazy",cat:"H",name:"„Lazy Prices“",rule:"Firmen, deren Geschäftsberichte sich von Jahr zu Jahr stark verändern, entwickelten sich danach oft schwächer.",tool:"lazy"},
+ {n:69,id:"rnd",cat:"H",name:"Hohe F&E-Intensität",rule:"Forschungs- und Entwicklungsausgaben im Verhältnis zum Börsenwert: Der Markt bewertet Forschung tendenziell zu niedrig.",need:"Bilanz",
+  screen:s=>{const f=S.fund[s],rd=last(f?.ann?.ResearchAndDevelopment);if(!f||!(rd>0))return null;const r=ratioCur(rd,f.finCur,f.mcap,f.cur),rv_=last(f.ann.TotalRevenue);
+    return r==null?null:{v:r,t:`F&E = ${pct(r,1,false)} vom Börsenwert${rv_?` · ${pct(rd/rv_,0,false)} vom Umsatz`:""}`,ok:r>0.04}}},
+ {n:70,id:"employees",cat:"H",name:"Mitarbeiterzufriedenheit",rule:"Firmen auf „Best Places to Work“-Listen erzielten langfristig Überrenditen (Edmans).",tool:"employees"},
+ {n:71,id:"samemonth",cat:"I",name:"Gleicher-Monat-Effekt (Heston/Sadka)",rule:"Aktien schneiden im selben Kalendermonat oft ähnlich ab wie in den Vorjahren. Owlgo prüft den kommenden Monat über bis zu 10 Jahre.",need:"Monatskurse",
+  screen:s=>{const mb=monthlyOf(s);if(!mb||mb.length<40)return null;const nm=(new Date().getMonth()+1)%12,rs=[];
+    for(let i=1;i<mb.length;i++)if(new Date(mb[i].t*1000).getMonth()===nm)rs.push(mb[i].c/mb[i-1].c-1);if(rs.length<4)return null;
+    const avg=rs.reduce((a,b)=>a+b,0)/rs.length,hit=rs.filter(x=>x>0).length/rs.length;
+    return {v:avg,t:`${new Date(2000,nm,1).toLocaleDateString("de-DE",{month:"long"})}: Ø ${pc1(avg)}, ${rs.filter(x=>x>0).length}/${rs.length} Jahre im Plus`,ok:avg>0.01&&hit>=0.6}}},
+ {n:72,id:"tom",cat:"I",name:"Turn-of-the-Month",rule:"Ein großer Teil der Aktienrendite fällt auf die Tage um den Monatswechsel (letzter Handelstag plus die ersten drei).",tool:"tom"},
+);
+Object.assign(TOOLS,{
+  volmom(){const P=stratPool(),X=S.stratX;const top=P.filter(s=>X.mom[s]!=null).sort((a,b)=>X.mom[b]-X.mom[a]).slice(0,10).map(s=>S.metrics[s]);
+    const n=Math.min(...top.map(m=>(m.closes||[]).length));if(top.length<3||n<25)return"";const r=[];
+    for(let i=n-21;i<n;i++)r.push(top.reduce((a,m)=>{const c=m.closes.slice(-n);return a+(c[i]/c[i-1]-1)},0)/top.length);
+    const mu=r.reduce((a,b)=>a+b,0)/r.length,vol=Math.sqrt(r.reduce((a,b)=>a+(b-mu)**2,0)/(r.length-1)*252),exp=Math.max(0.25,Math.min(1.5,0.15/vol));
+    return `<div class="dualbox"><b>Investitionsquote für ein Momentum-Depot: ${pct(exp,0,false)}</b><br><small class="muted">Die 10 stärksten Momentum-Aktien schwankten im letzten Monat mit ${pct(vol,0,false)} p. a.; Ziel 15 % → Quote = 15 % ÷ ${pct(vol,0,false)} (begrenzt auf 25–150 %). Den Rest in Geldmarkt halten.</small></div>`},
+  indexdel(){setTimeout(async()=>{const el=$("#idxNews");if(!el)return;if(S.mode!=="live"){el.innerHTML='<p class="muted">Meldungen gibt es nur mit Live-Daten.</p>';return}
+      try{const L=await pool(["removed from S&P 500","DAX Absteiger"],2,async q=>(await api("/api/news?q="+encodeURIComponent(q))).news||[]);
+        el.innerHTML=L.flat().filter(Boolean).map(n=>newsItem({title:n.title,link:n.link,source:n.publisher,ts:(n.providerPublishTime||0)*1000,tickers:n.relatedTickers})).join("")||'<p class="muted">Keine aktuellen Meldungen.</p>'}
+      catch{el.innerHTML='<p class="muted">Meldungen konnten nicht geladen werden.</p>'}},0);
+    return `<p>Indexänderungen werden meist 1–2 Wochen vorher angekündigt (S&amp;P 500 und DAX quartalsweise). Der Verkaufsdruck der Indexfonds ist um den Stichtag am größten; die Erholung folgt in den Monaten danach. Ausgeschlossene Werte danach mit den übrigen Strategien prüfen (Qualität, Bewertung, Distress-Risiko).</p>
+      <h4>Aktuelle Meldungen</h4><div class="news" id="idxNews"><p class="muted">Lade …</p></div>`},
+  lazy(){return `<p>Für diese Strategie bräuchte man die Volltexte der Geschäftsberichte (z. B. 10-K-Berichte der US-Börsenaufsicht) und einen Textvergleich Jahr für Jahr. Diese Daten sind für Owlgo nicht verfügbar – es wird deshalb nichts berechnet.</p>
+      <p>Selbst prüfen: Bei der US-Börsenaufsicht (<a href="https://www.sec.gov/edgar/search/" target="_blank" rel="noopener noreferrer">sec.gov/edgar</a>) zwei aufeinanderfolgende Jahresberichte vergleichen – besonders die Abschnitte „Risk Factors“ und „Legal Proceedings“. Viele neue Risiken oder Rechtsstreitigkeiten sind ein Warnsignal.</p>`},
+  employees(){return `<p>Für Mitarbeiterzufriedenheit gibt es keine frei zugängliche Datenquelle, die Owlgo abrufen kann – es wird deshalb nichts berechnet und keine Liste erfunden.</p>
+      <p>Selbst prüfen: Bewertungen auf <a href="https://www.glassdoor.de" target="_blank" rel="noopener noreferrer">glassdoor.de</a> oder <a href="https://www.kununu.com" target="_blank" rel="noopener noreferrer">kununu.com</a> sowie die Listen von <a href="https://www.greatplacetowork.de" target="_blank" rel="noopener noreferrer">Great Place to Work</a>. Die Überrendite zeigte sich in Studien erst über viele Jahre.</p>`},
+  tom(){const b=S.daily["EUNL.DE"]?.bars;if(!b||b.length<200)return'<p class="muted">Kursverlauf des MSCI World noch nicht geladen.</p>';
+    const tom=[],oth=[];for(let i=4;i<b.length-1;i++){const mo=d=>new Date(b[d].t*1000).getMonth();const r=b[i].c/b[i-1].c-1;
+      const lastDay=mo(i)!==mo(i+1),firstDays=mo(i)!==mo(i-1)||mo(i)!==mo(i-2)||mo(i)!==mo(i-3);(lastDay||firstDays?tom:oth).push(r)}
+    const av=a=>a.reduce((x,y)=>x+y,0)/a.length,sum=a=>a.reduce((x,y)=>x+y,0),share=sum(tom)/(sum(tom)+sum(oth));
+    const now=new Date(),end=new Date(now.getFullYear(),now.getMonth()+1,0);
+    return `<p>Auswertung MSCI World (${b.length} Handelstage${S.mode!=="live"?", simuliert":""}):</p><dl class="kv"><dt>Ø Tagesrendite um den Monatswechsel</dt><dd class="${cls(av(tom))}">${pct(av(tom),3)}</dd>
+      <dt>Ø an allen anderen Tagen</dt><dd class="${cls(av(oth))}">${pct(av(oth),3)}</dd><dt>Anteil an der Gesamtrendite</dt><dd>${Number.isFinite(share)?pct(share,0,false):"–"} (bei nur ~${pct(tom.length/(tom.length+oth.length),0,false)} der Tage)</dd>
+      <dt>Nächstes Fenster</dt><dd>ab ${end.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})} bis zum 3. Handelstag</dd></dl>
+      <p class="hint">Praktisch nutzbar vor allem für den Zeitpunkt von Sparplan-Käufen (kurz vor Monatsende). Für aktives Hin- und Herhandeln sind Gebühren und Steuern meist höher als der Effekt.</p>`},
+});
+// Pools für Sonderstrategien
+function poolFor(st,P){if(st.pool==="etf")return [...U.filter(x=>x.a==="etf").map(x=>x.s),"EUNA.DE","XEON.DE"].filter(s=>S.metrics[s]);
+  if(st.pool==="supplier")return Object.keys(SUPPLY).filter(s=>S.metrics[s]);return P}
+// Value-Komposit vorberechnen
+const _stratContext=stratContext;
+stratContext=function(P){const X=_stratContext(P);X.resid={};const F=s=>S.fund[s]||{};
+  const r=[pctMap(P,s=>F(s).pe!=null?(F(s).pe>0?1/F(s).pe:-0.05):null),pctMap(P,s=>F(s).pb>0?1/F(s).pb:null),pctMap(P,s=>F(s).ps>0?1/F(s).ps:null),
+    pctMap(P,s=>F(s).evEbitda>0?1/F(s).evEbitda:null),pctMap(P,s=>ratioCur(F(s).ocf,F(s).finCur,F(s).mcap,F(s).cur)),
+    pctMap(P,s=>{const a=F(s).ann||{};const o=Math.abs(last(a.CashDividendsPaid)||0)+Math.abs(last(a.RepurchaseOfCapitalStock)||0);return o?ratioCur(o,F(s).finCur,F(s).mcap,F(s).cur):null})];
+  X.vc2={};for(const s of P){const v=r.map(m=>m[s]).filter(x=>x!=null);if(v.length>=3)X.vc2[s]=avgOf(...v)}
+  return X};
+
+/* ---------- Trefferliste: Aktien, auf die die meisten Strategien zutreffen ---------- */
+function strategyHits(sym,X,onlyAB=false){
+  const hits=[],warns=[],checked=[];
+  for(const st of STRATS){if(!st.screen||(onlyAB&&!["A","B"].includes(st.cat)))continue;if(st.pool==="etf")continue;if(st.pool==="supplier"&&!SUPPLY[sym])continue;
+    let r=null;try{r=st.screen(sym,X)}catch{}if(!r)continue;
+    if(st.avoid){if(r.warn)warns.push([st,r]);continue}
+    checked.push(st);if(r.ok)hits.push([st,r]);}
+  return {hits,warns,n:checked.length};
+}
+S.topFilter=store.get("topFilter","alle");S.topAB=store.get("topAB",false);S.stratTab=store.get("stratTab","katalog");
+function renderTop(){
+  const el=$("#topList");if(!el)return;const P=stratPool();[...S.watch.map(w=>w.sym)].forEach(s=>{if(S.metrics[s]&&assetOf(s)==="aktie"&&!P.includes(s))P.push(s)});
+  const X=S.stratX||stratContext(P),mine=new Set(S.portfolio.map(p=>p.sym)),wl=new Set(S.watch.map(w=>w.sym));
+  let rows=P.map(s=>({s,...strategyHits(s,X,S.topAB)})).filter(r=>r.n>0);
+  if(S.topFilter==="depot")rows=rows.filter(r=>mine.has(r.s));if(S.topFilter==="watch")rows=rows.filter(r=>wl.has(r.s));
+  rows.sort((a,b)=>b.hits.length-a.hits.length||a.warns.length-b.warns.length||b.hits.length/b.n-a.hits.length/a.n);
+  document.querySelectorAll("#topFilters .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.f===S.topFilter));$("#topAB").checked=S.topAB;
+  el.innerHTML=rows.length?`<div class="tbl-wrap"><table class="stbl ttbl"><thead><tr><th>#</th><th>Aktie</th><th>Treffer</th><th>Zutreffende Strategien</th><th>Warnsignale</th><th>Trend</th><th>Prognose 12 M</th></tr></thead><tbody>${rows.slice(0,40).map((r,i)=>{
+      const m=S.metrics[r.s],ci=companyInfo(r.s),fc=forecast(r.s),q=r.hits.length/r.n;
+      return `<tr data-s="${esc(r.s)}" tabindex="0"><td class="num">${i+1}</td>
+        <td><b>${esc(BY[r.s]?.n||S.portfolio.find(p=>p.sym===r.s)?.name||S.watch.find(w=>w.sym===r.s)?.name||r.s)}</b> <small>${esc(r.s)}${ci.country?" · "+esc(ci.country):""}</small>${mine.has(r.s)?' <span class="mine">Depot</span>':""}${wl.has(r.s)?' <span class="mine wl">Watchlist</span>':""}</td>
+        <td class="num"><b>${r.hits.length}</b>/${r.n}<div class="bar hb"><i style="width:${(q*100).toFixed(0)}%"></i></div></td>
+        <td class="hl">${r.hits.slice(0,5).map(([st,x])=>`<span class="sp ok" title="${esc(x.t)}">${esc(st.name)}</span>`).join("")}${r.hits.length>5?`<span class="sp" title="${esc(r.hits.slice(5).map(([st])=>st.name).join(", "))}">+${r.hits.length-5} weitere</span>`:""}</td>
+        <td>${r.warns.length?r.warns.map(([st,x])=>`<span class="sp warn" title="${esc(st.name)}: ${esc(x.t)}">⚠ ${esc(st.name.replace(/ meiden$/,"").replace(/^Stark leerverkaufte Aktien$/,"Short-Quote").replace(/^Lotterieaktien meiden \(MAX-Effekt\)$/,"MAX-Effekt"))}</span>`).join(""):'<span class="muted">–</span>'}</td>
+        <td class="${m.trend.cls==="side-t"?"":m.trend.cls}">${m.trend.short}</td><td class="num ${fc?cls(fc.mu):""}">${fc?pct(fc.mu,1):"–"}</td></tr>`}).join("")}</tbody></table></div>`
+    :`<p class="muted">${S.topFilter==="watch"?"Keine Aktien auf der Watchlist.":S.topFilter==="depot"?"Keine Einzelaktien im Depot.":"Noch keine Daten – Unternehmensdaten werden geladen."}</p>`;
+}
 
 /* ---------- Unternehmensprofile: Herkunft und Geschäft (Kurzbeschreibungen auf Deutsch) ---------- */
 const COUNTRY={US:"USA",DE:"Deutschland",FR:"Frankreich",NL:"Niederlande",CH:"Schweiz",GB:"Großbritannien",DK:"Dänemark",SA:"Saudi-Arabien",TW:"Taiwan",CN:"China",

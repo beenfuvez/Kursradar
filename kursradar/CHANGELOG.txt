@@ -3,6 +3,12 @@ Schema: Hauptversion.Änderung
   kleine Änderung  -> zweite Stelle +1   (z. B. 3.1 -> 3.2)
   große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 3.5 -> 4.1)
 
+6.3      22 weitere Strategien (51–72): Residual Momentum, Frog-in-the-Pan, volatilitätsgesteuertes und
+         Time-Series Momentum, EV/EBIT, Value-Komposit, Cash-Profitabilität, Beneish M-Score, Altman Z-Score,
+         Netto-Emissionen, IPO, Dividenden-Initiierungen, Indexausschlüsse, idiosynkratische Vola, MAX-Effekt,
+         Short-Quote, Kunden-Lieferanten, Lazy Prices, F&E-Intensität, Mitarbeiterzufriedenheit,
+         Gleicher-Monat-Effekt, Turn-of-the-Month. Neuer Reiter „Top-Treffer“: Aktien, auf die die meisten
+         Strategien zutreffen, mit Warnsignalen der Meiden-Strategien; Filter Depot/Watchlist.
 6.2      Unternehmensprofil je Wert: Herkunft (Land, Sitz), Branche und deutsche Kurzbeschreibung für rund
          85 Aktien, ETFs und Kryptos; für weitere Werte Beschreibung, Mitarbeiter und Website von Yahoo.
          Watchlist: Werte mit ☆ merken, optional Wunschkurs und Notiz, eigene Liste in der Seitenleiste,
