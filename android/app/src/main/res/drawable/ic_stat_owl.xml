@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Einfarbiges Eulen-Symbol für die Statusleiste -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp" android:viewportWidth="48" android:viewportHeight="48">
+    <path android:fillColor="#FFFFFFFF" android:fillType="evenOdd"
+        android:pathData="M8,18 L9,6 L17,12 Q24,10 31,12 L39,6 L40,18 Q42,38 24,43 Q6,38 8,18 Z M17,15 a6,6 0 1,0 0.01,0 Z M31,15 a6,6 0 1,0 0.01,0 Z" />
+</vector>

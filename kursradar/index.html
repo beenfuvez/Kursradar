@@ -254,6 +254,25 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .ttbl td.hl{white-space:normal;min-width:440px;text-align:left} .ttbl td.hl .sp,.ttbl td .sp{display:inline-block;margin:0 4px 4px 0}
 .ttbl td:nth-child(5){white-space:normal;min-width:150px;text-align:left}
 .ttbl td:nth-child(3){vertical-align:middle}
+.alertbar{display:flex;flex-direction:column;gap:6px}
+.abar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--warn-soft);border:1px solid var(--warn);border-radius:var(--r);padding:10px 14px;font-size:13.5px}
+.alertedit{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+.alertedit select{border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:5px 7px;color:var(--fg)}
+.tgrid{margin-top:14px;align-items:start}
+.xplan{margin:6px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.tmbar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--panel-2);border:1px solid var(--line)}
+.tmbar i{display:block;height:100%} .tmbar .w{background:var(--up)} .tmbar .m{background:var(--muted);opacity:.45} .tmbar .l{background:var(--down)}
+.tmbar.mini{height:8px;min-width:120px;margin-bottom:3px}
+.tmtiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.hist{width:100%;height:auto;display:block}
+.hist rect.pos{fill:var(--up)} .hist rect.neg{fill:var(--down)} .hist rect.zero{fill:var(--muted)} .hist .zl{stroke:var(--fg);stroke-dasharray:3 3}
+.hist text{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.warnbox{background:var(--warn-soft);border:1px solid var(--warn);border-radius:6px;padding:8px 10px;font-size:12.5px;margin:8px 0 0}
+.newtag{font-size:10px;font-weight:700;color:#fff;background:var(--down);border-radius:3px;padding:1px 5px;margin-right:4px;vertical-align:1px}
+.nbadge{display:inline-block;min-width:18px;font-size:10.5px;font-weight:700;line-height:16px;color:#fff;background:var(--down);border-radius:9px;padding:0 5px;margin-left:5px;font-family:var(--f-mono)}
+.sctbl td.hl{white-space:normal;min-width:260px;text-align:left} .sctbl td.hl .sp{display:inline-block;margin:0 4px 4px 0} .sctbl td small{color:var(--muted)}
+.sctbl td:nth-child(5){min-width:170px;text-align:left;white-space:normal}
+@media (max-width:700px){.tmtiles{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 .impbox{margin-top:14px;padding:12px 14px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:6px}
 .impbox p{margin:0 0 10px} .impbox .hint{margin:10px 0 0}
 .advbar{align-items:center;margin-top:14px}
@@ -371,7 +390,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v6.3</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v7.1</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -419,6 +438,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
     <button type="button" data-m="info">Infos</button>
   </nav>
   <main class="main">
+    <div id="alertBar" class="alertbar" hidden></div>
     <div class="demo-note" id="demoNote" hidden>
       <b>Demo-Modus:</b> Die Kurse hier sind <b>simuliert</b> und keine echten Marktdaten. Für Echtzeitkurse den Ordner lokal öffnen und
       <code>python3 server.py</code> starten, danach <code>http://localhost:8765</code> aufrufen.
@@ -433,7 +453,9 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
           <div id="stTrendPill"></div>
           <div class="watchrow"><button type="button" class="btn" id="watchBtn" aria-pressed="false">☆ Zur Watchlist</button>
             <span id="watchEdit" class="watchedit" hidden><label>Wunschkurs<input id="wTarget" type="number" min="0" step="any" inputmode="decimal" placeholder="optional"></label>
-            <label>Notiz<input id="wNote" maxlength="80" placeholder="optional"></label></span></div>
+            <label>Notiz<input id="wNote" maxlength="80" placeholder="optional"></label>
+            <span class="alertedit"><label>Alarm<select id="wAlertType"><option value="">kein Alarm</option><option value="above">Kurs steigt über</option><option value="below">Kurs fällt unter</option><option value="breakout">Ausbruch über 20-Tage-Hoch</option><option value="rsi30">RSI fällt unter 30</option><option value="sma200up">Kreuzt 200-Tage-Linie nach oben</option></select></label>
+            <input id="wAlertVal" type="number" min="0" step="any" inputmode="decimal" placeholder="Kurs" hidden><button type="button" class="btn" id="wAlertSave">Alarm speichern</button><small class="muted" id="wAlertState"></small></span></span></div>
         </div>
         <div class="bigpx">
           <div class="p" id="stPx">–</div>
@@ -454,10 +476,16 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
       <div id="chart"><div class="chart-msg" id="chartMsg">Chart wird geladen …</div></div>
     </section>
 
-    <section class="card">
-      <h3 id="coTitle">Über das Unternehmen</h3>
-      <div id="coBody"></div>
-    </section>
+    <div class="grid2">
+      <section class="card">
+        <h3 id="coTitle">Über das Unternehmen</h3>
+        <div id="coBody"></div>
+      </section>
+      <section class="card">
+        <h3 id="snTitle">Nachrichten</h3>
+        <div id="snBody" class="news"></div>
+      </section>
+    </div>
 
     <div class="grid3">
       <section class="card trend-card">
@@ -500,6 +528,15 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
         <p class="hint">Regeln: höchstens 1–2 % des Depots pro Trade riskieren · Stop-Loss vor dem Kauf festlegen und nicht verschieben · Chance/Risiko mindestens 2 : 1. Vorschläge: Stop knapp unter der nächsten Unterstützung, Ziel am nächsten Widerstand.</p>
       </section>
     </div>
+
+    <section class="card" id="tradeCard">
+      <div class="ctitle"><h3>Exit-Plan &amp; Zeitmaschine</h3></div>
+      <p class="hint" style="margin-top:0">Nutzt Einstieg, Stop und Ziel aus dem Risiko-Rechner. Die Zeitmaschine spielt den Trade 10.000-mal auf den historischen Kursbewegungen dieser Aktie durch und zeigt, wie oft du Gewinn gemacht hättest, wie oft der Stop gegriffen hätte und wie oft es irgendwo dazwischen geendet wäre.</p>
+      <div class="factions"><button class="btn" type="button" id="exitBtn">Exit-Plan vorschlagen</button>
+        <label class="tg">Zeitraum <select id="tmHz" class="sel"><option value="day">1 Handelstag (Daytrading)</option><option value="d5">5 Tage</option><option value="d20" selected>20 Tage</option><option value="d60">60 Tage</option></select></label>
+        <button class="btn primary" type="button" id="tmBtn">Zeitmaschine: 10.000× testen</button></div>
+      <div class="grid2 tgrid"><div id="exitOut"><p class="muted">Noch kein Exit-Plan – „Exit-Plan vorschlagen“ berechnet Stop, drei Gewinnziele und einen nachziehenden Stop.</p></div><div id="tmOut"></div></div>
+    </section>
 
     <div class="grid2">
       <section class="card">
@@ -601,7 +638,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
     <div id="viewStrat" class="view" hidden>
       <section class="card">
         <div class="ctitle"><h2 class="vtitle">Strategien</h2><button class="btn" type="button" id="fundReload">Daten neu laden</button></div>
-        <div class="seg stabs" id="stratTabs" role="tablist"><button type="button" data-t="katalog">Alle Strategien</button><button type="button" data-t="top">Top-Treffer</button></div>
+        <div class="seg stabs" id="stratTabs" role="tablist"><button type="button" data-t="katalog">Alle Strategien</button><button type="button" data-t="top">Top-Treffer</button><button type="button" data-t="scan">Scanner</button></div>
         <div class="honest" style="margin-top:10px"><b>Realistisch bleiben:</b> Auch gut belegte Faktoren bringen im Schnitt nur wenige Prozentpunkte Mehrrendite pro Jahr – und können zehn Jahre hinter dem Markt liegen (Value 2010–2020). Keine Strategie ersetzt Streuung und Geduld. Die Prognosen sind Modelle, keine Vorhersagen.
           <br><br>Viele Anomalien wurden nach ihrer Veröffentlichung deutlich schwächer, weil Investoren sie ausnutzen. Die Punkte 60–70 sind für Privatanleger oft schwer umzusetzen (Daten, häufiges Umschichten, Leerverkäufe). Am praktikabelsten bleiben Momentum, Value, Quality und Low Volatility – die gibt es auch als ETFs. Keine Anlageberatung.</div>
         <div class="sbar"><div class="chips" id="stratCats"><button class="chip" type="button" data-c="alle">Alle</button><button class="chip" type="button" data-c="A">Sehr gut belegt</button><button class="chip" type="button" data-c="B">Gut belegt</button><button class="chip" type="button" data-c="C">Klassisch</button>
@@ -611,6 +648,13 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
         <p class="muted" id="fundState" style="font-size:12.5px;margin:8px 0 0"></p>
       </section>
       <div id="stratList" class="stratlist"></div>
+      <section class="card" id="scanCard" hidden>
+        <div class="ctitle"><h3>Scanner: Trading-Setups von heute</h3><span class="muted" id="scanStamp" style="font-size:12.5px"></span></div>
+        <p class="hint" style="margin-top:0">Durchsucht alle Werte in Owlgo (Top-Listen, ETFs, Kryptos, Depot, Watchlist) nach typischen Einstiegs-Setups. Je Treffer: Stop und Ziel nach dem Exit-Plan und eine Zeitmaschine mit 2.000 Durchläufen über 20 Tage. Zeile antippen = Analyse mit fertigem Exit-Plan.</p>
+        <div class="sbar"><div class="chips" id="scanCls"><button class="chip" type="button" data-c="alle">Alle</button><button class="chip" type="button" data-c="aktie">Aktien</button><button class="chip" type="button" data-c="etf">ETFs</button><button class="chip" type="button" data-c="krypto">Kryptos</button><button class="chip" type="button" data-c="mine">Depot &amp; Watchlist</button></div>
+          <label class="tg">Setup <select id="scanSetup" class="sel"><option value="">alle Setups</option><option value="breakout">Ausbruch 20-Tage-Hoch</option><option value="hi52">Neues 52-Wochen-Hoch</option><option value="pullback">Rücksetzer im Aufwärtstrend</option><option value="volspike">Volumen-Spike</option><option value="gap">Kurslücke (Gap)</option><option value="oversold">Überverkauft im Aufwärtstrend</option><option value="golden">Golden Cross (frisch)</option><option value="macd">MACD-Kaufsignal (frisch)</option><option value="nr7">Enge Spanne (NR7)</option><option value="bigmove">Starke Tagesbewegung</option></select></label></div>
+        <div id="scanList" style="margin-top:10px"></div>
+      </section>
       <section class="card" id="topCard" hidden>
         <div class="ctitle"><h3>Top-Treffer: Aktien, auf die die meisten Strategien zutreffen</h3></div>
         <p class="hint" style="margin-top:0">Gezählt werden alle prüfbaren Strategien, die für eine Aktie sprechen. „Meiden“-Strategien (M-Score, Distress, Emissionen, IPO, MAX-Effekt, Short-Quote) zählen nicht als Treffer, sondern erscheinen als Warnsignal. Aktien mit mehr Daten können mehr Treffer sammeln – die Quote (Balken) zeigt den Anteil.</p>
@@ -969,6 +1013,7 @@ function computeMetrics(sym){
     s20,s50,s200,slope50,rsi:R,vol,hi,lo,distHi:1-p/hi,maxDD:dd,volRatio:v50?v5/v50:1,divYield:p?divSum/p:0,mcapUSD,cur,
     spark:c.slice(-30)};
   m.low20=Math.min(...bars.slice(-20).map(b=>b.l));m.hi60=Math.max(...bars.slice(-60).map(b=>b.h));
+  {let s=0,k=0;for(let i=Math.max(1,bars.length-14);i<bars.length;i++){const b=bars[i],pc=bars[i-1].c;s+=Math.max(b.h-b.l,Math.abs(b.h-pc),Math.abs(b.l-pc));k++}m.atr=k?s/k:null}
   // für Faktor-Strategien: Jahres-Volatilität, 12-1-Monats-Momentum, 3-Monats-Rendite
   {const r=[];for(let i=Math.max(1,c.length-252);i<c.length;i++)r.push(Math.log(c[i]/c[i-1]));const mu=r.reduce((a,b)=>a+b,0)/r.length;
    m.vol1y=Math.sqrt(r.reduce((a,b)=>a+(b-mu)**2,0)/Math.max(1,r.length-1)*252);
@@ -1151,6 +1196,7 @@ async function refreshAll(full=true){
       for(const s of syms){if(!S.daily[s])S.daily[s]=demoDaily(s);else demoTick(s)}
     }
     S.updated=new Date();computeAll();renderSide();renderBoard();if(S.view==="depot"){renderDepot();renderProfit()}await renderStock(true);
+    checkAlerts();if(S.view==="strat"&&S.stratTab==="scan")renderScanner();
   }catch(e){
     $("#stamp").textContent="Fehler beim Aktualisieren: "+e.message+". Läuft server.py noch?";
   }finally{S.busy=false;b.classList.remove("busy");b.disabled=false}
@@ -1183,7 +1229,7 @@ function renderSide(){
   $("#fToggle").setAttribute("aria-expanded",S.fOpen);$("#fgroups").hidden=!S.fOpen;$("#fdesc").hidden=!S.fOpen;
   const list=regionList(S.region);
   const W=S.asset==="watch";
-  $("#list").innerHTML=list.map((m,i)=>{const info=BY[m.sym],ci=companyInfo(m.sym),wm=W?watchMetric(m):"";const hit=W&&/erreicht/.test(wm);
+  $("#list").innerHTML=list.map((m,i)=>{const info=BY[m.sym],ci=companyInfo(m.sym),wm=W?watchMetric(m):"";const hit=W&&/erreicht|ausgelöst/.test(wm);
     return `<button class="row" role="listitem" data-s="${m.sym}" aria-current="${m.sym===S.sel}">
     <span class="rk">${i+1}</span>
     <span class="nm"><b>${esc(info?.n||S.watch.find(w=>w.sym===m.sym)?.name||m.sym)}</b><small>${esc(m.sym)}${ci.country?" · "+esc(ci.country):""}</small>${S.filter!=="mcap"?`<br><span class="metric">${esc(f.fmt(m))}</span>`:""}${wm?`<br><span class="metric${hit?" hit":""}">${esc(wm)}</span>`:""}</span>
@@ -1269,7 +1315,7 @@ async function renderStock(keepView=false){
   if(!keepView||rb.intraday||!rb.from){rb.from?chart.timeScale().setVisibleRange({from:rb.from,to:bars[bars.length-1].t}):chart.timeScale().fitContent()}
 }
 function renderAnalysis(m){
-  renderStrategies(m);fillRisk(m);renderForecast(m);renderCompany(m);renderWatchBtn();
+  renderStrategies(m);fillRisk(m);renderForecast(m);renderCompany(m);renderWatchBtn();renderStockNews(m);
   $("#trTitle").innerHTML=`<span class="${m.trend.cls==="side-t"?"":m.trend.cls}">${esc(m.trend.t)}</span>`;
   $("#trText").textContent=m.trend.x;
   const sig=[];const a200=m.p/m.s200-1,a50=m.p/m.s50-1;
@@ -1336,7 +1382,7 @@ function profitBlock(m,pc){
 }
 function depotTotalEUR(){return S.portfolio.reduce((a,p)=>{const m=S.metrics[p.sym];const px=m&&!p.manual?toEUR(m.p,m.cur):p.refPx;return a+(px?p.qty*px:0)},0)}
 function fillRisk(m){
-  if(riskSym!==m.sym){riskSym=m.sym;
+  if(riskSym!==m.sym){riskSym=m.sym;$("#tmOut").innerHTML="";$("#exitOut").innerHTML='<p class="muted">Noch kein Exit-Plan – „Exit-Plan vorschlagen“ berechnet Stop, drei Gewinnziele und einen nachziehenden Stop.</p>';
     $("#rEntry").value=+m.p.toPrecision(6);$("#rStop").value=+m.entry.stop.toPrecision(6);$("#rTarget").value=+m.entry.target.toPrecision(6);
     if(!$("#rDepot").value){const t=depotTotalEUR();$("#rDepot").value=store.get("rDepot",t?Math.round(t):10000)}
     document.querySelectorAll(".rcur").forEach(x=>x.textContent="("+m.cur+")");$("#rMsg").textContent="";
@@ -1802,7 +1848,7 @@ async function renderStrats(loadIfNeeded=true){
   document.querySelectorAll("#stratCats .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.c===S.stratCat));$("#stratMine").checked=S.stratMine;
   const mine=new Set(S.portfolio.map(p=>p.sym));
   const tab=S.stratTab;document.querySelectorAll("#stratTabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===tab));
-  $("#stratList").hidden=tab!=="katalog";$("#stratCats").hidden=tab!=="katalog";$("#stratMine").closest("label").hidden=tab!=="katalog";$("#topCard").hidden=tab!=="top";
+  $("#stratList").hidden=tab!=="katalog";$("#stratCats").hidden=tab!=="katalog";$("#stratMine").closest("label").hidden=tab!=="katalog";$("#topCard").hidden=tab!=="top";$("#scanCard").hidden=tab!=="scan";if(tab==="scan")renderScanner();
   document.querySelector('#stratCats .chip[data-c="alle"]').textContent=`Alle ${STRATS.length}`;
   if(tab==="top")renderTop();
   $("#stratList").innerHTML=tab!=="katalog"?"":["A","B","C","D","E","F","G","H","I"].filter(c=>S.stratCat==="alle"||S.stratCat===c).map(c=>`<h3 class="scat">${CAT_NAME[c]}</h3>`+STRATS.filter(st=>st.cat===c).map(st=>{
@@ -2194,16 +2240,221 @@ async function toggleWatch(sym){
 }
 function renderWatchBtn(){
   const b=$("#watchBtn");if(!b)return;const on=onWatch(S.sel);b.setAttribute("aria-pressed",on);b.innerHTML=on?"★ Auf der Watchlist":"☆ Zur Watchlist";
-  const w=S.watch.find(x=>x.sym===S.sel);$("#watchEdit").hidden=!on;if(w){$("#wTarget").value=w.target??"";$("#wNote").value=w.note||""}
+  const w=S.watch.find(x=>x.sym===S.sel);$("#watchEdit").hidden=!on;if(w){$("#wTarget").value=w.target??"";$("#wNote").value=w.note||"";fillAlertEdit()}
 }
 $("#watchBtn").addEventListener("click",()=>toggleWatch(S.sel));
-$("#watchEdit").addEventListener("change",async()=>{const w=S.watch.find(x=>x.sym===S.sel);if(!w)return;
+$("#watchEdit").addEventListener("change",async e=>{if(e.target.closest(".alertedit"))return;const w=S.watch.find(x=>x.sym===S.sel);if(!w)return;
   const t=parseFloat(String($("#wTarget").value).replace(",","."));w.target=t>0?t:null;w.note=$("#wNote").value.trim();await savePortfolio();renderSide()});
 function watchMetric(m){const w=S.watch.find(x=>x.sym===m.sym);if(!w)return"";const parts=[];
   if(w.addPx)parts.push(`seit ${new Date(w.added).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}: ${pct(m.p/w.addPx-1,1)}`);
   if(w.target)parts.push(m.p<=w.target?"Wunschkurs erreicht!":`Wunschkurs ${fmtPx(w.target)} (${pct(w.target/m.p-1,0)})`);
+  if(w.alert?.active)parts.push(w.alert.hit?"Alarm ausgelöst!":"Alarm: "+alertText(w.alert));
   return parts.join(" · ");
 }
+
+/* ======================= Trading: Exit-Plan, Zeitmaschine, Scanner, Alarme, News ======================= */
+/* ---------- Exit-Plan ---------- */
+function exitPlan(m,entry,o={}){
+  const atr=o.atr||m.atr||m.p*0.02,mult=o.mult||2;let stop=entry-mult*atr,why=o.why||"2 × ATR unter dem Einstieg";
+  const sup=m.supLvl?.lvl;if(!o.atr&&sup&&sup<entry&&entry-sup<=3*atr&&entry-sup>=0.5*atr){stop=sup*0.99;why=`knapp unter der Unterstützung ${fmtPx(sup)}`}
+  const R=entry-stop;let t3=entry+3*R;const res=m.resLvl?.lvl;if(!o.atr&&res&&res>entry+2*R&&res<entry+5*R)t3=res;
+  return {stop,why,R,atr,t1:entry+R,t2:entry+2*R,t3,trail:1.5*mult*atr,intra:!!o.atr};
+}
+function renderExit(m,entry,o){
+  const e=exitPlan(m,entry,o),c=m.cur,f=v=>`${fmtPx(v)} ${esc(c)}`;
+  $("#exitOut").innerHTML=`<div class="label">Exit-Plan für Einstieg bei ${f(entry)}</div>
+    <ol class="xplan">
+      <li><b class="down">Stop-Loss ${f(e.stop)}</b> (${pct(e.stop/entry-1,1)}) – ${esc(e.why)}. Risiko je Stück = 1 R = ${fmtPx(e.R)}.</li>
+      <li><b class="up">Ziel 1: ${f(e.t1)}</b> (+1 R) – ein Drittel verkaufen, Stop auf den Einstieg nachziehen (Break-even).</li>
+      <li><b class="up">Ziel 2: ${f(e.t2)}</b> (+2 R) – zweites Drittel verkaufen.</li>
+      <li><b class="up">Ziel 3: ${f(e.t3)}</b> (+${nf(1).format((e.t3-entry)/e.R)} R${m.resLvl&&e.t3===m.resLvl.lvl?", am Widerstand":""}) – Rest verkaufen oder mit nachziehendem Stop laufen lassen.</li>
+      <li><b>Nachziehender Stop:</b> höchster Kurs seit Einstieg minus ${e.intra?"12 × 5-Minuten-ATR":"3 × ATR"} (= ${fmtPx(e.trail)}). Wird nur nach oben verschoben, nie nach unten.</li>
+      <li><b>Zeit-Stop:</b> ${e.intra?"Spätestens kurz vor Börsenschluss schließen – Daytrades nicht über Nacht halten.":"Ist nach dem gewählten Zeitraum weder Ziel noch Stop erreicht, Position überprüfen und im Zweifel schließen."}</li>
+    </ol><p class="hint">${e.intra?`Daytrading: ATR aus 5-Minuten-Kerzen = ${fmtPx(e.atr)} ${esc(c)} je Kerze.`:`ATR (Average True Range, 14 Tage) = durchschnittliche Tagesschwankung: ${fmtPx(e.atr)} ${esc(c)} (${pct(e.atr/m.p,1,false)}).`}</p>`;
+  return e;
+}
+/* ---------- Zeitmaschine: Trade 10.000-mal auf historischen Kursbewegungen nachspielen ---------- */
+S.intra={};
+async function relBars(sym,hz){ // Kerzen relativ zum vorherigen Schluss: {o,h,l,c}
+  let bars;
+  if(hz==="day"){
+    if(!S.intra[sym]){if(S.mode==="live"){try{S.intra[sym]=parseChart(await api(`/api/chart?symbol=${encodeURIComponent(sym)}&range=1mo&interval=5m`)).bars}catch{S.intra[sym]=null}}
+      else S.intra[sym]=demoIntraday(sym,5,5)}
+    bars=S.intra[sym];if(!bars||bars.length<60)return null;
+    const out=[];for(let i=1;i<bars.length;i++){if(bars[i].t-bars[i-1].t>1800)continue; // Übernacht-Lücken nicht mischen
+      const p=bars[i-1].c;out.push({o:bars[i].o/p,h:bars[i].h/p,l:bars[i].l/p,c:bars[i].c/p})}return out;
+  }
+  bars=S.daily[sym]?.bars;if(!bars||bars.length<120)return null;
+  const out=[];for(let i=1;i<bars.length;i++){const p=bars[i-1].c;out.push({o:bars[i].o/p,h:bars[i].h/p,l:bars[i].l/p,c:bars[i].c/p})}return out;
+}
+const HZ={day:{steps:78,block:6,label:"1 Handelstag (5-Minuten-Kerzen)"},d5:{steps:5,block:5,label:"5 Handelstage"},d20:{steps:20,block:5,label:"20 Handelstage (ca. 1 Monat)"},d60:{steps:60,block:5,label:"60 Handelstage (ca. 3 Monate)"}};
+function simulate(pool,entry,stop,target,hz,n,seed){
+  const H=HZ[hz],r=rng(seed),L=H.block;let win=0,loss=0,mid=0,midSum=0,sumPL=0,tWin=0,tLoss=0;const finals=new Float64Array(n);
+  for(let k=0;k<n;k++){
+    let p=entry,res=null,t=0,j=0,idx=0;
+    for(t=0;t<H.steps;t++){
+      if(j%L===0)idx=Math.floor(r()*(pool.length-L));const b=pool[idx+(j%L)];j++;
+      const o=p*b.o,lo=p*b.l,hi=p*b.h;
+      if(o<=stop){res=o;break}if(target&&o>=target){res=o;break}       // Kurslücke über Stop/Ziel hinweg
+      if(lo<=stop){res=stop;break}if(target&&hi>=target){res=target;break}
+      p=p*b.c;
+    }
+    if(res==null){mid++;midSum+=p-entry;finals[k]=p}else if(res>=entry&&target&&res>=target){win++;tWin+=t+1;finals[k]=res}else{loss++;tLoss+=t+1;finals[k]=res}
+    sumPL+=finals[k]-entry;
+  }
+  return {n,win,loss,mid,pWin:win/n,pLoss:loss/n,pMid:mid/n,avgMid:mid?midSum/mid:0,ev:sumPL/n,tWin:win?tWin/win:null,tLoss:loss?tLoss/loss:null,finals};
+}
+function histSvg(finals,entry,stop,target){
+  const R=entry-stop,lo=-1.2,hi=Math.max(2.2,target?(target-entry)/R+0.2:2.2),nb=24,bins=new Array(nb).fill(0);
+  for(const f of finals){const x=(f-entry)/R;const i=Math.min(nb-1,Math.max(0,Math.floor((x-lo)/(hi-lo)*nb)));bins[i]++}
+  const W=560,Hh=120,pad=18,mx=Math.max(...bins),bw=(W-2*pad)/nb,xr=v=>pad+(v-lo)/(hi-lo)*(W-2*pad);
+  return `<svg class="hist" viewBox="0 0 ${W} ${Hh+22}" role="img" aria-label="Verteilung der Ergebnisse in R">
+    ${bins.map((c,i)=>{const x0=lo+(i/nb)*(hi-lo),x1=lo+((i+1)/nb)*(hi-lo),h=mx?c/mx*(Hh-8):0,cl=x1<=0?"neg":x0>=0?"pos":"zero";
+      return `<rect x="${(pad+i*bw+1).toFixed(1)}" y="${(Hh-h).toFixed(1)}" width="${(bw-2).toFixed(1)}" height="${h.toFixed(1)}" class="${cl}"/>`}).join("")}
+    <line x1="${xr(0)}" x2="${xr(0)}" y1="0" y2="${Hh}" class="zl"/>
+    ${[-1,0,1,2,3].filter(v=>v>=lo&&v<=hi).map(v=>`<text x="${xr(v)}" y="${Hh+15}" text-anchor="middle">${v>0?"+":""}${v} R</text>`).join("")}</svg>`;
+}
+async function runTimeMachine(){
+  const m=S.metrics[S.sel],out=$("#tmOut");if(!m)return;const num=id=>parseFloat(String($(id).value).replace(",","."));
+  const entry=num("#rEntry"),stop=num("#rStop"),target=num("#rTarget"),hz=$("#tmHz").value;
+  if(!(entry>0&&stop>0&&stop<entry)){out.innerHTML='<p class="fmsg err">Bitte im Risiko-Rechner Einstieg und einen Stop-Loss darunter eintragen (oder „Exit-Plan vorschlagen“).</p>';return}
+  out.innerHTML='<p class="muted">Simuliere 10.000 Durchläufe …</p>';await new Promise(r=>setTimeout(r,20));
+  const pool=await relBars(m.sym,hz);if(!pool){out.innerHTML=`<p class="muted">Zu wenige historische Kursdaten für ${hz==="day"?"5-Minuten-Kerzen":"Tageskerzen"}.</p>`;return}
+  const t0=performance.now(),s=simulate(pool,entry,stop,target>entry?target:null,hz,10000,hash(m.sym+entry+stop+target+hz));
+  const R=entry-stop,q=x=>pct(x,1,false),c=m.cur,cnt=new Intl.NumberFormat("de-DE").format;
+  const qty=(()=>{const r=calcRisk();return r?.qty||0})();
+  out.innerHTML=`<div class="tmbar" role="img" aria-label="Ergebnisverteilung"><i class="w" style="width:${s.pWin*100}%"></i><i class="m" style="width:${s.pMid*100}%"></i><i class="l" style="width:${s.pLoss*100}%"></i></div>
+    <div class="tmtiles">
+      <div class="tile"><span class="label">Ziel erreicht</span><div class="v up">${q(s.pWin)}</div><div class="s muted">${cnt(s.win)} von 10.000${s.tWin?` · Ø nach ${nf(0).format(s.tWin)} ${hz==="day"?"Kerzen":"Tagen"}`:""}</div></div>
+      <div class="tile"><span class="label">Stop-Loss ausgelöst</span><div class="v down">${q(s.pLoss)}</div><div class="s muted">${cnt(s.loss)} von 10.000${s.tLoss?` · Ø nach ${nf(0).format(s.tLoss)} ${hz==="day"?"Kerzen":"Tagen"}`:""}</div></div>
+      <div class="tile"><span class="label">Irgendwo dazwischen</span><div class="v">${q(s.pMid)}</div><div class="s muted">Ø ${s.avgMid>=0?"+":""}${fmtPx(s.avgMid)} ${esc(c)} je Stück am Ende</div></div>
+      <div class="tile"><span class="label">Erwartungswert</span><div class="v ${cls(s.ev)}">${s.ev>=0?"+":""}${nf(2).format(s.ev/R)} R</div><div class="s muted">${s.ev>=0?"+":""}${fmtPx(s.ev)} ${esc(c)} je Stück${qty?` · ${fmtEur(toEUR(s.ev*qty,c))} bei ${fmtQty(qty)} Stk.`:""}</div></div>
+    </div>
+    ${histSvg(s.finals,entry,stop,target>entry?target:null)}
+    <p class="hint">Zeitraum: ${HZ[hz].label}. Gezogen wurden zufällige Abschnitte aus ${cnt(pool.length)} historischen ${hz==="day"?"5-Minuten-":"Tages"}kerzen von ${esc(BY[m.sym]?.n||m.sym)} (Blöcke von ${HZ[hz].block} Kerzen, damit ruhige und wilde Phasen erhalten bleiben). Liegen Stop und Ziel in derselben Kerze, zählt vorsichtshalber der Stop. Rechenzeit ${nf(0).format(performance.now()-t0)} ms.${S.mode!=="live"?" Achtung: simulierte Kurse.":""}</p>
+    <p class="warnbox"><b>Simulation, keine Garantie.</b> Vergangene Kursmuster sagen die Zukunft nicht voraus – Nachrichten, Quartalszahlen oder Crashs können alles ändern. Keine Anlageberatung, immer selbst prüfen.</p>`;
+}
+$("#tmHz").addEventListener("change",()=>{if($("#exitOut li"))$("#exitBtn").click()});
+$("#exitBtn").addEventListener("click",async()=>{const m=S.metrics[S.sel];if(!m)return;const entry=parseFloat(String($("#rEntry").value).replace(",","."))||m.p;
+  let o={};if($("#tmHz").value==="day"){await relBars(m.sym,"day");const ib=S.intra[m.sym];
+    if(ib&&ib.length>20){let s=0,k=0;for(let i=Math.max(1,ib.length-78);i<ib.length;i++){if(ib[i].t-ib[i-1].t>1800)continue;const pc=ib[i-1].c;s+=Math.max(ib[i].h-ib[i].l,Math.abs(ib[i].h-pc),Math.abs(ib[i].l-pc));k++}
+      if(k)o={atr:s/k,mult:8,why:"8 × 5-Minuten-ATR unter dem Einstieg (Daytrading)"}}}
+  const e=renderExit(m,entry,o);$("#rEntry").value=+entry.toPrecision(6);$("#rStop").value=+e.stop.toPrecision(6);$("#rTarget").value=+e.t2.toPrecision(6);calcRisk()});
+$("#tmBtn").addEventListener("click",runTimeMachine);
+
+/* ---------- Scanner: Trading-Setups ---------- */
+const SETUPS={breakout:"Ausbruch 20-Tage-Hoch",hi52:"Neues 52-Wochen-Hoch",pullback:"Rücksetzer im Aufwärtstrend",volspike:"Volumen-Spike",gap:"Kurslücke (Gap)",
+  oversold:"Überverkauft im Aufwärtstrend",golden:"Golden Cross (frisch)",macd:"MACD-Kaufsignal (frisch)",nr7:"Enge Spanne (NR7)",bigmove:"Starke Tagesbewegung"};
+function scanSetups(m){
+  const b=S.daily[m.sym]?.bars;if(!b||b.length<60)return [];const n=b.length,t=b[n-1],y=b[n-2],out=[];
+  const v50=b.slice(-51,-1).reduce((a,x)=>a+x.v,0)/50,vr=v50?t.v/v50:1,up=m.p>m.s200&&m.s50>m.s200;
+  const hi20=Math.max(...b.slice(-21,-1).map(x=>x.h));
+  if(m.p>hi20&&vr>1.5)out.push(["breakout",`über ${fmtPx(hi20)} bei ${nf(1).format(vr)}× Volumen`]);
+  if(m.p>=m.hi*0.995)out.push(["hi52",`Hoch ${fmtPx(m.hi)}`]);
+  if(up&&m.rsi>=35&&m.rsi<=52&&(Math.abs(m.p/m.s20-1)<0.02||Math.abs(m.p/m.s50-1)<0.02))out.push(["pullback",`an der ${Math.abs(m.p/m.s50-1)<0.02?"50":"20"}-Tage-Linie, RSI ${m.rsi.toFixed(0)}`]);
+  if(vr>2)out.push(["volspike",`${nf(1).format(vr)}× Ø-Volumen`]);
+  const gap=t.o/y.c-1;if(Math.abs(gap)>=0.02)out.push(["gap",`${gap>0?"Gap-up":"Gap-down"} ${pct(gap,1)}`]);
+  if(up&&m.rsi<35)out.push(["oversold",`RSI ${m.rsi.toFixed(0)}`]);
+  if(m.strat.golden.state==="buy"&&m.strat.golden.score>=95)out.push(["golden",m.strat.golden.short]);
+  if(m.strat.macd.state==="buy"&&/vor [0-3] T\./.test(m.strat.macd.short))out.push(["macd",m.strat.macd.short]);
+  const rng7=b.slice(-7).map(x=>x.h-x.l);if(rng7[6]<=Math.min(...rng7.slice(0,6)))out.push(["nr7","kleinste Tagesspanne seit 7 Tagen"]);
+  if(Math.abs(m.c1d)>=0.04)out.push(["bigmove",`${pct(m.c1d,1)} heute`]);
+  return out;
+}
+S.scanCls=store.get("scanCls","alle");S.scanSetup=store.get("scanSetup","");
+function renderScanner(){
+  const el=$("#scanList");if(!el)return;
+  const syms=[...new Set([...U.map(x=>x.s),...S.portfolio.filter(p=>!p.manual).map(p=>p.sym),...S.watch.map(w=>w.sym)])].filter(s=>S.metrics[s]);
+  const mine=new Set([...S.portfolio.map(p=>p.sym),...S.watch.map(w=>w.sym)]);
+  let rows=syms.map(s=>({s,m:S.metrics[s],set:scanSetups(S.metrics[s])})).filter(r=>r.set.length);
+  if(S.scanCls==="mine")rows=rows.filter(r=>mine.has(r.s));else if(S.scanCls!=="alle")rows=rows.filter(r=>assetOf(r.s)===S.scanCls);
+  if(S.scanSetup)rows=rows.filter(r=>r.set.some(([k])=>k===S.scanSetup));
+  for(const r of rows){const e=exitPlan(r.m,r.m.p);r.e=e;const pool=(()=>{const b=S.daily[r.s]?.bars;if(!b||b.length<120)return null;const o=[];for(let i=1;i<b.length;i++){const p=b[i-1].c;o.push({o:b[i].o/p,h:b[i].h/p,l:b[i].l/p,c:b[i].c/p})}return o})();
+    r.sim=pool?simulate(pool,r.m.p,e.stop,e.t2,"d20",2000,hash(r.s+"scan")):null}
+  rows.sort((a,b)=>b.set.length-a.set.length||(b.sim?.ev??-9)/(b.e.R||1)-(a.sim?.ev??-9)/(a.e.R||1));
+  document.querySelectorAll("#scanCls .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.c===S.scanCls));$("#scanSetup").value=S.scanSetup;
+  $("#scanStamp").textContent=`${syms.length} Werte durchsucht · ${rows.length} mit Setup · Kurse ${S.mode==="live"?"live":"simuliert"}, Stand ${S.updated?S.updated.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}):"–"}`;
+  el.innerHTML=rows.length?`<div class="tbl-wrap"><table class="stbl sctbl"><thead><tr><th>Wert</th><th>Setups</th><th>Kurs</th><th>Stop / Ziel (2 R)</th><th>Zeitmaschine 20 T.</th><th>Trend</th></tr></thead><tbody>${rows.slice(0,40).map(r=>{
+      const ci=companyInfo(r.s);return `<tr data-s="${esc(r.s)}" tabindex="0"><td><b>${esc(BY[r.s]?.n||S.portfolio.find(p=>p.sym===r.s)?.name||S.watch.find(w=>w.sym===r.s)?.name||r.s)}</b> <small>${esc(r.s)}${ci.country?" · "+esc(ci.country):""}</small>${mine.has(r.s)?' <span class="mine">meins</span>':""}</td>
+      <td class="hl">${r.set.map(([k,t])=>`<span class="sp ok" title="${esc(t)}">${esc(SETUPS[k])}</span>`).join("")}<br><small>${esc(r.set.map(x=>x[1]).join(" · "))}</small></td>
+      <td class="num">${fmtPx(r.m.p)} <small>${esc(r.m.cur)}</small><br><small class="${cls(r.m.c1d)}">${pct(r.m.c1d,1)}</small></td>
+      <td class="num"><span class="down">${fmtPx(r.e.stop)}</span> / <span class="up">${fmtPx(r.e.t2)}</span></td>
+      <td>${r.sim?`<div class="tmbar mini"><i class="w" style="width:${r.sim.pWin*100}%"></i><i class="m" style="width:${r.sim.pMid*100}%"></i><i class="l" style="width:${r.sim.pLoss*100}%"></i></div><small><span class="up">${pct(r.sim.pWin,0,false)} Ziel</span> · <span class="down">${pct(r.sim.pLoss,0,false)} Stop</span> · EW ${nf(2).format(r.sim.ev/r.e.R)} R</small>`:"–"}</td>
+      <td class="${r.m.trend.cls==="side-t"?"":r.m.trend.cls}">${r.m.trend.short}</td></tr>`}).join("")}</tbody></table></div>`
+    :'<p class="muted">Gerade kein Wert mit diesem Setup.</p>';
+}
+$("#scanCls").addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;S.scanCls=c.dataset.c;store.set("scanCls",S.scanCls);renderScanner()});
+$("#scanSetup").addEventListener("change",e=>{S.scanSetup=e.target.value;store.set("scanSetup",S.scanSetup);renderScanner()});
+$("#scanList").addEventListener("click",async e=>{const tr=e.target.closest("tr[data-s]");if(!tr)return;const s=tr.dataset.s;if(await ensureData(s)){S.extra[s]=1;select(s);
+  setTimeout(()=>{$("#exitBtn").click();$("#tradeCard").scrollIntoView({behavior:"smooth",block:"start"})},300)}});
+
+/* ---------- Einstiegs-Alarme (Watchlist) ---------- */
+const ALERT_TYPES={above:"Kurs steigt über",below:"Kurs fällt unter",breakout:"Ausbruch über 20-Tage-Hoch",rsi30:"RSI fällt unter 30",sma200up:"Kreuzt 200-Tage-Linie nach oben"};
+function alertText(a){return a?`${ALERT_TYPES[a.type]}${["above","below"].includes(a.type)?" "+fmtPx(a.value):""}`:""}
+function alertHit(a,m){
+  const b=S.daily[m.sym]?.bars;
+  switch(a.type){
+    case "above":return m.p>=a.value;case "below":return m.p<=a.value;
+    case "breakout":return b&&b.length>21&&m.p>Math.max(...b.slice(-21,-1).map(x=>x.h));
+    case "rsi30":return m.rsi<30;
+    case "sma200up":return m.strat.sma200.state==="buy"&&/seit [0-2] T\./.test(m.strat.sma200.short);
+  }return false;
+}
+function notifyUser(title,text){
+  if(NATIVE&&typeof NATIVE.notify==="function"){try{NATIVE.notify(title,text)}catch{}return}
+  try{if("Notification"in window&&Notification.permission==="granted")new Notification(title,{body:text})}catch{}
+}
+async function checkAlerts(){
+  let changed=false;
+  for(const w of S.watch){const a=w.alert,m=S.metrics[w.sym];if(!a||!a.active||a.hit||!m)continue;
+    if(alertHit(a,m)){a.hit=Math.floor(Date.now()/1000);a.hitPx=m.p;a.seen=false;changed=true;
+      notifyUser(`${w.name||w.sym}: Alarm ausgelöst`,`${alertText(a)} – aktuell ${fmtPx(m.p)} ${m.cur}`)}}
+  if(changed){await savePortfolio();renderSide()}
+  renderAlertBar();
+}
+function renderAlertBar(){
+  const L=S.watch.filter(w=>w.alert?.hit&&!w.alert.seen);const el=$("#alertBar");el.hidden=!L.length;
+  el.innerHTML=L.map(w=>`<div class="abar" data-s="${esc(w.sym)}"><b>Alarm: ${esc(w.name||w.sym)}</b> – ${esc(alertText(w.alert))} (ausgelöst bei ${fmtPx(w.alert.hitPx)} am ${new Date(w.alert.hit*1000).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"})})
+    <span class="act"><button type="button" data-a="open">Ansehen</button><button type="button" data-a="ok">OK</button></span></div>`).join("");
+}
+$("#alertBar").addEventListener("click",async e=>{const b=e.target.closest("button[data-a]"),row=e.target.closest(".abar");if(!b||!row)return;const w=S.watch.find(x=>x.sym===row.dataset.s);if(!w)return;
+  w.alert.seen=true;await savePortfolio();renderAlertBar();if(b.dataset.a==="open"&&await ensureData(w.sym))select(w.sym)});
+function fillAlertEdit(){const w=S.watch.find(x=>x.sym===S.sel),a=w?.alert;$("#wAlertType").value=a?.active?a.type:"";$("#wAlertVal").value=a?.value??"";
+  $("#wAlertVal").hidden=!["above","below"].includes($("#wAlertType").value);
+  $("#wAlertState").textContent=a?.active?(a.hit?`ausgelöst ${new Date(a.hit*1000).toLocaleDateString("de-DE")} – neu setzen über „Alarm“`:"aktiv"):"";}
+$("#wAlertType").addEventListener("change",()=>{$("#wAlertVal").hidden=!["above","below"].includes($("#wAlertType").value);
+  const m=S.metrics[S.sel];if(m&&!$("#wAlertVal").value)$("#wAlertVal").value=+(m.p*($("#wAlertType").value==="below"?0.95:1.05)).toPrecision(5)});
+$("#wAlertSave").addEventListener("click",async()=>{const w=S.watch.find(x=>x.sym===S.sel);if(!w)return;const t=$("#wAlertType").value,v=parseFloat(String($("#wAlertVal").value).replace(",","."));
+  if(!t){w.alert=null}else{if(["above","below"].includes(t)&&!(v>0)){$("#wAlertState").textContent="Bitte einen Kurs eintragen.";return}
+    w.alert={type:t,value:["above","below"].includes(t)?v:null,active:true,created:Math.floor(Date.now()/1000)};
+    if(NATIVE&&typeof NATIVE.requestNotifications==="function")NATIVE.requestNotifications();
+    else try{if("Notification"in window&&Notification.permission==="default")Notification.requestPermission()}catch{}}
+  await savePortfolio();fillAlertEdit();renderSide();checkAlerts()});
+// Alarme, die die App im Hintergrund ausgelöst hat, beim Zurückkehren übernehmen
+document.addEventListener("visibilitychange",async()=>{if(document.hidden||!S.server)return;try{const j=await api("/api/portfolio");
+  for(const sw of j.watchlist||[]){const w=S.watch.find(x=>x.sym===sw.sym);if(w&&sw.alert?.hit&&w.alert&&!w.alert.hit){w.alert.hit=sw.alert.hit;w.alert.hitPx=sw.alert.hitPx;w.alert.seen=false}}renderAlertBar();renderSide()}catch{}});
+
+/* ---------- Nachrichten zur Aktie + Zähler für neue Meldungen ---------- */
+const newsCache={};
+async function renderStockNews(m){
+  const el=$("#snBody");if(!el)return;const name=BY[m.sym]?.n||m.sym;$("#snTitle").textContent=`Nachrichten zu ${name}`;
+  if(S.mode!=="live"){el.innerHTML='<p class="muted">Nachrichten gibt es nur mit Live-Daten (App oder PC-Version).</p>';return}
+  const c=newsCache[m.sym];if(!c||Date.now()-c.t>10*6e4){el.innerHTML='<p class="muted">Lade …</p>';
+    try{const j=await api("/api/news?q="+encodeURIComponent(m.sym));newsCache[m.sym]={t:Date.now(),items:(j.news||[]).map(n=>({title:n.title,link:n.link,source:n.publisher,ts:(n.providerPublishTime||0)*1000,tickers:n.relatedTickers}))}}
+    catch{el.innerHTML='<p class="muted">Nachrichten konnten nicht geladen werden.</p>';return}}
+  if(S.sel!==m.sym)return;const items=newsCache[m.sym].items.sort((a,b)=>b.ts-a.ts);
+  el.innerHTML=items.map(n=>newsItem(n).replace("<b>",Date.now()-n.ts<3*36e5?'<b><span class="newtag">NEU</span> ':"<b>")).join("")||'<p class="muted">Keine aktuellen Meldungen.</p>';
+}
+S.newsSeen=store.get("newsSeen",Date.now());
+async function pollNews(){
+  if(S.mode!=="live")return;const syms=[...new Set([...depotRows().rows.filter(r=>r.m&&!r.p.manual).sort((a,b)=>(b.value||0)-(a.value||0)).slice(0,6).map(r=>r.p.sym),...S.watch.slice(0,4).map(w=>w.sym)])];
+  if(!syms.length)return;let fresh=0;
+  try{const L=await pool(syms,3,async q=>(await api("/api/news?q="+encodeURIComponent(q))).news||[]);const seen=new Set();
+    for(const n of L.flat()){if(!n||seen.has(n.title))continue;seen.add(n.title);if((n.providerPublishTime||0)*1000>S.newsSeen)fresh++}}catch{}
+  for(const sel of ['#vInfo','#mnav button[data-m="info"]']){const b=document.querySelector(sel);if(!b)continue;let t=b.querySelector(".nbadge");
+    if(fresh&&S.view!=="info"){if(!t){t=document.createElement("span");t.className="nbadge";b.appendChild(t)}t.textContent=fresh>9?"9+":fresh}else t?.remove()}
+}
+setInterval(()=>{if(!document.hidden)pollNews()},15*6e4);
 
 /* ---------- Trade-Tagebuch ---------- */
 const today=()=>new Date().toISOString().slice(0,10);
@@ -2268,7 +2519,7 @@ function setView(v){
   S.view=v;store.set("view",v);
   $("#viewMarket").hidden=v!=="markt";$("#viewDepot").hidden=v!=="depot";$("#viewInfo").hidden=v!=="info";$("#viewStrat").hidden=v!=="strat";$("#vStrat").setAttribute("aria-pressed",v==="strat");
   $("#vMarkt").setAttribute("aria-pressed",v==="markt");$("#vDepot").setAttribute("aria-pressed",v==="depot");$("#vInfo").setAttribute("aria-pressed",v==="info");
-  if(v==="info")renderInfo();if(v==="strat")renderStrats();
+  if(v==="info"){renderInfo();S.newsSeen=Date.now();store.set("newsSeen",S.newsSeen);document.querySelectorAll(".nbadge").forEach(x=>x.remove())}if(v==="strat")renderStrats();
   if(v==="depot"){renderDepot();renderJournal();renderProfit()}
 }
 
@@ -2522,7 +2773,7 @@ new MutationObserver(retheme).observe(document.documentElement,{attributes:true,
     await refreshAll(true);$("#stamp").textContent="Yahoo Finance nicht erreichbar – zeige simulierte Daten.";
   }
   if(!S.metrics[S.sel]){S.sel=regionList(S.region)[0]?.sym||"NVDA";renderSide();renderStock()}
-  setAuto();setView(S.view);fillSymList("");setMobileTab(store.get("mtab","listen"));
+  setAuto();setView(S.view);fillSymList("");setTimeout(pollNews,4000);setMobileTab(store.get("mtab","listen"));
   if(NATIVE){ // In der App: Version antippen = nach Updates suchen
     let inf={};try{inf=JSON.parse(NATIVE.info())}catch{}
     const v=$("#appVer");v.title="Nach Updates suchen";v.style.cursor="pointer";v.setAttribute("role","button");v.tabIndex=0;

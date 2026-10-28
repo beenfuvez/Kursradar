@@ -80,6 +80,14 @@ public class Bridge {
     @JavascriptInterface
     public void saveFile(final String name, final String content) { act.runOnUiThread(() -> act.startSave(name, content)); }
 
+    /** Benachrichtigung für einen ausgelösten Kursalarm. */
+    @JavascriptInterface
+    public void notify(String title, String text) { Notifier.show(act, (int) (System.currentTimeMillis() & 0x7fffffff), title, text); }
+
+    /** Fragt (Android 13+) einmalig nach der Erlaubnis für Benachrichtigungen. */
+    @JavascriptInterface
+    public void requestNotifications() { act.runOnUiThread(act::askNotifications); }
+
     /** Manuelle Update-Prüfung aus der Oberfläche. */
     @JavascriptInterface
     public void checkUpdate() { act.runOnUiThread(() -> act.updater.check(true)); }

@@ -73,6 +73,7 @@ public class MainActivity extends Activity {
 
         loadUi();
         updater.check(false);
+        try { AlertJobService.schedule(this); } catch (Exception ignored) { } // Kursalarme im Hintergrund
     }
 
     /** Lädt die aktuellste verfügbare Oberfläche (heruntergeladenes Update oder mitgelieferte Version). */
@@ -81,6 +82,12 @@ public class MainActivity extends Activity {
                 + "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\">"
                 + "</head><body>" + updater.currentHtml() + "</body></html>";
         web.loadDataWithBaseURL(BASE_URL, html, "text/html", "utf-8", null);
+    }
+
+    void askNotifications() {
+        if (android.os.Build.VERSION.SDK_INT >= 33
+                && checkSelfPermission("android.permission.POST_NOTIFICATIONS") != android.content.pm.PackageManager.PERMISSION_GRANTED)
+            requestPermissions(new String[]{"android.permission.POST_NOTIFICATIONS"}, 43);
     }
 
     /** Export: Android-Dialog „Speichern unter“ (Downloads, Google Drive …), danach Inhalt schreiben. */
