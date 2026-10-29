@@ -152,7 +152,7 @@ details:first-of-type{border-top:0}
 summary{cursor:pointer;font-weight:600}
 details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .view{display:flex;flex-direction:column;gap:16px;min-width:0}
-.viewsw{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:0 16px 10px}
+.viewsw{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px}.viewsw button{flex:1 1 auto}
 .viewsw button{border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:7px 8px;cursor:pointer;font-weight:600}
 .viewsw button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 .cnt{font-family:var(--f-mono);font-size:11px;font-weight:500;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:0 6px;margin-left:4px}
@@ -284,7 +284,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .msort{display:none}
 @media (max-width:700px){
   .app{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
-  .mnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--panel);border-top:1px solid var(--line);
+  .mnav{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--panel);border-top:1px solid var(--line);
     padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
   .mnav button{border:0;background:none;padding:10px 4px;font-weight:600;color:var(--muted);border-radius:8px;font-size:14px}
   .mnav button[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
@@ -378,19 +378,48 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .rules{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;max-width:90ch}
 @media (max-width:700px){
   .mnav button{font-size:13px;padding:10px 2px}
-  :root[data-m="info"] .side{display:none}
+  :root[data-m="info"] .side,:root[data-m="blase"] .side{display:none}
   .fgroup{grid-template-columns:minmax(0,1fr);gap:4px}
   .flabel{padding-top:0}
   .jtbl{min-width:640px}
   .kgrid{grid-template-columns:minmax(0,1fr)}
 }
 .foot{font-size:12px;color:var(--muted);text-align:center;padding:4px 0 8px}
+/* Blasen-Radar */
+.disc{background:var(--warn-soft);border:1px solid var(--warn);border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13.5px}
+.disc summary{color:var(--fg)} .disc p{color:var(--fg);max-width:90ch;margin:8px 0 0}
+.backack{margin-top:12px;font-weight:600}
+.discfoot{font-size:12px;color:var(--muted);margin:0;text-align:center}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:12px}
+.btile{display:flex;flex-direction:column;gap:4px;text-align:left;border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:10px 12px;cursor:pointer;color:var(--fg);font:inherit;min-width:0}
+.btile[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.bt-h{display:flex;justify-content:space-between;gap:6px;align-items:center} .bt-d{font-size:12px}
+.bt-v{display:flex;align-items:baseline;gap:8px;margin-top:2px} .bt-v .num{font-size:26px;font-weight:700}
+.bph{font-size:12px;font-weight:600;color:var(--accent)} .bph.down{color:var(--down)} .bph.warn{color:var(--warn)} .bph.up{color:var(--up)}
+.bbar{height:6px;border-radius:3px;background:var(--line);overflow:hidden} .bbar i{display:block;height:100%}
+.bt-m{display:flex;justify-content:space-between;gap:6px;font-size:12px;color:var(--muted)} .bt-m b{color:var(--fg)}
+.ball{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:13.5px} .ball > div:last-child{flex:1 1 280px;min-width:0}
+.bgauge{width:96px;height:96px;border-radius:50%;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(var(--panel) 62%,transparent 63%),conic-gradient(var(--c) calc(var(--v)*1%),var(--line) 0)}
+.bgauge .num{font-size:24px;font-weight:700} .bgauge small{font-size:10.5px;color:var(--muted)}
+.bsvg{width:100%;height:auto;display:block}
+.blegend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted);margin-top:4px} .blegend i,.chip i,.bdot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.chip[aria-pressed="false"]{opacity:.5} .bcur{font-weight:600;cursor:default}
+.bstats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
+.bstats > div{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.bstats b{font-size:17px} .bstats small{font-size:11.5px;color:var(--muted)}
+#bubDetail p{font-size:13.5px;max-width:90ch;margin:6px 0 0}
+.bscroll{overflow-x:auto}
+.bhgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.bhcard{border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:10px 12px;font-size:13px}
+.bhcard h4{margin:0 0 6px} .bhcard dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0} .bhcard dt{color:var(--muted)} .bhcard dd{margin:0} .bcurrow td{font-weight:600;background:var(--accent-soft)} .bhot tbody tr{cursor:pointer}
+@media (max-width:700px){.mnav button{font-size:11.5px;padding:10px 0}.bgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.bt-v .num{font-size:22px}.btile{padding:8px 9px}.bt-m{flex-direction:column}}
 </style>
 
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v7.1</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v7.2</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -405,6 +434,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
       <button type="button" data-v="strat" id="vStrat">Strategien</button>
       <button type="button" data-v="depot" id="vDepot">Depot <span class="cnt" id="depotCount"></span></button>
       <button type="button" data-v="info" id="vInfo">Infos</button>
+      <button type="button" data-v="blase" id="vBlase">Blasen-Radar</button>
     </div>
     <div class="stamp" id="stamp">Lade Daten …</div>
     <div class="assetsw" id="assetSeg" role="group" aria-label="Anlageklasse">
@@ -436,6 +466,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
     <button type="button" data-m="strat">Strategien</button>
     <button type="button" data-m="depot">Depot</button>
     <button type="button" data-m="info">Infos</button>
+    <button type="button" data-m="blase">Blasen</button>
   </nav>
   <main class="main">
     <div id="alertBar" class="alertbar" hidden></div>
@@ -662,6 +693,58 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
           <label class="tg"><input type="checkbox" id="topAB"> Nur gut belegte Strategien (1–25)</label></div>
         <div id="topList" style="margin-top:10px"></div>
       </section>
+    </div>
+
+    <div id="viewBubble" class="view" hidden>
+      <section class="card">
+        <div class="ctitle"><h2 class="vtitle">Blasen-Radar</h2><button class="btn" type="button" id="bubReload">Neu laden</button></div>
+        <p class="hint" style="margin-top:0">Wie heiß sind die Märkte? Owlgo vergleicht den heutigen Kursverlauf großer Aktienmärkte, von Gold und Bitcoin mit der eigenen, oft jahrzehntelangen Geschichte und mit den großen Blasen der Vergangenheit – und leitet daraus einen statistischen Ausblick ab.</p>
+        <details class="disc" id="bubDisc" open>
+          <summary>⚠️ Wichtiger Hinweis (Disclaimer) – bitte lesen</summary>
+          <p><b>Keine Anlageberatung.</b> Das Blasen-Radar ist ein statistisches Informationswerkzeug. Es ist keine Anlageberatung, keine Anlageempfehlung und keine Aufforderung zum Kauf oder Verkauf von Wertpapieren, Rohstoffen oder Kryptowerten.</p>
+          <p><b>Blasen erkennt man erst im Nachhinein.</b> Ein hoher Blasen-Score bedeutet nur, dass ein Markt ungewöhnlich schnell gestiegen ist – nicht, dass ein Crash bevorsteht. Märkte können viel länger übertrieben bleiben, als man erwartet. Wer zu früh aussteigt, verpasst oft einen großen Teil des Anstiegs.</p>
+          <p><b>Der Ausblick ist keine Prognose.</b> Er beruht ausschließlich auf vergangenen Kursmustern. Vergangene Entwicklungen sind kein verlässlicher Indikator für künftige Ergebnisse. Bewertungen, Zinsen, Unternehmensgewinne und Politik fließen nicht ein. Ähnliche Kurven bedeuten nicht, dass sich die Geschichte wiederholt.</p>
+          <p><b>Daten ohne Gewähr.</b> Kurse stammen von Yahoo Finance und können verzögert, lückenhaft oder fehlerhaft sein. Die Eckdaten historischer Blasen sind gerundet. Im Demo-Modus sind alle Verläufe simuliert.</p>
+          <p><b>Keine Haftung.</b> Für Entscheidungen auf Grundlage dieser Angaben wird keine Haftung übernommen. Jede Geldanlage kann zu Verlusten bis zum Totalverlust führen. Für persönliche Anlageentscheidungen wende dich an eine unabhängige, zugelassene Beratung und berücksichtige deine finanzielle Lage, Risikobereitschaft und Steuersituation.</p>
+          <label class="tg backack"><input type="checkbox" id="bubAck"> Ich habe den Hinweis gelesen und verstanden.</label>
+        </details>
+        <p class="muted" id="bubState" style="font-size:12.5px;margin:8px 0 0"></p>
+      </section>
+      <div id="bubBody" class="view" hidden>
+        <section class="card">
+          <h3>Marktthermometer</h3>
+          <p class="hint" style="margin-top:0">Blasen-Score 0–100: wie extrem der heutige Anstieg im Vergleich zur <b>eigenen Geschichte</b> des Marktes ist. Unter 45 kühl · 45–70 normal · ab 70 heiß · ab 85 Blasen-Zone. Kachel antippen = Historie und Ausblick.</p>
+          <div id="bubAll"></div>
+          <div class="bgrid" id="bubGrid"></div>
+          <details style="margin-top:10px"><summary>So wird der Blasen-Score berechnet</summary>
+            <p>Drei Messungen, jeweils als Rang unter allen früheren Monaten desselben Marktes (100 = so extrem wie nie zuvor): 1. Abstand zur 10-Monats-Linie (kurzfristige Überhitzung), 2. Anstieg der letzten 3 Jahre (Tempo), 3. Abstand zum 5-Jahres-Durchschnitt. Der Score ist der Durchschnitt der drei Ränge. Jeder Monat wird nur mit seiner eigenen Vergangenheit verglichen – so lässt sich ehrlich prüfen, was historisch auf ähnliche Werte folgte. Bewertungskennzahlen (z. B. KGV) sind nicht enthalten.</p></details>
+        </section>
+        <section class="card" id="bubDetail"></section>
+        <section class="card">
+          <div class="ctitle"><h3>Heute im Vergleich mit den großen Blasen</h3><label class="tg">Markt <select id="bubCmp" class="sel"></select></label></div>
+          <p class="hint" style="margin-top:0">Alle Kurven sind am Gipfel der jeweiligen Blase auf 100 gesetzt – die heutige Kurve am aktuellen Kurs (logarithmische Skala). Links: der Anstieg der 5 Jahre davor. Rechts: was nach dem Gipfel geschah. Legende antippen = Kurve ein- oder ausblenden.</p>
+          <div class="chips" id="bubLegend"></div>
+          <div id="bubChart" style="margin-top:8px"></div>
+          <p id="bubCmpTxt" style="font-size:13.5px;max-width:90ch"></p>
+          <div class="bscroll" id="bubCmpTbl"></div>
+        </section>
+        <section class="card">
+          <h3>Heißeste Einzelaktien</h3>
+          <p class="hint" style="margin-top:0">Im Vergleich zu allen Aktien in Owlgo: Abstand zur 200-Tage-Linie, Anstieg in einem Jahr und RSI. Warnsignale: mehr als 40 % über der 200-Tage-Linie, RSI über 75, Kursverdopplung in einem Jahr, KGV über 60. Zeile antippen = Analyse.</p>
+          <div class="bscroll" id="bubHot"></div>
+        </section>
+        <section class="card">
+          <h3>Die großen Blasen der Geschichte</h3>
+          <p class="hint" style="margin-top:0">Gerundete Eckdaten. Typischer Ablauf nach Kindleberger und Minsky: neue Geschichte („diesmal ist alles anders“) → Boom → Euphorie mit Krediten und vielen Neueinsteigern → erste Insider verkaufen → Panik.</p>
+          <div class="bhgrid" id="bubHistTbl"></div>
+          <ul class="klist" style="margin-top:12px">
+            <li><b>Typische Warnzeichen:</b> parabolischer Kursanstieg, Kauf auf Kredit, Welle von Börsengängen, Kurse ohne Bezug zu Gewinnen, Taxifahrer-Tipps, „diesmal ist alles anders“.</li>
+            <li><b>Was half Anlegern?</b> Breit streuen, nicht auf Kredit kaufen, regelmäßig zurück auf die Zielgewichtung (Rebalancing), Stop-Regeln einhalten – und nicht alles auf ein Thema setzen.</li>
+            <li><b>Was meist schadete:</b> der Versuch, den Gipfel exakt zu treffen. Viele Warner lagen jahrelang zu früh richtig.</li>
+          </ul>
+        </section>
+      </div>
+      <p class="discfoot">Blasen-Radar: statistische Auswertung vergangener Kurse, keine Anlageberatung und keine Prognose. Angaben ohne Gewähr.</p>
     </div>
 
     <div id="viewInfo" class="view" hidden>
@@ -1196,7 +1279,7 @@ async function refreshAll(full=true){
       for(const s of syms){if(!S.daily[s])S.daily[s]=demoDaily(s);else demoTick(s)}
     }
     S.updated=new Date();computeAll();renderSide();renderBoard();if(S.view==="depot"){renderDepot();renderProfit()}await renderStock(true);
-    checkAlerts();if(S.view==="strat"&&S.stratTab==="scan")renderScanner();
+    checkAlerts();if(S.view==="strat"&&S.stratTab==="scan")renderScanner();if(S.view==="blase"&&BUB.ts)renderBubbles();
   }catch(e){
     $("#stamp").textContent="Fehler beim Aktualisieren: "+e.message+". Läuft server.py noch?";
   }finally{S.busy=false;b.classList.remove("busy");b.disabled=false}
@@ -1468,7 +1551,7 @@ function isMobile(){return matchMedia("(max-width: 700px)").matches}
 function setMobileTab(t){
   document.documentElement.dataset.m=t;store.set("mtab",t);
   document.querySelectorAll("#mnav button").forEach(b=>b.setAttribute("aria-current",b.dataset.m===t?"page":"false"));
-  if(t==="depot"&&S.view!=="depot")setView("depot");if(t==="analyse"&&S.view!=="markt")setView("markt");if(t==="info"&&S.view!=="info")setView("info");if(t==="strat"&&S.view!=="strat")setView("strat");
+  if(t==="depot"&&S.view!=="depot")setView("depot");if(t==="analyse"&&S.view!=="markt")setView("markt");if(t==="info"&&S.view!=="info")setView("info");if(t==="strat"&&S.view!=="strat")setView("strat");if(t==="blase"&&S.view!=="blase")setView("blase");
   window.scrollTo(0,0);
 }
 document.querySelectorAll("#mnav button").forEach(b=>b.addEventListener("click",()=>setMobileTab(b.dataset.m)));
@@ -2515,11 +2598,255 @@ $("#jBody").addEventListener("click",async e=>{
   renderJournal();
 });
 
+/* ---------- Blasen-Radar: Märkte mit ihrer eigenen Geschichte und mit historischen Blasen vergleichen ---------- */
+const BUB_ASSETS=[
+  {s:"^GSPC",n:"S&P 500",d:"USA · 500 große Unternehmen",k:"idx"},
+  {s:"^NDX",n:"Nasdaq 100",d:"USA · Technologie",k:"idx"},
+  {s:"^SOX",n:"Halbleiter-Index",d:"USA · Chips & KI-Thema",k:"idx"},
+  {s:"^GDAXI",n:"DAX",d:"Deutschland · 40 Werte",k:"idx"},
+  {s:"^STOXX50E",n:"Euro Stoxx 50",d:"Eurozone · 50 Werte",k:"idx"},
+  {s:"^N225",n:"Nikkei 225",d:"Japan",k:"idx"},
+  {s:"000001.SS",n:"Shanghai Composite",d:"China",k:"idx"},
+  {s:"GC=F",n:"Gold",d:"USD je Feinunze",k:"gold"},
+  {s:"BTC-USD",n:"Bitcoin",d:"in USD",k:"krypto"},
+];
+const BUB_HIST=[ // Gipfel: höchster Monatsschluss ±4 Monate um das Datum
+  {id:"b1929",n:"US-Börse 1929",s:"^GSPC",pk:"1929-09",col:"#9b6bc0"},
+  {id:"b1989",n:"Japan 1989",s:"^N225",pk:"1989-12",col:"#c99a12"},
+  {id:"b2000",n:"Dotcom 2000",s:"^IXIC",pk:"2000-03",col:"#e0603a"},
+  {id:"b2007",n:"Finanzkrise 2007",s:"^GSPC",pk:"2007-10",col:"#3f9a78"},
+  {id:"b2017",n:"Bitcoin 2017",s:"BTC-USD",pk:"2017-12",col:"#c2508a"},
+  {id:"b2021",n:"Bitcoin 2021",s:"BTC-USD",pk:"2021-11",col:"#6f84d6"},
+];
+const BUB_TABLE=[ // gerundete Eckdaten aus der Finanzgeschichte
+  ["Tulpenmanie","Niederlande 1634–37","Zwiebelpreise vervielfacht, einzelne Sorten teurer als ein Haus","−90 % und mehr binnen Wochen","nie","Termingeschäfte auf Zwiebeln; plötzlich fehlten Käufer (Quellenlage dünn)"],
+  ["Südseeblase","England 1720","Aktie ≈ ×8 in einem halben Jahr","≈ −85 % bis Jahresende","nie","Tausch von Staatsschulden in Aktien, Insiderverkäufe"],
+  ["US-Börse (Dow Jones)","1921–1929","≈ +500 % in 8 Jahren","−89 % bis 1932","25 Jahre (1954)","Aktienkauf auf Kredit mit 10 % Eigenkapital, Zinserhöhungen"],
+  ["„Nifty Fifty“","USA 1972","Lieblingsaktien mit KGV über 40","S&P 500 −48 % (1973–74)","≈ 7 Jahre","Ölkrise, Inflation, steigende Zinsen"],
+  ["Japan (Nikkei 225)","1983–1989","≈ +380 % in 6 Jahren, KGV um 60","−82 % bis 2009","34 Jahre (2024)","Boden- und Aktienblase auf Kredit, Zinswende der Notenbank"],
+  ["Dotcom (Nasdaq)","1995–2000","≈ +570 % in 5 Jahren","−78 % bis 2002","15 Jahre (2015)","„Neue Ära“ Internet, Börsengänge ohne Gewinne, Zinserhöhungen"],
+  ["US-Immobilien","1997–2006","Hauspreise mehr als verdoppelt","Häuser −27 %, S&P 500 −57 % (2007–09)","≈ 5½ Jahre (S&P 500)","Subprime-Kredite, Verbriefung, hoher Bankenhebel"],
+  ["Bitcoin","2017","≈ ×20 in einem Jahr","−84 % bis Dez. 2018","3 Jahre (2020)","ICO-Welle, Privatanleger-Euphorie"],
+  ["Bitcoin, Meme-Aktien, SPACs","2020–2021","Bitcoin ≈ ×6 in 13 Monaten","Bitcoin −77 % bis Nov. 2022","≈ 2⅓ Jahre (2024)","Nullzinsen, Konjunkturschecks, Zinswende 2022"],
+];
+const BUB_START={"^GSPC":1927.92,"^IXIC":1971.1,"^NDX":1985.8,"^SOX":1994.4,"^GDAXI":1988,"^STOXX50E":1987,"^N225":1965,"000001.SS":1991,"GC=F":2000.7,"BTC-USD":2014.7,"^VIX":1990};
+const BUB_DEMO={"^GSPC":[[1929.7,1.4,-0.86],[2000.2,0.6,-0.45],[2007.8,0.5,-0.55]],"^N225":[[1989.9,1.6,-0.75]],"^IXIC":[[2000.2,2.2,-0.78]],"^NDX":[[2000.2,2.3,-0.8]],
+  "^SOX":[[2000.2,2.0,-0.8]],"BTC-USD":[[2017.95,2.8,-0.84],[2021.85,1.6,-0.75]],"000001.SS":[[2007.8,1.6,-0.7],[2015.45,1.0,-0.45]]};
+const BUB={data:{},sim:{},an:{},ts:0,mode:null,busy:false,fail:0,sel:store.get("bubSel","^GSPC"),cmp:store.get("bubCmp","^NDX"),hide:store.get("bubHide",{})};
+const bubYm=t=>{const d=new Date((t+3*86400)*1000);return d.getUTCFullYear()*12+d.getUTCMonth()}; // +3 Tage: asiatische Zeitstempel liegen am Vortag
+const bubDate=t=>{const k=bubYm(t);return String(k%12+1).padStart(2,"0")+"/"+Math.floor(k/12)};
+
+function demoMonthly(sym){ // simulierte Monatskurse inkl. nachgebildeter Blasen – nur Demo
+  const r=rng(hash("bub"+sym)),t0=BUB_START[sym]||1990,now=Date.now(),out=[],bumps=BUB_DEMO[sym]||[];
+  const kr=sym==="BTC-USD",vix=sym==="^VIX",sd=kr?0.2:0.045,mu=kr?0.025:sym==="GC=F"?0.004:0.006;
+  let y=Math.floor(t0),m=Math.round((t0%1)*12),lv=0;
+  while(Date.UTC(y,m,1)<=now){
+    const yr=y+m/12;lv=vix?0.8*lv+gauss(r)*0.2:lv+mu+sd*gauss(r);
+    let ex=0;for(const [p,up,dn] of bumps){const U=Math.log(1+up),D=U+Math.log(1+dn),dt=yr-p;
+      if(dt>=-3&&dt<=0)ex+=U*(1+dt/3)**2;else if(dt>0&&dt<=1.5)ex+=U+(D-U)*dt/1.5;else if(dt>1.5)ex+=D}
+    out.push({t:Date.UTC(y,m,1)/1000,c:(vix?17:100)*Math.exp(lv+ex)});
+    if(++m>11){m=0;y++}
+  }
+  return out;
+}
+function parseMonthly(j){
+  const res=j?.chart?.result?.[0];if(!res)throw new Error("Keine Daten");
+  const ts=res.timestamp||[],q=res.indicators?.quote?.[0]?.close||[],a=res.indicators?.adjclose?.[0]?.adjclose,out=[];
+  for(let i=0;i<ts.length;i++){const c=q[i]??a?.[i];if(c!=null&&c>0)out.push({t:ts[i],c})}
+  for(let i=out.length-1;i>0;i--)if(bubYm(out[i].t)===bubYm(out[i-1].t))out.splice(i-1,1); // laufender Monat doppelt
+  return out;
+}
+async function loadBubbles(force){
+  if(BUB.busy)return;
+  if(!force&&BUB.ts&&BUB.mode===S.mode&&Date.now()-BUB.ts<6*3600e3){renderBubbles();return}
+  BUB.busy=true;$("#bubState").textContent="Lade lange Kurshistorien (Monatskurse seit Beginn der Aufzeichnung) …";
+  const syms=[...new Set([...BUB_ASSETS.map(a=>a.s),...BUB_HIST.map(h=>h.s),"^VIX"])];let fail=0;
+  await Promise.all(syms.map(async s=>{
+    if(S.mode==="live"){try{const d=parseMonthly(await api(`/api/chart?symbol=${encodeURIComponent(s)}&range=max&interval=1mo`));if(d.length<24)throw 0;BUB.data[s]=d;BUB.sim[s]=false;return}catch{fail++}}
+    BUB.data[s]=demoMonthly(s);BUB.sim[s]=true;
+  }));
+  Object.assign(BUB,{ts:Date.now(),mode:S.mode,busy:false,fail,an:{}});renderBubbles();
+}
+
+/* Score 0–100: wie extrem ist der heutige Anstieg im Vergleich zur eigenen Geschichte?
+   Drei Messungen, jeweils als Rang unter allen bisherigen Monaten (ohne Blick in die Zukunft):
+   Abstand zur 10-Monats-Linie, Anstieg in 3 Jahren, Abstand zum 5-Jahres-Durchschnitt. */
+function quant(a,q){if(!a.length)return null;const s=[...a].sort((x,y)=>x-y),p=(s.length-1)*q,i=Math.floor(p);return s[i]+(s[Math.min(i+1,s.length-1)]-s[i])*(p-i)}
+function bubAnalyze(s){
+  if(BUB.an[s])return BUB.an[s];const d=BUB.data[s];if(!d||d.length<60)return null;
+  const c=d.map(x=>x.c),n=c.length,L=c.map(Math.log),F=[[],[],[]],sc=[];
+  for(let i=0;i<n;i++){F[0].push(i>=9?Math.log(c[i]/sma(c,10,i)):null);F[1].push(i>=36?L[i]-L[i-36]:null);F[2].push(i>=59?Math.log(c[i]/sma(c,60,i)):null)}
+  for(let i=0;i<n;i++){const ps=[];
+    for(const f of F){if(f[i]==null)continue;let b=0,k=0;for(let j=0;j<i;j++){if(f[j]==null)continue;k++;if(f[j]<f[i])b++;else if(f[j]===f[i])b+=0.5}if(k>=24)ps.push(b/k)}
+    sc.push(ps.length>=2?100*ps.reduce((a,b)=>a+b,0)/ps.length:null)}
+  const cur=sc[n-1];if(cur==null)return null;
+  // Ausblick: Was folgte historisch auf ähnliche Score-Werte?
+  const fwd=(h,cond)=>{const v=[],dd=[],yrs=new Set();for(let i=0;i+h<n;i++){if(sc[i]==null||!cond(i))continue;v.push(c[i+h]/c[i]-1);yrs.add(Math.floor(bubYm(d[i].t)/12));
+      if(i+24<n){let mn=c[i];for(let k=1;k<=24;k++)mn=Math.min(mn,c[i+k]);dd.push(mn/c[i]-1)}}
+    return {n:v.length,yrs:yrs.size,med:quant(v,0.5),q10:quant(v,0.1),q90:quant(v,0.9),neg:v.length?v.filter(x=>x<0).length/v.length:null,dd:dd.length?dd.reduce((a,b)=>a+b,0)/dd.length:null}};
+  let band=10,near=i=>Math.abs(sc[i]-cur)<=band,o12=fwd(12,near);if(o12.n<24){band=15;o12=fwd(12,near)}
+  const o36=fwd(36,near),a12=fwd(12,()=>true),a36=fwd(36,()=>true);
+  // Langfristtrend (log-linear über die ganze Historie, nur zur Info)
+  let sx=0,sy=0,sxx=0,sxy=0;for(let i=0;i<n;i++){sx+=i;sy+=L[i];sxx+=i*i;sxy+=i*L[i]}
+  const b=(n*sxy-sx*sy)/(n*sxx-sx*sx),a0=(sy-b*sx)/n,res=L.map((y,i)=>y-a0-b*i),sdr=Math.sqrt(res.reduce((q,x)=>q+x*x,0)/(n-2));
+  const ath=Math.max(...c),hi24=Math.max(...sc.slice(-24).filter(x=>x!=null)),dd24=c[n-1]/Math.max(...c.slice(-24))-1;
+  let ph=cur>=85?["Blasen-Zone","down"]:cur>=70?["Heiß","warn"]:cur>=45?["Normal",""]:cur>=20?["Kühl","up"]:["Ausverkauf","up"];
+  if(hi24>=85&&cur<60&&dd24<-0.25)ph=["Nach der Übertreibung","down"];
+  const a={s,c,sc,n,cur,ph,band,o12,o36,a12,a36,trendZ:res[n-1]/sdr,trendDev:Math.exp(res[n-1])-1,cagr:Math.pow(c[n-1]/c[0],12/(n-1))-1,
+    ath,dAth:c[n-1]/ath-1,r3:F[1][n-1]!=null?Math.exp(F[1][n-1]/3)-1:null,d10:Math.exp(F[0][n-1])-1,d60:F[2][n-1]!=null?Math.exp(F[2][n-1])-1:null,
+    since:bubDate(d[0].t),years:(n-1)/12,sim:BUB.sim[s]};
+  return BUB.an[s]=a;
+}
+const bubCol=v=>v==null?"var(--muted)":v>=85?"var(--down)":v>=70?"var(--warn)":v>=45?"var(--accent)":"var(--up)";
+const bubName=s=>BUB_ASSETS.find(a=>a.s===s)?.n||s;
+
+function bubOutlook(a){
+  const nm=esc(bubName(a.s)),o=a.o12,al=a.a12,lo=Math.max(0,Math.round(a.cur-a.band)),hi=Math.min(100,Math.round(a.cur+a.band)),out=[];
+  if(o.n>=6){
+    out.push(`<p>In der Vergangenheit lag ${nm} in <b>${o.n} Monaten</b> (verteilt auf ${o.yrs} Jahre) auf einem ähnlichen Blasen-Score (${lo}–${hi}). In den <b>12 Monaten danach</b> ging es im Mittel (Median) um <b class="${cls(o.med)}">${pct(o.med,1)}</b> – über alle Monate waren es ${pct(al.med,1)}.
+      Die mittleren 80 % der Fälle lagen zwischen ${pct(o.q10,0)} und ${pct(o.q90,0)}. Nach einem Jahr tiefer: in <b>${pct(o.neg,0,false)}</b> der Fälle (alle Monate: ${pct(al.neg,0,false)}).${o.dd!=null?` Zwischenzeitlicher Rückgang innerhalb von 2 Jahren: im Schnitt ${pct(o.dd,0)}.`:""}</p>`);
+    if(a.o36.n>=6)out.push(`<p>Auf Sicht von <b>3 Jahren</b>: Median ${pct(a.o36.med,0)} (alle Monate: ${pct(a.a36.med,0)}).</p>`);
+  }else out.push(`<p>Zu wenige ähnliche Phasen in der Geschichte von ${nm} für eine statistische Auswertung.</p>`);
+  const v=a.cur;
+  out.push(`<p><b>Einordnung:</b> ${
+    a.ph[0]==="Nach der Übertreibung"?"Nach einer Übertreibung ist die Luft bereits teilweise entwichen. Historisch dauerte die Bodenbildung nach echten Blasen oft lange (Nasdaq 2000: 2½ Jahre, Nikkei 1989: Jahrzehnte) – bei bloßen Korrekturen ging es dagegen schnell wieder aufwärts. Welcher Fall vorliegt, zeigt sich erst im Nachhinein."
+    :v>=85?"Der Anstieg ist im Vergleich zur eigenen Geschichte extrem. Solche Phasen gingen häufiger – nicht immer – größeren Rückschlägen voraus. Den Zeitpunkt kann niemand vorhersagen: Übertreibungen liefen oft noch Monate oder Jahre weiter (Nasdaq stieg 1998–2000 noch einmal um mehr als 200 %). Sinnvoll: keine Käufe auf Kredit, Gewichtung im Depot prüfen, Gewinne teilweise sichern, Stops nachziehen."
+    :v>=70?"Überdurchschnittlich heiß, aber noch kein Extrem. Das Rückschlagrisiko ist erhöht, ein Verkaufssignal ist das allein nicht – starke Märkte bleiben oft lange stark (Momentum). Sinnvoll: Positionsgrößen und Stops prüfen, nicht hinterherlaufen."
+    :v>=45?"Unauffällig: Der Kursverlauf liegt im historischen Normalbereich. Kein Hinweis auf eine Blase – aber auch kein Schnäppchen."
+    :"Das Kursniveau liegt unter dem eigenen langfristigen Schnitt. Historisch folgten auf solche Phasen eher überdurchschnittliche Renditen – oft aber erst nach weiteren Verlusten. Wer langfristig anlegt, findet hier eher Chancen als Blasen-Risiken."}</p>`);
+  if(o.yrs<6)out.push(`<p class="muted">Achtung: Nur wenige unabhängige Vergleichsjahre – die Statistik ist sehr unsicher.</p>`);
+  return out.join("");
+}
+
+function bubPeak(h){
+  const d=BUB.data[h.s];if(!d)return -1;const [Y,M]=h.pk.split("-").map(Number),tg=Y*12+M-1;let best=-1;
+  for(let i=0;i<d.length;i++){if(Math.abs(bubYm(d[i].t)-tg)<=4&&(best<0||d[i].c>d[best].c))best=i}return best;
+}
+function bubSeries(){ // Kurven für den Vergleich: Gipfel bzw. heute = 100
+  const out=[];
+  for(const h of BUB_HIST){const d=BUB.data[h.s],p=bubPeak(h);if(p<0)continue;const pts=[];
+    for(let k=-60;k<=48;k++){const i=p+k;if(i>=0&&i<d.length)pts.push([k,d[i].c/d[p].c*100])}
+    let lowK=0,low=100;for(const [k,v] of pts)if(k>0&&v<low){low=v;lowK=k}
+    const at=k=>pts.find(x=>x[0]===k)?.[1];
+    out.push({...h,pts,low:low/100-1,lowK,r5:at(-60)?100/at(-60)-1:null,r3:at(-36)?100/at(-36)-1:null,r1:at(-12)?100/at(-12)-1:null,simd:BUB.sim[h.s]})}
+  const d=BUB.data[BUB.cmp];
+  if(d){const n=d.length,pts=[];for(let k=-60;k<=0;k++){const i=n-1+k;if(i>=0)pts.push([k,d[i].c/d[n-1].c*100])}
+    const at=k=>pts.find(x=>x[0]===k)?.[1];
+    const cur={id:"cur",n:"Heute: "+bubName(BUB.cmp),pts,cur:true,col:"var(--fg)",r5:at(-60)?100/at(-60)-1:null,r3:at(-36)?100/at(-36)-1:null,r1:at(-12)?100/at(-12)-1:null,simd:BUB.sim[BUB.cmp]};
+    for(const h of out){let q=0,k0=0;for(let k=-36;k<=0;k++){const a=at(k),b=h.pts.find(x=>x[0]===k)?.[1];if(a&&b){q+=(Math.log(a)-Math.log(b))**2;k0++}}
+      h.simil=k0>=24?100*Math.exp(-2*Math.sqrt(q/k0)):null}
+    out.unshift(cur)}
+  return out;
+}
+function bubSvg(series){
+  const W=720,H=300,l=46,r=12,t=12,b=28,vis=series.filter(x=>x.cur||!BUB.hide[x.id]);
+  let mn=Infinity,mx=-Infinity;for(const s of vis)for(const [,v] of s.pts){mn=Math.min(mn,v);mx=Math.max(mx,v)}
+  if(!isFinite(mn)){mn=10;mx=200}mn=Math.max(mn*0.9,1);mx*=1.1;
+  const X=k=>l+(k+60)/108*(W-l-r),Y=v=>t+(Math.log(mx)-Math.log(v))/(Math.log(mx)-Math.log(mn))*(H-t-b);
+  let g=`<rect x="${X(0)}" y="${t}" width="${X(48)-X(0)}" height="${H-t-b}" fill="var(--panel-2)"/>`;
+  for(const v of [1,2,5,10,20,50,100,200,500,1000,2000,5000])if(v>=mn&&v<=mx)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)">${v}</text>`;
+  for(let k=-60;k<=48;k+=12)g+=`<text x="${X(k)}" y="${H-8}" text-anchor="middle" font-size="11" fill="var(--muted)">${k===0?"Gipfel / heute":(k>0?"+":"−")+Math.abs(k/12)+" J"}</text>`;
+  g+=`<line x1="${X(0)}" x2="${X(0)}" y1="${t}" y2="${H-b}" stroke="var(--muted)" stroke-dasharray="4 4"/><text x="${X(0)+6}" y="${t+14}" font-size="11" fill="var(--muted)">danach: was historisch folgte</text>`;
+  for(const s of [...vis].reverse())g+=`<path d="${s.pts.map(([k,v],i)=>(i?"L":"M")+X(k).toFixed(1)+","+Y(v).toFixed(1)).join("")}" fill="none" stroke="${s.col}" stroke-width="${s.cur?3:1.8}" stroke-linejoin="round"${s.cur?"":' opacity=".9"'}/>`;
+  return `<svg viewBox="0 0 ${W} ${H}" class="bsvg" role="img" aria-label="Kursverläufe vor und nach historischen Blasen im Vergleich zum heutigen Verlauf, logarithmisch, Gipfel = 100">${g}</svg>`;
+}
+function bubHistSvg(a){ // ganze Historie (log) mit Heat-Streifen des Scores
+  const W=720,H=220,l=50,r=12,t=10,sb=26,ph=H-t-sb-22,n=a.n,mn=Math.min(...a.c),mx=Math.max(...a.c);
+  const X=i=>l+i/(n-1)*(W-l-r),Y=v=>t+(Math.log(mx)-Math.log(v))/(Math.log(mx/mn)||1)*ph;
+  let g="";const step=Math.max(1,Math.round(n/240));
+  for(let i=0;i<n;i+=step){const v=a.sc[i];if(v==null)continue;g+=`<rect x="${X(i).toFixed(1)}" y="${t+ph+8}" width="${(X(Math.min(n-1,i+step))-X(i)+0.6).toFixed(1)}" height="12" fill="${bubCol(v)}" opacity="${v>=70||v<45?0.95:0.35}"/>`}
+  const dec=[mn,Math.sqrt(mn*mx),mx];for(const v of dec)g+=`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmtPx(v)}</text>`;
+  const d=BUB.data[a.s],y0=Math.floor(bubYm(d[0].t)/12),y1=Math.floor(bubYm(d[n-1].t)/12),span=y1-y0,every=span>60?20:span>30?10:span>12?5:2;
+  for(let i=0;i<n;i++){const k=bubYm(d[i].t);if(k%12===0&&(k/12)%every===0)g+=`<text x="${X(i)}" y="${H-4}" text-anchor="middle" font-size="11" fill="var(--muted)">${k/12}</text>`}
+  g+=`<path d="${a.c.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+","+Y(v).toFixed(1)).join("")}" fill="none" stroke="var(--accent)" stroke-width="1.6"/>`;
+  return `<svg viewBox="0 0 ${W} ${H}" class="bsvg" role="img" aria-label="Kursverlauf seit ${a.since}, logarithmisch, darunter der Blasen-Score als Farbstreifen">${g}</svg>`;
+}
+function bubHot(){ // heißeste Einzelaktien relativ zu allen Aktien in Owlgo
+  const rows=Object.keys(S.metrics).filter(s=>(BY[s]?.a||S.portfolio.find(p=>p.sym===s)?.type||guessType(s))==="aktie").map(s=>{const m=S.metrics[s];
+    return {s,m,d200:m.s200?m.p/m.s200-1:null,y:m.c1y,r:m.rsi,pe:S.fund[s]?.pe}}).filter(x=>x.d200!=null&&x.y!=null);
+  const rk=k=>{const v=rows.map(x=>x[k]);for(const x of rows){let b=0;for(const y of v)if(y<x[k])b++;x["p"+k]=v.length>1?b/(v.length-1):0.5}};rk("d200");rk("y");rk("r");
+  for(const x of rows){x.score=100*(x.pd200+x.py+x.pr)/3;x.flags=[];
+    if(x.d200>0.4)x.flags.push(`${pct(x.d200,0)} über 200-Tage-Linie`);if(x.r>75)x.flags.push(`RSI ${x.r.toFixed(0)}`);
+    if(x.y>1)x.flags.push(`Kurs mehr als verdoppelt`);if(x.pe>60)x.flags.push(`KGV ${x.pe.toFixed(0)}`)}
+  return rows.sort((a,b)=>b.score-a.score).slice(0,10);
+}
+
+function renderBubbles(){
+  const ack=store.get("bubAck",false);$("#bubAck").checked=ack;$("#bubBody").hidden=!ack;$("#bubDisc").open=!ack;
+  if(!ack){$("#bubState").textContent="Bitte zuerst den Hinweis lesen und bestätigen.";return}
+  if(!BUB.ts||BUB.mode!==S.mode){loadBubbles();return}
+  const sim=Object.values(BUB.sim).some(Boolean);
+  $("#bubState").innerHTML=(sim?`<span class="badge demo">${S.mode==="live"?"Teilweise simuliert":"Simulierte Daten"}</span> `:"")+
+    (S.mode==="live"?(BUB.fail?`${BUB.fail} Verläufe von Yahoo nicht erhalten – dort werden simulierte Werte gezeigt. `:"Monatskurse von Yahoo Finance. "):"Demo-Modus: Alle Verläufe sind simuliert und zeigen nicht die echte Geschichte. ")+
+    "Stand "+new Date(BUB.ts).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"});
+  // Thermometer
+  const A=BUB_ASSETS.map(x=>({...x,a:bubAnalyze(x.s)}));
+  $("#bubGrid").innerHTML=A.map(x=>{const a=x.a;if(!a)return `<button type="button" class="btile" disabled><b>${esc(x.n)}</b><span class="muted">keine Daten</span></button>`;
+    return `<button type="button" class="btile" data-s="${esc(x.s)}" aria-pressed="${BUB.sel===x.s}">
+      <span class="bt-h"><b>${esc(x.n)}</b>${a.sim?'<span class="badge demo">Sim.</span>':""}</span><span class="muted bt-d">${esc(x.d)}</span>
+      <span class="bt-v"><span class="num" style="color:${bubCol(a.cur)}">${a.cur.toFixed(0)}</span><span class="bph ${a.ph[1]}">${a.ph[0]}</span></span>
+      <span class="bbar"><i style="width:${a.cur}%;background:${bubCol(a.cur)}"></i></span>
+      <span class="bt-m"><span>3 J p. a. <b class="num ${cls(a.r3)}">${pc0(a.r3)}</b></span><span>Hoch <b class="num">${a.dAth>-0.005?"Rekord":pc0(a.dAth)}</b></span></span></button>`}).join("");
+  // Gesamtbild
+  const eq=A.filter(x=>x.k==="idx"&&x.a),avg=eq.length?eq.reduce((s,x)=>s+x.a.cur,0)/eq.length:null,hot=A.filter(x=>x.a&&x.a.cur>=70);
+  const vx=BUB.data["^VIX"],vxP=vx?.length>24?vx.filter(x=>x.c<vx[vx.length-1].c).length/(vx.length-1):null;
+  const st=Object.values(S.metrics).filter(m=>BY[m.sym]?.a==="aktie"&&m.s200),br=st.length?st.filter(m=>m.p>m.s200).length/st.length:null,ov=st.length?st.filter(m=>m.p>m.s200*1.3).length/st.length:null;
+  const lvl=avg==null?"":avg>=80?"heiß – mehrere Märkte im historischen Extrembereich":avg>=65?"erhöht – Märkte deutlich über ihrem Normalbereich":avg>=40?"normal – keine breite Übertreibung erkennbar":"kühl – Märkte eher unter ihrem langfristigen Schnitt";
+  $("#bubAll").innerHTML=avg==null?"":`<div class="ball"><div class="bgauge" style="--v:${avg};--c:${bubCol(avg)}"><span class="num">${avg.toFixed(0)}</span><small>Ø Aktienmärkte</small></div>
+    <div><p style="margin-top:0"><b>Gesamtbild: ${lvl}.</b> ${hot.length?`Im heißen Bereich (Score ≥ 70): ${hot.map(x=>`<b>${esc(x.n)}</b> (${x.a.cur.toFixed(0)})`).join(", ")}.`:"Kein Markt liegt im heißen Bereich (Score ≥ 70)."}</p>
+    <ul class="klist">${vxP!=null?`<li><b>Angst-Barometer VIX</b> ${nf(1).format(vx[vx.length-1].c)}: niedriger als in ${pct(1-vxP,0,false)} aller Monate seit ${bubDate(vx[0].t).slice(3)}${vxP<0.2?" – große Sorglosigkeit, typisch für späte Boomphasen":vxP>0.8?" – große Angst, eher typisch für Tiefpunkte":""}.</li>`:""}
+    ${br!=null?`<li><b>Marktbreite:</b> ${pct(br,0,false)} der Aktien in Owlgo liegen über ihrer 200-Tage-Linie, ${pct(ov,0,false)} mehr als 30 % darüber${ov>0.25?" – auffällig viele überhitzte Werte":""}.</li>`:""}
+    <li>Blasen erkennt man sicher erst im Nachhinein. Ein hoher Score heißt „ungewöhnlich schneller Anstieg“, nicht „Crash steht bevor“.</li></ul></div></div>`;
+  // Detail & Ausblick
+  const sel=A.find(x=>x.s===BUB.sel&&x.a)||A.find(x=>x.a);
+  if(sel){const a=sel.a;BUB.sel=sel.s;
+    $("#bubDetail").innerHTML=`<div class="ctitle"><h3>${esc(sel.n)}: Historie &amp; Ausblick</h3><span class="muted" style="font-size:12.5px">Daten seit ${a.since}${a.sim?" · simuliert":""}</span></div>
+    ${bubHistSvg(a)}
+    <div class="blegend"><span><i style="background:var(--up)"></i>kühl (&lt; 45)</span><span><i style="background:var(--accent);opacity:.35"></i>normal</span><span><i style="background:var(--warn)"></i>heiß (≥ 70)</span><span><i style="background:var(--down)"></i>Blasen-Zone (≥ 85)</span></div>
+    <div class="bstats">
+      <div><span class="label">Blasen-Score</span><b class="num" style="color:${bubCol(a.cur)}">${a.cur.toFixed(0)} / 100</b><small>${a.ph[0]}</small></div>
+      <div><span class="label">Über 10-Monats-Linie</span><b class="num ${cls(a.d10)}">${pc1(a.d10)}</b><small>kurzfristige Überhitzung</small></div>
+      <div><span class="label">Über 5-Jahres-Schnitt</span><b class="num ${cls(a.d60)}">${pc0(a.d60)}</b><small>mittelfristig</small></div>
+      <div><span class="label">3 Jahre p. a.</span><b class="num ${cls(a.r3)}">${pc1(a.r3)}</b><small>langfristig Ø ${pc1(a.cagr)} p. a.</small></div>
+      <div><span class="label">Langfrist-Trend</span><b class="num ${cls(a.trendDev)}">${pc0(a.trendDev)}</b><small>${nf(1).format(a.trendZ)} σ vom Trend seit ${a.since.slice(3)}</small></div>
+      <div><span class="label">Abstand Allzeithoch</span><b class="num">${a.dAth>-0.005?"Rekordhoch":pc1(a.dAth)}</b><small>Hoch ${fmtPx(a.ath)}</small></div>
+    </div>
+    <h4 style="margin:14px 0 4px">Ausblick aus der Historie</h4>${bubOutlook(a)}`}
+  // Vergleich mit historischen Blasen
+  $("#bubCmp").innerHTML=BUB_ASSETS.map(x=>`<option value="${esc(x.s)}"${x.s===BUB.cmp?" selected":""}>${esc(x.n)}</option>`).join("");
+  const ser=bubSeries();
+  $("#bubLegend").innerHTML=ser.map(s=>s.cur?`<span class="chip bcur"><i style="background:var(--fg)"></i>${esc(s.n)}</span>`:
+    `<button type="button" class="chip" data-h="${s.id}" aria-pressed="${!BUB.hide[s.id]}"><i style="background:${s.col}"></i>${esc(s.n)}</button>`).join("");
+  $("#bubChart").innerHTML=bubSvg(ser);
+  const best=ser.filter(s=>!s.cur&&s.simil!=null).sort((a,b)=>b.simil-a.simil)[0],cur=ser.find(s=>s.cur);
+  $("#bubCmpTxt").innerHTML=best&&cur?`Der Verlauf der letzten 3 Jahre von <b>${esc(bubName(BUB.cmp))}</b> ähnelt am ehesten <b>${esc(best.n)}</b> (Ähnlichkeit ${best.simil.toFixed(0)} %).
+    ${best.simil>=70?`Das ist eine auffällige Parallele – historisch folgte darauf ein Rückgang von ${pct(best.low,0)}. Eine ähnliche Kurve bedeutet aber nicht, dass sich die Geschichte wiederholt: Bewertung, Zinsen und Gewinne können völlig anders sein.`
+      :best.simil>=45?"Die Parallele ist nur mäßig – der heutige Anstieg ist deutlich anders verlaufen als vor den großen Blasen.":"Der heutige Verlauf hat mit den großen Blasen der Geschichte wenig gemeinsam."}`:"";
+  $("#bubCmpTbl").innerHTML=`<table><thead><tr><th>Verlauf</th><th>vor 5 J</th><th>vor 3 J</th><th>vor 1 J</th><th>Ähnlichkeit</th><th>Absturz danach</th><th>Tief nach</th></tr></thead><tbody>${ser.map(s=>`<tr${s.cur?' class="bcurrow"':""}>
+    <td><i class="bdot" style="background:${s.col}"></i>${esc(s.n)}${s.simd?' <span class="badge demo">Sim.</span>':""}</td>
+    <td class="num ${cls(s.r5)}">${pc0(s.r5)}</td><td class="num ${cls(s.r3)}">${pc0(s.r3)}</td><td class="num ${cls(s.r1)}">${pc0(s.r1)}</td>
+    <td class="num">${s.cur?"–":s.simil!=null?s.simil.toFixed(0)+" %":"–"}</td><td class="num down">${s.cur?"?":pc0(s.low)}</td><td class="num">${s.cur?"?":s.lowK?s.lowK+" Mon.":"–"}</td></tr>`).join("")}</tbody></table>`;
+  // heißeste Einzelwerte
+  const hs=bubHot();
+  $("#bubHot").innerHTML=hs.length?`<table class="bhot"><thead><tr><th>Aktie</th><th>Hitze</th><th>Warnsignale</th><th>1 Jahr</th><th>RSI</th></tr></thead><tbody>${hs.map(x=>`<tr data-sym="${esc(x.s)}">
+    <td><b>${esc(x.s)}</b> <small class="muted">${esc(BY[x.s]?.n||S.portfolio.find(p=>p.sym===x.s)?.name||"")}</small></td><td class="num" style="color:${bubCol(x.score)}">${x.score.toFixed(0)}</td>
+    <td style="text-align:left;white-space:normal">${x.flags.length?x.flags.map(esc).join(" · "):'<span class="muted">keine Extremwerte</span>'}</td><td class="num ${cls(x.y)}">${pc0(x.y)}</td><td class="num">${x.r.toFixed(0)}</td></tr>`).join("")}</tbody></table>`
+    :`<p class="muted">Noch keine Kursdaten geladen.</p>`;
+  $("#bubHistTbl").innerHTML=BUB_TABLE.map(([n,z,up,dn,rec,why])=>`<article class="bhcard"><h4>${esc(n)} <small class="muted">${esc(z)}</small></h4>
+    <dl><dt>Anstieg</dt><dd>${esc(up)}</dd><dt>Absturz</dt><dd class="down">${esc(dn)}</dd><dt>Zurück auf Gipfel</dt><dd>${esc(rec)}</dd><dt>Auslöser</dt><dd>${esc(why)}</dd></dl></article>`).join("");
+}
+$("#bubAck").addEventListener("change",e=>{store.set("bubAck",e.target.checked);renderBubbles()});
+$("#bubReload").addEventListener("click",()=>{if(store.get("bubAck",false))loadBubbles(true)});
+$("#bubGrid").addEventListener("click",e=>{const b=e.target.closest(".btile[data-s]");if(!b)return;BUB.sel=b.dataset.s;store.set("bubSel",BUB.sel);renderBubbles();$("#bubDetail").scrollIntoView({behavior:"smooth",block:"nearest"})});
+$("#bubCmp").addEventListener("change",e=>{BUB.cmp=e.target.value;store.set("bubCmp",BUB.cmp);renderBubbles()});
+$("#bubLegend").addEventListener("click",e=>{const b=e.target.closest("button[data-h]");if(!b)return;BUB.hide[b.dataset.h]=!BUB.hide[b.dataset.h];store.set("bubHide",BUB.hide);renderBubbles()});
+$("#bubHot").addEventListener("click",e=>{const tr=e.target.closest("tr[data-sym]");if(tr)select(tr.dataset.sym)});
+
 function setView(v){
   S.view=v;store.set("view",v);
-  $("#viewMarket").hidden=v!=="markt";$("#viewDepot").hidden=v!=="depot";$("#viewInfo").hidden=v!=="info";$("#viewStrat").hidden=v!=="strat";$("#vStrat").setAttribute("aria-pressed",v==="strat");
+  $("#viewMarket").hidden=v!=="markt";$("#viewDepot").hidden=v!=="depot";$("#viewInfo").hidden=v!=="info";$("#viewStrat").hidden=v!=="strat";$("#viewBubble").hidden=v!=="blase";$("#vBlase").setAttribute("aria-pressed",v==="blase");$("#vStrat").setAttribute("aria-pressed",v==="strat");
   $("#vMarkt").setAttribute("aria-pressed",v==="markt");$("#vDepot").setAttribute("aria-pressed",v==="depot");$("#vInfo").setAttribute("aria-pressed",v==="info");
-  if(v==="info"){renderInfo();S.newsSeen=Date.now();store.set("newsSeen",S.newsSeen);document.querySelectorAll(".nbadge").forEach(x=>x.remove())}if(v==="strat")renderStrats();
+  if(v==="info"){renderInfo();S.newsSeen=Date.now();store.set("newsSeen",S.newsSeen);document.querySelectorAll(".nbadge").forEach(x=>x.remove())}if(v==="strat")renderStrats();if(v==="blase")renderBubbles();
   if(v==="depot"){renderDepot();renderJournal();renderProfit()}
 }
 
