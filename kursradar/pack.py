@@ -11,7 +11,7 @@ FLAG = b"const NO_DEPOT=false;"
 
 def ohne_depot(data):
     assert data.count(FLAG) == 1, "Schalter NO_DEPOT nicht gefunden"
-    return data.replace(FLAG, b"const NO_DEPOT=true;")
+    return data.replace(FLAG, b"const NO_DEPOT=true;").replace(b"<title>Owlgo</title>", b"<title>Owlgo ohne Depot</title>", 1)
 
 
 def pack(name, files, patch=None):
