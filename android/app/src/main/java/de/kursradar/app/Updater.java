@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  *  - App selbst (APK): Hinweis mit „Installieren“, Installation über den Android-Paketinstaller.
  */
 public class Updater {
-    private static final long INTERVAL = 60 * 60 * 1000L; // höchstens stündlich automatisch prüfen
+    private static final long INTERVAL = 10 * 60 * 1000L; // höchstens alle 10 Minuten automatisch prüfen (nach Erfolg)
     private static final Pattern VER = Pattern.compile("id=\"appVer\">v([0-9.]+)<");
 
     private final MainActivity act;
@@ -46,6 +46,31 @@ public class Updater {
 
     private String raw(String path) {
         return "https://raw.githubusercontent.com/" + BuildConfig.UPDATE_REPO + "/main/" + path + "?t=" + System.currentTimeMillis();
+    }
+
+    /** Datei aus dem Repository laden: erst raw.githubusercontent.com, bei Fehler über die GitHub-API. */
+    private String fetch(String path) throws IOException {
+        try {
+            return Bridge.get(raw(path), 45_000);
+        } catch (IOException first) {
+            try {
+                return Bridge.get("https://api.github.com/repos/" + BuildConfig.UPDATE_REPO + "/contents/" + path + "?ref=main", 45_000,
+                        "application/vnd.github.raw");
+            } catch (IOException second) {
+                throw new IOException(first.getMessage() + " / API: " + second.getMessage());
+            }
+        }
+    }
+
+    /** Status für die Anzeige beim Antippen der Versionsnummer. */
+    String status() {
+        long t = prefs.getLong("lastCheck", 0);
+        String when = t == 0 ? "noch nie" : new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm", java.util.Locale.GERMANY).format(new java.util.Date(t));
+        String err = prefs.getString("lastError", "");
+        return "App: " + BuildConfig.VERSION_NAME + "\nOberfläche: " + currentWebVersion()
+                + "\nZuletzt erfolgreich geprüft: " + when
+                + (prefs.getString("serverWeb", "").isEmpty() ? "" : "\nAuf dem Server: Oberfläche " + prefs.getString("serverWeb", "") + ", App " + prefs.getString("serverApp", ""))
+                + (err.isEmpty() ? "" : "\nLetzter Fehler: " + err);
     }
 
     /** Version der aktuell genutzten Oberfläche. */
@@ -89,15 +114,16 @@ public class Updater {
         new Thread(() -> {
             boolean found = false;
             try {
-                JSONObject info = new JSONObject(Bridge.get(raw("update/version.json")));
-                prefs.edit().putLong("lastCheck", now).apply();
+                JSONObject info = new JSONObject(fetch("update/version.json"));
+                prefs.edit().putString("serverWeb", info.optString("web")).putString("serverApp", info.optString("app")).apply();
 
                 // 1) Oberfläche
                 if (cmp(info.optString("web"), currentWebVersion()) > 0) {
-                    String html = Bridge.get(raw("kursradar/index.html"));
+                    String html = fetch("kursradar/index.html");
                     Matcher m = VER.matcher(html);
-                    if (html.length() > 20_000 && (html.contains("<title>Owlgo</title>") || html.contains("<title>Kursradar</title>")) && m.find()
-                            && cmp(m.group(1), currentWebVersion()) > 0) {
+                    boolean ok = html.length() > 20_000 && (html.contains("<title>Owlgo") || html.contains("<title>Kursradar")) && m.find();
+                    if (!ok) throw new IOException("Oberfläche unvollständig geladen (" + html.length() + " Zeichen)");
+                    if (cmp(m.group(1), currentWebVersion()) > 0) {
                         File dir = webFile.getParentFile();
                         if (dir != null && !dir.exists()) //noinspection ResultOfMethodCallIgnored
                             dir.mkdirs();
@@ -115,9 +141,12 @@ public class Updater {
                     final String v = info.optString("app"), url = info.optString("apk");
                     act.runOnUiThread(() -> askInstall(v, url));
                 }
-                if (manual && !found) act.runOnUiThread(() -> toast("Owlgo ist aktuell (v" + currentWebVersion() + ")."));
+                prefs.edit().putLong("lastCheck", now).putString("lastError", "").apply(); // erst nach Erfolg: sonst sofort neuer Versuch
+                if (manual && !found) act.runOnUiThread(() -> showStatus("Owlgo ist aktuell."));
             } catch (Exception e) {
-                if (manual) act.runOnUiThread(() -> toast("Update-Prüfung fehlgeschlagen: " + e.getMessage()));
+                String msg = e.getClass().getSimpleName() + ": " + e.getMessage();
+                prefs.edit().putString("lastError", msg).apply();
+                if (manual) act.runOnUiThread(() -> showStatus("Update-Prüfung fehlgeschlagen."));
             } finally {
                 running = false;
             }
@@ -175,6 +204,16 @@ public class Updater {
                 act.runOnUiThread(() -> toast("Update fehlgeschlagen: " + e.getMessage()));
             }
         }).start();
+    }
+
+    private void showStatus(String title) {
+        if (act.isFinishing()) return;
+        new AlertDialog.Builder(act).setTitle(title).setMessage(status())
+                .setPositiveButton("OK", null)
+                .setNeutralButton("APK im Browser", (d, w) -> {
+                    try { act.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/" + BuildConfig.UPDATE_REPO + "/releases/latest"))); }
+                    catch (Exception ignored) { }
+                }).show();
     }
 
     private void toast(String msg) { Toast.makeText(act, msg, Toast.LENGTH_LONG).show(); }

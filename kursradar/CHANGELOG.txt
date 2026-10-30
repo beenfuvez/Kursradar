@@ -3,6 +3,11 @@ Schema: Hauptversion.Änderung
   kleine Änderung  -> zweite Stelle +1   (z. B. 3.1 -> 3.2)
   große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 3.5 -> 4.1)
 
+7.5      FIX Android-Updates: Fehler werden nicht mehr verschluckt, nach einem Fehlschlag wird beim nächsten
+         Öffnen erneut geprüft (statt erst nach einer Stunde), Ersatzquelle über die GitHub-API, längere
+         Ladezeit für die Oberfläche. Versionsnummer antippen zeigt jetzt den Update-Status (App, Oberfläche,
+         Server, letzter Fehler) mit Link zur APK. NEU Sicherheitsnetz in der Oberfläche: Hängt das Update,
+         erscheint oben ein Hinweis mit „Jetzt aktualisieren“ und „App (APK) herunterladen“.
 7.4      NEU Markt-Simulator in der Analyse jeder Aktie: 4.000 Kursverläufe aus den echten Tagesschwankungen
          (bis 10 Jahre, kreisförmiger Block-Bootstrap), Blasen-Check (eigene Überhitzung, KI-/Chip-Thema bzw.
          Markt, KGV) mit Korrekturphasen, Kosten wie im Echtbetrieb (Spread, Ordergebühr, Stop-Schlupf, Kurs-

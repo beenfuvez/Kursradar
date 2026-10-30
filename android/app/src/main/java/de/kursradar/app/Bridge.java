@@ -72,6 +72,7 @@ public class Bridge {
                     .put("app", BuildConfig.VERSION_NAME)
                     .put("web", act.updater.currentWebVersion())
                     .put("updates", !BuildConfig.UPDATE_REPO.isEmpty())
+                    .put("appCode", BuildConfig.VERSION_CODE)
                     .toString();
         } catch (Exception e) { return "{}"; }
     }
@@ -215,12 +216,17 @@ public class Bridge {
         return v;
     }
 
-    static String get(String url) throws IOException {
+    static String get(String url) throws IOException { return get(url, 15_000, "*/*"); }
+
+    static String get(String url, int readTimeout) throws IOException { return get(url, readTimeout, "*/*"); }
+
+    static String get(String url, int readTimeout, String accept) throws IOException {
         HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
-        c.setConnectTimeout(12_000);
-        c.setReadTimeout(15_000);
+        c.setConnectTimeout(15_000);
+        c.setReadTimeout(readTimeout);
+        c.setUseCaches(false);
         c.setRequestProperty("User-Agent", UA);
-        c.setRequestProperty("Accept", "*/*");
+        c.setRequestProperty("Accept", accept);
         try {
             int code = c.getResponseCode();
             if (code >= 400) throw new IOException("HTTP " + code);

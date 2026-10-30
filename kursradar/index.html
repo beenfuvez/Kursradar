@@ -392,6 +392,8 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 .simheat{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin:12px 0;font-size:13.5px;background:var(--panel-2)}
 .simheat.down{border-left-color:var(--down)} .simheat.warn{border-left-color:var(--warn)} .simheat.up{border-left-color:var(--up)}
 .simheat ul{margin:6px 0;padding-left:18px} .simheat p{margin:6px 0 0;color:var(--muted)}
+.updbar{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:8px;right:8px;z-index:40;max-width:640px;margin:0 auto;box-shadow:0 6px 24px rgba(0,0,0,.25);padding-right:40px}
+.updx{position:absolute;top:6px;right:6px;border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer;padding:6px}
 /* Ausgabe ohne Depot */
 :root.nodepot .depot-only{display:none!important}
 @media (max-width:700px){:root.nodepot .mnav{grid-template-columns:repeat(5,1fr)}}
@@ -429,7 +431,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v7.4</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v7.5</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -3109,6 +3111,19 @@ $("#trainBtn").addEventListener("click",startTrain);
 $("#sStrat").addEventListener("change",()=>{simStratUI();if(SIM.res){SIM.res.strat=$("#sStrat").value;renderSim()}});
 $("#trainOut").addEventListener("click",e=>{const b=e.target.closest("button[data-ta]");if(b)trainAct(b.dataset.ta)});
 
+/* Sicherheitsnetz in der App: selbst bei GitHub nachsehen und Bescheid geben, falls das stille Update hängt */
+const vcmp=(a,b)=>{const x=String(a||"").split("."),y=String(b||"").split(".");for(let i=0;i<Math.max(x.length,y.length);i++){const d=(+x[i]||0)-(+y[i]||0);if(d)return Math.sign(d)}return 0};
+async function updateHint(own,inf){
+  let j;try{const r=await fetch("https://raw.githubusercontent.com/beenfuvez/Kursradar/main/update/version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;j=await r.json()}catch{return}
+  const webNew=vcmp(j.web,own)>0,appNew=inf.appCode?j.appCode>inf.appCode:vcmp(j.app,inf.app)>0;if(!webNew&&!appNew)return;
+  const bar=document.createElement("div");bar.className="demo-note updbar";
+  bar.innerHTML=`<button type="button" class="updx" aria-label="Hinweis schließen">✕</button><b>Neue Version verfügbar:</b> ${webNew?`Oberfläche v${esc(j.web)} (du hast v${esc(own)})`:""}${webNew&&appNew?" · ":""}${appNew?`App ${esc(j.app)} (du hast ${esc(inf.app||"?")})`:""}
+    <span class="factions" style="margin-top:8px"><button class="btn primary" type="button" data-u="check">Jetzt aktualisieren</button><a class="btn" href="${esc(j.apk||"https://github.com/beenfuvez/Kursradar/releases/latest")}">App (APK) herunterladen</a></span>
+    <small class="muted" style="display:block;margin-top:6px">Falls „Jetzt aktualisieren“ nichts bewirkt: APK herunterladen und installieren – Depot und Watchlist bleiben erhalten.</small>`;
+  bar.querySelector('[data-u="check"]').addEventListener("click",()=>NATIVE.checkUpdate());
+  bar.querySelector(".updx").addEventListener("click",()=>bar.remove());
+  document.body.append(bar);
+}
 function setView(v){
   if(NO_DEPOT&&v==="depot")v="markt";
   S.view=v;store.set("view",v);
@@ -3373,9 +3388,11 @@ new MutationObserver(retheme).observe(document.documentElement,{attributes:true,
   setAuto();setView(S.view);fillSymList("");setTimeout(pollNews,4000);setMobileTab(store.get("mtab","listen"));
   if(NATIVE){ // In der App: Version antippen = nach Updates suchen
     let inf={};try{inf=JSON.parse(NATIVE.info())}catch{}
+    const own=($("#appVer").textContent.match(/v([\d.]+)/)||[])[1];
     const v=$("#appVer");v.title="Nach Updates suchen";v.style.cursor="pointer";v.setAttribute("role","button");v.tabIndex=0;
     if(inf.app)v.textContent=`v${inf.web||""} · App ${inf.app}`;
     v.addEventListener("click",()=>NATIVE.checkUpdate());
+    setTimeout(()=>updateHint(own,inf),8000);
   }
 })();
 </script>
