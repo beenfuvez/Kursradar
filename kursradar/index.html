@@ -385,6 +385,13 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
   .kgrid{grid-template-columns:minmax(0,1fr)}
 }
 .foot{font-size:12px;color:var(--muted);text-align:center;padding:4px 0 8px}
+/* Markt-Simulator */
+.simform{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:12px 0 4px;align-items:end}
+.simform label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)} .simform label.tg{flex-direction:row;color:var(--fg)}
+.simform input:not([type=checkbox]),.simform select{border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:7px 8px;color:var(--fg);width:100%;min-width:0;font:inherit}
+.simheat{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin:12px 0;font-size:13.5px;background:var(--panel-2)}
+.simheat.down{border-left-color:var(--down)} .simheat.warn{border-left-color:var(--warn)} .simheat.up{border-left-color:var(--up)}
+.simheat ul{margin:6px 0;padding-left:18px} .simheat p{margin:6px 0 0;color:var(--muted)}
 /* Ausgabe ohne Depot */
 :root.nodepot .depot-only{display:none!important}
 @media (max-width:700px){:root.nodepot .mnav{grid-template-columns:repeat(5,1fr)}}
@@ -422,7 +429,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v7.3</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v7.4</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -570,6 +577,25 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
         <label class="tg">Zeitraum <select id="tmHz" class="sel"><option value="day">1 Handelstag (Daytrading)</option><option value="d5">5 Tage</option><option value="d20" selected>20 Tage</option><option value="d60">60 Tage</option></select></label>
         <button class="btn primary" type="button" id="tmBtn">Zeitmaschine: 10.000× testen</button></div>
       <div class="grid2 tgrid"><div id="exitOut"><p class="muted">Noch kein Exit-Plan – „Exit-Plan vorschlagen“ berechnet Stop, drei Gewinnziele und einen nachziehenden Stop.</p></div><div id="tmOut"></div></div>
+    </section>
+
+    <section class="card" id="simCard">
+      <div class="ctitle"><h3>Markt-Simulator</h3></div>
+      <p class="hint" style="margin-top:0">Simuliert 4.000 mögliche Kursverläufe dieser Aktie aus ihren echten früheren Tagesschwankungen (bis zu 10 Jahre) – mit Blasen-Check (z. B. KI-Thema), realistischen Kosten (Spread, Ordergebühr, Stop-Ausführung bei Kurslücken, Abgeltungsteuer) und deiner Verkaufsregel. Im Probehandel kaufst und verkaufst du Tag für Tag auf einem verdeckten simulierten Verlauf.</p>
+      <div class="simform">
+        <label>Betrag € <input id="sAmt" type="number" min="1" step="any" inputmode="decimal" value="1000"></label>
+        <label>Zeitraum <select id="sHz" class="sel"><option value="21">1 Monat</option><option value="63">3 Monate</option><option value="126" selected>6 Monate</option><option value="252">1 Jahr</option><option value="504">2 Jahre</option></select></label>
+        <label>Verkaufsregel <select id="sStrat" class="sel"><option value="hold">Halten bis zum Ende</option><option value="st">Stop-Loss + Gewinnziel</option><option value="tr">Nachziehender Stop</option></select></label>
+        <label id="sStopL" hidden>Stop-Loss % <input id="sStop" type="number" min="1" max="90" step="any" inputmode="decimal"></label>
+        <label id="sTgtL" hidden>Gewinnziel % <input id="sTgt" type="number" min="1" step="any" inputmode="decimal"></label>
+        <label id="sTrailL" hidden>Abstand % <input id="sTrail" type="number" min="1" max="90" step="any" inputmode="decimal"></label>
+        <label>Ordergebühr € <input id="sFee" type="number" min="0" step="any" inputmode="decimal" value="1"></label>
+        <label>Spread % <input id="sSpr" type="number" min="0" step="any" inputmode="decimal" value="0.1"></label>
+        <label class="tg"><input type="checkbox" id="sTax" checked> Abgeltungsteuer (Verluste verrechnet)</label>
+      </div>
+      <div class="factions"><button class="btn primary" type="button" id="simBtn">Simulieren (4.000 Verläufe)</button><button class="btn" type="button" id="simNew">Neu würfeln</button><button class="btn" type="button" id="trainBtn">Probehandel starten</button></div>
+      <div id="simOut"></div>
+      <div id="trainOut"></div>
     </section>
 
     <div class="grid2">
@@ -989,6 +1015,8 @@ function parseChart(j){
   const res=j?.chart?.result?.[0];if(!res)throw new Error(j?.chart?.error?.description||"Keine Daten");
   const q=res.indicators.quote[0];const ts=res.timestamp||[];const bars=[];
   for(let i=0;i<ts.length;i++){if(q.close[i]==null||q.open[i]==null)continue;bars.push({t:ts[i],o:q.open[i],h:q.high[i],l:q.low[i],c:q.close[i],v:q.volume[i]||0})}
+  if(/^\d+(d|wk|mo)$/.test(res.meta?.dataGranularity||"")){const off=res.meta.gmtoffset||0,day=t=>Math.floor((t+off)/86400);
+    for(let i=bars.length-1;i>0;i--)if(day(bars[i].t)===day(bars[i-1].t))bars.splice(i-1,1)}
   const divs=Object.values(res.events?.dividends||{}).map(d=>({t:d.date,a:d.amount}));
   return {bars,divs,meta:res.meta};
 }
@@ -1085,7 +1113,7 @@ function computeMetrics(sym){
   const d=S.daily[sym];if(!d||d.bars.length<30)return null;
   const bars=d.bars, c=bars.map(b=>b.c), v=bars.map(b=>b.v);
   const p=d.meta.regularMarketPrice??c[c.length-1];c[c.length-1]=p;
-  const prev=d.meta.previousClose??d.meta.chartPreviousClose??c[c.length-2];
+  const prev=c.length>1?c[c.length-2]:p; // Schluss des vorigen Handelstags aus den Tageskursen (chartPreviousClose gilt für den Beginn des Abrufzeitraums!)
   const s20=sma(c,20),s50=sma(c,50),s200=sma(c,200)??sma(c,Math.min(c.length,150));
   const s50prev=sma(c,50,c.length-11);const slope50=s50&&s50prev?s50/s50prev-1:0;
   const R=rsi(c);
@@ -1360,10 +1388,26 @@ function rebuildSeries(){
   mainSer.priceScale().applyOptions({scaleMargins:{top:.08,bottom:.22}});
   for(const n of [20,50,200])smaSer[n]=chart.addLineSeries({color:css("--sma"+n),lineWidth:1.5,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,visible:$("#sma"+n).checked});
 }
+/* Bezugskurs für den Zeitraum: 5T = 5 Handelstage zurück, 1M/6M/1J = gleicher Kalendertag damals (wie bei Brokern) */
+const RANGE_MON={"1m":1,"6m":6,"1y":12,"5y":60};
+function refIdx(bars,r){
+  const n=bars.length;if(r==="5d")return Math.max(0,n-6);
+  const d=new Date(bars[n-1].t*1000);d.setUTCMonth(d.getUTCMonth()-RANGE_MON[r]);const t=d.getTime()/1000;
+  let i=n-1;while(i>0&&bars[i].t>t)i--;return i;
+}
+function isTodayBar(t){const a=new Date(t*1000),b=new Date();return a.toDateString()===b.toDateString()}
+function renderChange(m,d,rb){
+  const r=S.range,bars=d.bars;let ref=m.prev,lbl=isTodayBar(bars[bars.length-1].t)?"heute":"letzter Handelstag";
+  if(r!=="1d"){const b=r==="5y"?(rb&&!rb.intraday?rb.bars:null):bars;if(!b)return;
+    const i=refIdx(b,r);ref=b[i].c;const full=r==="5y"?b[0].t<=Date.now()/1000-4.9*31557600:i>0||r==="5d";
+    lbl={"5d":"5 Tage","1m":"1 Monat","6m":"6 Monate","1y":"1 Jahr","5y":"5 Jahre"}[r];
+    if(!full)lbl="seit "+new Date(b[i].t*1000).toLocaleDateString("de-DE",{month:"2-digit",year:"numeric"})}
+  const ch=m.p-ref,pc=ref?m.p/ref-1:null;
+  $("#stChg").innerHTML=`<span class="${cls(ch)}">${ch>0?"+":""}${fmtPx(ch)} (${pct(pc)})</span> <span class="muted">${lbl}</span>`;
+}
 async function getRangeBars(sym){
   const r=S.range;const d=S.daily[sym];
-  const slice={"1m":22,"6m":126,"1y":252}[r];
-  if(slice)return{bars:d.bars,from:d.bars[Math.max(0,d.bars.length-slice)].t,intraday:false};
+  if(["1m","6m","1y"].includes(r))return{bars:d.bars,from:d.bars[refIdx(d.bars,r)].t,intraday:false};
   if(S.mode==="live"){
     const map={"1d":["1d","5m"],"5d":["5d","15m"],"5y":["5y","1wk"]}[r];
     const x=parseChart(await api(`/api/chart?symbol=${encodeURIComponent(sym)}&range=${map[0]}&interval=${map[1]}`));
@@ -1381,7 +1425,7 @@ async function renderStock(keepView=false){
   if(!m){$("#stSub").textContent=sym+" · keine Daten";$("#chartMsg").hidden=false;$("#chartMsg").textContent="Keine Daten für "+sym;return}
   $("#stSub").textContent=`${sym} · ${d.meta.exchangeName||""} · ${m.cur}${BY[sym]?" · "+REG_NAME[BY[sym].reg]:""} · Börsenwert ${fmtBn(m.mcapUSD)}`;
   $("#stPx").textContent=fmtPx(m.p)+" "+m.cur;
-  $("#stChg").innerHTML=`<span class="${cls(m.c1d)}">${m.p-m.prev>0?"+":""}${fmtPx(m.p-m.prev)} (${pct(m.c1d)})</span> <span class="muted">heute</span>`;
+  renderChange(m,d,null);
   const held=S.portfolio.filter(x=>x.sym===sym);let dp="";
   if(held.length){const q=held.reduce((a,x)=>a+x.qty,0),cost=held.reduce((a,x)=>a+toEUR(x.qty*x.buy,x.buyCur||m.cur),0),g=cost?toEUR(m.p*q,m.cur)/cost-1:0;
     dp=` <span class="pill ${g>=0?"up":"down"}">Im Depot: ${fmtQty(q)} Stk · ${pct(g,1)}</span>`}
@@ -1391,7 +1435,7 @@ async function renderStock(keepView=false){
   document.querySelectorAll("#typeSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===S.ctype));
   if(!ensureChart()){$("#chartMsg").textContent="Chart-Bibliothek konnte nicht geladen werden.";return}
   let rb;try{rb=await getRangeBars(sym)}catch(e){$("#chartMsg").hidden=false;$("#chartMsg").textContent="Chartdaten nicht verfügbar: "+e.message;return}
-  if(seq!==renderSeq)return;$("#chartMsg").hidden=true;
+  if(seq!==renderSeq)return;$("#chartMsg").hidden=true;renderChange(m,d,rb);
   if(!mainSer)rebuildSeries();
   const bars=rb.bars;
   mainSer.setData(S.ctype==="candle"?bars.map(b=>({time:b.t,open:b.o,high:b.h,low:b.l,close:b.c})):bars.map(b=>({time:b.t,value:b.c})));
@@ -1403,6 +1447,7 @@ async function renderStock(keepView=false){
   if(!keepView||rb.intraday||!rb.from){rb.from?chart.timeScale().setVisibleRange({from:rb.from,to:bars[bars.length-1].t}):chart.timeScale().fitContent()}
 }
 function renderAnalysis(m){
+  simDefaults(m);
   renderStrategies(m);fillRisk(m);renderForecast(m);renderCompany(m);renderWatchBtn();renderStockNews(m);
   $("#trTitle").innerHTML=`<span class="${m.trend.cls==="side-t"?"":m.trend.cls}">${esc(m.trend.t)}</span>`;
   $("#trText").textContent=m.trend.x;
@@ -1585,7 +1630,7 @@ async function renderInfo(force=false){
   $("#infoStamp").textContent="Stand "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
   // Marktüberblick
   const mk=await pool(MKT,5,async([sym,name])=>{const d=parseChart(await api(`/api/chart?symbol=${encodeURIComponent(sym)}&range=5d&interval=1d`));
-    const p=d.meta.regularMarketPrice,pc=d.meta.chartPreviousClose??d.bars[d.bars.length-2]?.c;return{sym,name,p,ch:pc?p/pc-1:null}});
+    const p=d.meta.regularMarketPrice,pc=d.bars[d.bars.length-2]?.c;return{sym,name,p,ch:pc?p/pc-1:null}}); // Vortag aus den Kerzen – chartPreviousClose wäre der Schluss vor dem 5-Tage-Fenster
   $("#mktTiles").innerHTML=mk.map((x,i)=>x?`<button type="button" class="mtile" data-s="${esc(x.sym)}"><span>${esc(x.name)}</span><b class="num">${fmtPx(x.p)}</b><span class="num ${cls(x.ch)}">${pct(x.ch,2)}</span></button>`
     :`<div class="mtile"><span>${esc(MKT[i][1])}</span><b>–</b></div>`).join("");
   // Nachrichten zu den größten Depotwerten
@@ -2848,6 +2893,221 @@ $("#bubGrid").addEventListener("click",e=>{const b=e.target.closest(".btile[data
 $("#bubCmp").addEventListener("change",e=>{BUB.cmp=e.target.value;store.set("bubCmp",BUB.cmp);renderBubbles()});
 $("#bubLegend").addEventListener("click",e=>{const b=e.target.closest("button[data-h]");if(!b)return;BUB.hide[b.dataset.h]=!BUB.hide[b.dataset.h];store.set("bubHide",BUB.hide);renderBubbles()});
 $("#bubHot").addEventListener("click",e=>{const tr=e.target.closest("tr[data-sym]");if(tr)select(tr.dataset.sym)});
+
+/* ---------- Markt-Simulator: Kursverläufe aus der eigenen Historie, mit Blasen-Risiko und echten Handelskosten ---------- */
+const AI_THEME=new Set(["NVDA","AMD","AVGO","TSM","2330.TW","ASML.AS","ASML","MSFT","GOOGL","GOOG","META","AMZN","ORCL","PLTR","SMCI","ARM","MU","AMAT","LRCX","KLAC",
+  "IFX.DE","CRWD","SNOW","NOW","ANET","VRT","DELL","000660.KS","005930.KS","TSLA","SMH","SOXX","QQQ","EXXT.DE","SXRV.DE"]);
+const SIM={long:{},res:null,seed:1,sym:null,train:null};
+const simNum=id=>parseFloat(String($(id).value).replace(",","."));
+
+async function simHistory(sym){ // möglichst lange Tageshistorie: live 10 Jahre, sonst die vorhandenen Tageskurse
+  if(SIM.long[sym])return SIM.long[sym];let bars=S.daily[sym]?.bars||[];
+  if(S.mode==="live"){try{const d=parseChart(await api(`/api/chart?symbol=${encodeURIComponent(sym)}&range=10y&interval=1d`));if(d.bars.length>bars.length)bars=d.bars}catch{}}
+  return SIM.long[sym]=bars;
+}
+function simPool(bars){ // Tageskerzen relativ zum Vortagesschluss (log): Eröffnung, Hoch, Tief, Schluss
+  const out=[];for(let i=1;i<bars.length;i++){const pc=bars[i-1].c,b=bars[i];if(!(pc>0&&b.c>0&&b.o>0&&b.h>0&&b.l>0))continue;
+    const o=Math.log(b.o/pc),c=Math.log(b.c/pc);if(Math.abs(c)>1.5)continue; // offensichtliche Datenfehler/Splits auslassen
+    out.push({o,c,h:Math.max(Math.log(b.h/pc),o,c),l:Math.min(Math.log(b.l/pc),o,c)})}
+  return out;
+}
+async function bubScoreOf(s){ // Blasen-Score eines Markts (aus dem Blasen-Radar), live ohne Simulations-Ersatz
+  if(!BUB.data[s]){
+    if(S.mode==="live"){try{BUB.data[s]=parseMonthly(await api(`/api/chart?symbol=${encodeURIComponent(s)}&range=max&interval=1mo`));BUB.sim[s]=false}catch{return null}}
+    else{BUB.data[s]=demoMonthly(s);BUB.sim[s]=true}}
+  return bubAnalyze(s)?.cur??null;
+}
+async function simHeat(sym,bars){ // Blasen-Risiko 0–1 aus eigener Überhitzung, Thema/Markt und Bewertung
+  const a=assetOf(sym),c=bars.map(b=>b.c),n=c.length,why=[],d2=[],r1=[];let s=0;
+  for(let i=0;i<n;i++){s+=c[i];if(i>=200)s-=c[i-200];if(i>=199)d2.push(c[i]/(s/200)-1);if(i>=252)r1.push(c[i]/c[i-252]-1)}
+  const rank=v=>{if(v.length<60)return null;const x=v[v.length-1];let b=0;for(const y of v)if(y<x)b++;return b/(v.length-1)};
+  const pd=rank(d2),pr=rank(r1),own=[pd,pr].filter(x=>x!=null),ownP=own.length?own.reduce((x,y)=>x+y,0)/own.length:0.5,ownH=Math.max(0,(ownP-0.5)/0.5);
+  const yrs=nf(0).format(n/(a==="krypto"?365:252));
+  if(pd!=null)why.push(`${pct(d2[d2.length-1],0)} zur 200-Tage-Linie – mehr als an ${pct(pd,0,false)} aller Tage der letzten ${yrs} Jahre`);
+  if(pr!=null)why.push(`12 Monate ${pct(r1[r1.length-1],0)} – stärker als ${pct(pr,0,false)} aller 12-Monats-Phasen seit ${yrs} Jahren`);
+  const ai=AI_THEME.has(sym),tech=(SECTOR[sym]||SECTOR_DE[S.fund[sym]?.sector])==="Technologie";
+  const tSym=a==="krypto"?"BTC-USD":ai?"^SOX":tech?"^NDX":"^GSPC",ts=await bubScoreOf(tSym),themeH=ts==null?0:Math.max(0,(ts-50)/50),wT=a==="krypto"||ai?0.35:tech?0.25:0.15;
+  if(ts!=null)why.push(`${ai?"KI-/Chip-Thema · ":""}Blasen-Score ${esc(bubName(tSym))}: ${ts.toFixed(0)}/100${BUB.sim[tSym]?" (simuliert)":""}`);
+  const pe=S.fund[sym]?.pe,wV=a==="aktie"&&pe>0?0.2:0,valH=!wV?0:pe>80?1:pe>50?0.6:pe>35?0.3:0;
+  if(wV)why.push(`KGV ${nf(0).format(pe)}${valH?" – hoch bewertet":""}`);
+  return {heat:Math.min(1,(0.45*ownH+wT*themeH+wV*valH)/(0.45+wT+wV)),why,ai,tSym,ts};
+}
+
+/* Kern: N Pfade per kreisförmigem Block-Bootstrap (10 Tage, erhält Volatilitäts-Cluster und dicke Ränder) aus echten Tageskerzen.
+   - Drift: historische Rendite wird herausgerechnet und durch die Modellrendite ersetzt (sonst würde ein Boom einfach fortgeschrieben)
+   - Volatilität: startet bei der aktuellen Schwankung und nähert sich der langjährigen an
+   - Blasen-Risiko: zufällige Korrekturphasen (15–50 Tage), Häufigkeit und Tiefe steigen mit dem Blasen-Risiko;
+     dafür steigt der Kurs außerhalb der Korrekturen schneller – Übertreibungen können also auch weiterlaufen
+   - Handel: Spread, Ordergebühr, Stop-Ausführung mit Schlupf und Kurslücken, Abgeltungsteuer */
+function simRun(o){
+  const {pool,H,N,seed,p0,kr}=o,r=rng(seed),L=10,spy=kr?365:252;
+  let mu=0;for(const b of pool)mu+=b.c;mu/=pool.length;let v=0;for(const b of pool)v+=(b.c-mu)**2;const sdH=Math.sqrt(v/pool.length);
+  const ratio=Math.min(2,Math.max(0.6,o.sigNow/Math.sqrt(spy)/sdH));
+  const lamY=0.05+0.35*o.heat,lam=lamY/spy,jMin=kr?0.25:0.12,jMax=Math.min(0.85,(0.2+0.3*o.heat)*(kr?1.5:1));
+  const lamE=lam/(1+lam*32.5); // während einer Korrektur (Ø 32,5 Tage) beginnt keine neue
+  const muD=Math.log(1+o.muAnn)/spy-Math.log(1-lamE*(jMin+jMax)/2),slip=kr?0.005:0.002; // Ausgleich: Erwartungswert bleibt trotz Korrekturen bei muAnn
+  // exakter Schwankungsabschlag aus der echten Verteilung (dicke Ränder): K(s)=log E[exp(s·(r−μ))]
+  const KT=[];for(let i=0;i<=80;i++){const sc=i*0.05;let a=0;for(const b of pool)a+=Math.exp(sc*(b.c-mu));KT.push(Math.log(a/pool.length))}
+  const K=sc=>{const x=Math.min(80,sc/0.05),i=Math.floor(x);return KT[i]+(KT[Math.min(80,i+1)]-KT[i])*(x-i)};
+  const fx=o.fx,spr=o.spr/2,fee=o.fee,stopL=p0*(1-o.sp),tgtL=p0*(1+o.tp),trp=o.trp;
+  const eb=p0*(1+spr),qW=Math.floor((o.amt-fee)/(eb*fx)),frac=qW<1,q=frac?Math.max(0,(o.amt-fee)/(eb*fx)):qW,cost=q*eb*fx+fee;
+  const net=px=>{const g=q*px*(1-spr)*fx-fee-cost;return o.tax?g*(1-TAX):g}; // Verluste mindern über den Verlustverrechnungstopf die Steuer auf andere Gewinne
+  const prices=new Float32Array(N*(H+1)),crash=new Uint8Array(N),R={hold:[],st:[],tr:[]},mdd=new Float32Array(N);
+  for(let k=0;k<N;k++){
+    let p=p0,j=0,idx=0,cr=0,crStep=0,peak=p0,dd=0,st=null,stW="ende",stD=H,tr=null,trW="ende",trD=H;prices[k*(H+1)]=p0;
+    for(let t=1;t<=H;t++){
+      if(j%L===0)idx=Math.floor(r()*pool.length);const b=pool[(idx+j%L)%pool.length];j++; // kreisförmige Blöcke: jeder Tag gleich oft
+      if(!cr&&r()<lam){cr=Math.round(15+r()*35);crStep=Math.log(1-(jMin+r()*(jMax-jMin)))/cr;crash[k]=1}
+      let sc=1+(ratio-1)*Math.exp(-t/30);if(cr)sc*=1.6;
+      const sf=muD-sc*mu-K(sc)+(cr?crStep:0);if(cr)cr--;
+      const O=p*Math.exp(sc*b.o+sf),Hh=p*Math.exp(sc*b.h+sf),Lo=p*Math.exp(sc*b.l+sf),C=p*Math.exp(sc*b.c+sf);
+      if(st==null){ // Stop zuerst prüfen (Reihenfolge im Tag unbekannt → vorsichtig)
+        if(O<=stopL){st=O*(1-slip);stW="stop";stD=t}else if(O>=tgtL){st=O;stW="ziel";stD=t}
+        else if(Lo<=stopL){st=stopL*(1-slip);stW="stop";stD=t}else if(Hh>=tgtL){st=tgtL;stW="ziel";stD=t}}
+      if(tr==null){const ts=peak*(1-trp);if(O<=ts){tr=O*(1-slip);trW="stop";trD=t}else if(Lo<=ts){tr=ts*(1-slip);trW="stop";trD=t}}
+      peak=Math.max(peak,C);dd=Math.min(dd,Lo/p0-1);p=C;prices[k*(H+1)+t]=C;
+    }
+    mdd[k]=dd;R.hold.push({v:net(p),w:"ende",d:H});R.st.push({v:net(st??p),w:stW,d:stD});R.tr.push({v:net(tr??p),w:trW,d:trD});
+  }
+  const stat=a=>{const v=a.map(x=>x.v).sort((x,y)=>x-y),n=v.length,w5=v.slice(0,Math.max(1,Math.floor(n*0.05)));
+    return {mean:v.reduce((x,y)=>x+y,0)/n,med:quant(v,0.5),q05:quant(v,0.05),q95:quant(v,0.95),cvar:w5.reduce((x,y)=>x+y,0)/w5.length,
+      pLoss:v.filter(x=>x<0).length/n,pStop:a.filter(x=>x.w==="stop").length/n,pZiel:a.filter(x=>x.w==="ziel").length/n,days:a.reduce((x,y)=>x+y.d,0)/n,vals:v}};
+  const st={hold:stat(R.hold),st:stat(R.st),tr:stat(R.tr)};
+  const cIdx=[...crash.keys()].filter(k=>crash[k]),cr={share:cIdx.length/N,hold:cIdx.length?cIdx.reduce((x,k)=>x+R.hold[k].v,0)/cIdx.length:null};
+  const step=Math.max(1,Math.floor(H/90)),band=[];
+  for(let t=0;t<=H;t+=step){const col=new Float64Array(N);for(let k=0;k<N;k++)col[k]=prices[k*(H+1)+t];col.sort();
+    band.push({t,q05:col[Math.floor(N*0.05)],q25:col[Math.floor(N*0.25)],q50:col[Math.floor(N*0.5)],q75:col[Math.floor(N*0.75)],q95:col[Math.floor(N*0.95)]})}
+  if(band[band.length-1].t!==H){const col=new Float64Array(N);for(let k=0;k<N;k++)col[k]=prices[k*(H+1)+H];col.sort();
+    band.push({t:H,q05:col[Math.floor(N*0.05)],q25:col[Math.floor(N*0.25)],q50:col[Math.floor(N*0.5)],q75:col[Math.floor(N*0.75)],q95:col[Math.floor(N*0.95)]})}
+  const md=[...mdd].sort((x,y)=>x-y);
+  return {...o,prices,crash,st,cr,band,ratio,lamY,jMin,jMax,q,frac,cost,mddMed:quant(md,0.5),mddBad:quant(md,0.1),sdH,spy};
+}
+
+function simFan(R,hist){
+  const W=720,Hh=260,l=58,rr=12,t=12,b=26,H=R.H,nh=hist.length,x0=l+(W-l-rr)*nh/(nh+H);
+  const all=[...hist,...R.band.flatMap(x=>[x.q05,x.q95]),R.p0*(1-R.sp)];if(R.strat==="st")all.push(R.p0*(1+R.tp));
+  const mn=Math.min(...all)*0.97,mx=Math.max(...all)*1.03,X=i=>l+(i+nh)/(nh+H)*(W-l-rr),Y=v=>t+(Math.log(mx)-Math.log(v))/Math.log(mx/mn)*(Hh-t-b);
+  const area=(a,bk)=>R.band.map((x,i)=>(i?"L":"M")+X(x.t).toFixed(1)+","+Y(x[a]).toFixed(1)).join("")+[...R.band].reverse().map(x=>"L"+X(x.t).toFixed(1)+","+Y(x[bk]).toFixed(1)).join("")+"Z";
+  let g=`<rect x="${x0}" y="${t}" width="${W-rr-x0}" height="${Hh-t-b}" fill="var(--panel-2)"/>`;
+  for(let i=0;i<=4;i++){const v=Math.exp(Math.log(mn)+i/4*Math.log(mx/mn));g+=`<line x1="${l}" x2="${W-rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmtPx(v)}</text>`}
+  g+=`<path d="${area("q05","q95")}" fill="var(--accent)" opacity=".14"/><path d="${area("q25","q75")}" fill="var(--accent)" opacity=".24"/>`;
+  for(let k=0;k<3;k++){let d="";for(let i=0;i<=H;i+=Math.max(1,Math.floor(H/150)))d+=(d?"L":"M")+X(i).toFixed(1)+","+Y(R.prices[k*(H+1)+i]).toFixed(1);g+=`<path d="${d}" fill="none" stroke="var(--muted)" stroke-width="1" opacity=".55"/>`}
+  g+=`<path d="${R.band.map((x,i)=>(i?"L":"M")+X(x.t).toFixed(1)+","+Y(x.q50).toFixed(1)).join("")}" fill="none" stroke="var(--accent)" stroke-width="2.2"/>`;
+  g+=`<path d="${hist.map((v,i)=>(i?"L":"M")+X(i-nh+1).toFixed(1)+","+Y(v).toFixed(1)).join("")}" fill="none" stroke="var(--fg)" stroke-width="1.6"/>`;
+  const hl=(v,c,txt)=>v>mn&&v<mx?`<line x1="${x0}" x2="${W-rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="${c}" stroke-dasharray="5 4"/><text x="${W-rr-4}" y="${Y(v)-4}" text-anchor="end" font-size="11" fill="${c}">${txt}</text>`:"";
+  if(R.strat==="st"){g+=hl(R.p0*(1-R.sp),"var(--down)","Stop "+fmtPx(R.p0*(1-R.sp)));g+=hl(R.p0*(1+R.tp),"var(--up)","Ziel "+fmtPx(R.p0*(1+R.tp)))}
+  g+=`<text x="${x0}" y="${Hh-6}" text-anchor="middle" font-size="11" fill="var(--muted)">heute</text><text x="${l}" y="${Hh-6}" font-size="11" fill="var(--muted)">−${nh} Tage</text><text x="${W-rr}" y="${Hh-6}" text-anchor="end" font-size="11" fill="var(--muted)">+${R.hzLbl}</text>`;
+  return `<svg viewBox="0 0 ${W} ${Hh}" class="bsvg" role="img" aria-label="Kursverlauf und simulierte Spanne: dunkles Band 50 %, helles Band 90 % der Verläufe, Linie = Median">${g}</svg>`;
+}
+function simHist(vals){
+  const lo=quant(vals,0.01),hi=quant(vals,0.99),nb=26,bins=new Array(nb).fill(0),W=560,Hh=110,pad=14;if(!(hi>lo))return"";
+  for(const v of vals){const i=Math.min(nb-1,Math.max(0,Math.floor((v-lo)/(hi-lo)*nb)));bins[i]++}
+  const mx=Math.max(...bins),bw=(W-2*pad)/nb,xr=v=>pad+(v-lo)/(hi-lo)*(W-2*pad);
+  return `<svg class="hist" viewBox="0 0 ${W} ${Hh+22}" role="img" aria-label="Verteilung des Netto-Ergebnisses in Euro">${bins.map((c,i)=>{const x0=lo+i/nb*(hi-lo),x1=lo+(i+1)/nb*(hi-lo),h=mx?c/mx*(Hh-8):0;
+    return `<rect x="${(pad+i*bw+1).toFixed(1)}" y="${(Hh-h).toFixed(1)}" width="${(bw-2).toFixed(1)}" height="${h.toFixed(1)}" class="${x1<=0?"neg":x0>=0?"pos":"zero"}"/>`}).join("")}
+    ${lo<0&&hi>0?`<line x1="${xr(0)}" x2="${xr(0)}" y1="0" y2="${Hh}" class="zl"/>`:""}<text x="${pad}" y="${Hh+15}">${fmtEur(lo)}</text><text x="${W-pad}" y="${Hh+15}" text-anchor="end">${fmtEur(hi)}</text>
+    ${lo<0&&hi>0?`<text x="${xr(0)}" y="${Hh+15}" text-anchor="middle">0 €</text>`:""}</svg>`;
+}
+const SIM_STRAT={hold:"Halten bis zum Ende",st:"Stop-Loss + Gewinnziel",tr:"Nachziehender Stop"};
+function simDefaults(m){ // beim Wechsel der Aktie: passende Startwerte, alte Ergebnisse weg
+  if(SIM.sym===m.sym)return;SIM.sym=m.sym;SIM.res=null;SIM.train=null;$("#simOut").innerHTML="";$("#trainOut").innerHTML="";
+  const a=assetOf(m.sym),H=+$("#sHz").value,sg=Math.min(Math.max(m.vol1y||m.vol||0.3,0.1),1.5),sp=Math.round(Math.min(30,Math.max(5,sg*Math.sqrt(H/252)*100)));
+  $("#sStop").value=sp;$("#sTgt").value=sp*2;$("#sTrail").value=sp;$("#sSpr").value=a==="krypto"?0.5:a==="etf"?0.1:m.mcapUSD>50?0.05:0.2;
+}
+function simStratUI(){const v=$("#sStrat").value;$("#sStopL").hidden=v!=="st";$("#sTgtL").hidden=v!=="st";$("#sTrailL").hidden=v!=="tr"}
+
+async function runSim(newSeed){
+  const m=S.metrics[S.sel],out=$("#simOut");if(!m)return;if(newSeed)SIM.seed++;
+  const amt=simNum("#sAmt"),fee=simNum("#sFee")||0,spr=(simNum("#sSpr")||0)/100,sp=simNum("#sStop")/100,tp=simNum("#sTgt")/100,trp=simNum("#sTrail")/100;
+  if(!(amt>fee)){out.innerHTML='<p class="fmsg err">Bitte einen Anlagebetrag eingeben, der höher als die Ordergebühr ist.</p>';return}
+  if(!(sp>0&&sp<0.95&&tp>0&&trp>0&&trp<0.95)){out.innerHTML='<p class="fmsg err">Bitte Stop-Loss, Gewinnziel und Nachzieh-Stop in Prozent angeben (z. B. 10).</p>';return}
+  out.innerHTML='<p class="muted">Lade Kurshistorie und prüfe das Blasen-Risiko …</p>';$("#trainOut").innerHTML="";SIM.train=null;
+  const sym=m.sym,bars=await simHistory(sym),pool=simPool(bars);
+  if(pool.length<120){out.innerHTML='<p class="fmsg err">Zu wenig Kurshistorie für eine Simulation (mindestens ein halbes Jahr nötig).</p>';return}
+  const hz=await simHeat(sym,bars),fc=forecast(sym),a=assetOf(sym),kr=a==="krypto",base=fc?.mu??(kr?0:0.07);
+  const hd=+$("#sHz").value,H=kr?Math.round(hd*365/252):hd,hzLbl=$("#sHz").selectedOptions[0].textContent;
+  if(S.sel!==sym)return;out.innerHTML='<p class="muted">Simuliere 4.000 Kursverläufe …</p>';await new Promise(r=>setTimeout(r,20));
+  const t0=performance.now();
+  const R=simRun({pool,H,N:4000,seed:hash(sym)+SIM.seed*7919,p0:m.p,kr,sigNow:Math.min(Math.max(m.vol||0.3,0.05),3),muAnn:base-0.05*hz.heat,heat:hz.heat,
+    amt,fee,spr,sp,tp,trp,tax:$("#sTax").checked,fx:toEUR(1,m.cur)||1,strat:$("#sStrat").value,hzLbl});
+  Object.assign(R,{sym,hz,base,bars,ms:performance.now()-t0,hd});SIM.res=R;renderSim();
+}
+function renderSim(){
+  const R=SIM.res,out=$("#simOut");if(!R||R.sym!==S.sel)return;const m=S.metrics[R.sym],X=R.st[R.strat],fin=R.band[R.band.length-1],hist=R.bars.slice(-Math.min(120,Math.max(40,R.H))).map(b=>b.c);
+  hist[hist.length-1]=R.p0;const hcl=R.hz.heat>=0.6?"down":R.hz.heat>=0.35?"warn":"up",hl=R.hz.heat>=0.6?"hoch":R.hz.heat>=0.35?"erhöht":"gering";
+  const row=(k,lbl)=>{const s=R.st[k];return `<tr${k===R.strat?' class="bcurrow"':""}><td>${lbl}</td><td class="num ${cls(s.mean)}">${fmtEur(s.mean)}</td><td class="num ${cls(s.med)}">${fmtEur(s.med)}</td>
+    <td class="num">${pct(s.pLoss,0,false)}</td><td class="num down">${fmtEur(s.q05)}</td><td class="num ${cls(s.q95)}">${fmtEur(s.q95)}</td><td class="num">${nf(0).format(s.days)} T</td></tr>`};
+  const best=Object.keys(R.st).sort((a,b)=>R.st[b].mean-R.st[a].mean)[0];
+  out.innerHTML=`
+  <div class="simheat ${hcl}"><b>Blasen-Risiko: ${Math.round(R.hz.heat*100)}/100 (${hl})</b>
+    <ul>${R.hz.why.map(w=>`<li>${w}</li>`).join("")}</ul>
+    <p>Im Modell: erwartete Rendite ${pct(R.muAnn,1)} p. a.${R.hz.heat>0.05?` (Grundannahme ${pct(R.base,1)}, Abschlag wegen Überhitzung)`:""} · Korrekturphase im Schnitt alle ${nf(1).format(1/R.lamY)} Jahre mit −${pct(R.jMin,0,false).replace(" %","")} bis −${pct(R.jMax,0,false)} · Schwankung aktuell ${nf(1).format(R.ratio)}× so hoch wie im Schnitt.</p></div>
+  ${simFan(R,hist)}
+  <div class="blegend"><span><i style="background:var(--fg)"></i>bisher</span><span><i style="background:var(--accent)"></i>Median</span><span><i style="background:var(--accent);opacity:.4"></i>50 % der Verläufe</span><span><i style="background:var(--accent);opacity:.18"></i>90 % der Verläufe</span><span><i style="background:var(--muted)"></i>3 Beispielverläufe</span></div>
+  <div class="bstats">
+    <div><span class="label">Kurs in ${{21:"1 Monat",63:"3 Monaten",126:"6 Monaten",252:"1 Jahr",504:"2 Jahren"}[R.hd]}</span><b class="num">${fmtPx(fin.q50)}</b><small>90 %: ${fmtPx(fin.q05)} – ${fmtPx(fin.q95)} ${esc(m.cur)}</small></div>
+    <div><span class="label">Ø Netto-Ergebnis</span><b class="num ${cls(X.mean)}">${fmtEur(X.mean)}</b><small>Median ${fmtEur(X.med)}</small></div>
+    <div><span class="label">Verlust-Wahrscheinlichkeit</span><b class="num">${pct(X.pLoss,0,false)}</b><small>nach Kosten${R.tax?" und Steuern":""}</small></div>
+    <div><span class="label">Schlechteste 5 %</span><b class="num down">${fmtEur(X.q05)}</b><small>im Schnitt ${fmtEur(X.cvar)}</small></div>
+    <div><span class="label">Zwischen-Tief (Halten)</span><b class="num down">${pct(R.mddMed,0)}</b><small>jeder 10. Verlauf: ${pct(R.mddBad,0)}</small></div>
+    <div><span class="label">Mit Korrekturphase</span><b class="num">${pct(R.cr.share,0,false)}</b><small>Ø Halten dann ${fmtEur(R.cr.hold)}</small></div>
+  </div>
+  ${R.strat!=="hold"?`<p class="muted" style="font-size:12.5px;margin:8px 0 0">${R.strat==="st"?`Ziel erreicht: ${pct(X.pZiel,0,false)} · Stop ausgelöst: ${pct(X.pStop,0,false)} · `:`Stop ausgelöst: ${pct(X.pStop,0,false)} · `}am Ende noch gehalten: ${pct(1-X.pZiel-X.pStop,0,false)}</p>`:""}
+  <h4 style="margin:14px 0 4px">Verteilung: ${esc(SIM_STRAT[R.strat])}</h4>${simHist(X.vals)}
+  <h4 style="margin:14px 0 4px">Welche Verkaufsregel schnitt in denselben 4.000 Verläufen ab?</h4>
+  <div class="bscroll"><table><thead><tr><th>Regel</th><th>Ø netto</th><th>Median</th><th>Verlust</th><th>Schlechteste 5 %</th><th>Beste 5 %</th><th>Haltedauer</th></tr></thead>
+    <tbody>${row("hold",SIM_STRAT.hold)}${row("st",`Stop −${nf(0).format(R.sp*100)} % / Ziel +${nf(0).format(R.tp*100)} %`)}${row("tr",`Nachziehender Stop −${nf(0).format(R.trp*100)} %`)}</tbody></table></div>
+  <p style="font-size:13.5px;max-width:90ch">${best===R.strat?"Deine gewählte Regel hatte hier den besten Durchschnitt.":`Den besten Durchschnitt hatte „${esc(SIM_STRAT[best])}“.`} Stops verringern meist die schlimmsten Verluste, kosten aber oft Rendite, weil man in Schwankungen ausgestoppt wird – entscheidend ist, welches Risiko du tragen kannst.</p>
+  <p class="hint">Kauf ${R.frac?`${nf(3).format(R.q)} Stück (Bruchstück, Betrag reicht nicht für eine ganze Aktie)`:`${R.q} Stück`} zu ${fmtPx(R.p0*(1+R.spr/2))} ${esc(m.cur)} inkl. halbem Spread = ${fmtEur(R.cost)} mit Gebühr. Kursdaten: ${R.bars.length} Handelstage (${nf(1).format(R.bars.length/R.spy)} Jahre)${S.mode!=="live"?" – simuliert":""}. Gerechnet in ${nf(0).format(R.ms)} ms.
+    Nicht enthalten: Wechselkurs-Schwankungen (fester Kurs ${nf(4).format(R.fx)} €/${esc(m.cur)}), Dividenden, Sparerpauschbetrag, Nachrichten. Steuer: 26,375 % auf Gewinne, Verluste mindern die Steuer auf andere Gewinne. Simulation, keine Prognose und keine Anlageberatung.</p>`;
+}
+
+/* Probehandel: ein zufälliger simulierter Verlauf wird Tag für Tag aufgedeckt – kaufen und verkaufen wie im Echtbetrieb */
+function startTrain(){
+  const R=SIM.res;if(!R||R.sym!==S.sel){runSim().then(()=>SIM.res&&startTrain());return}
+  const k=Math.floor(Math.random()*4000);SIM.train={k,t:0,cash:simNum("#sAmt"),q:0,basis:0,fees:0,taxes:0,log:[],done:false};renderTrain();
+  $("#trainOut").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function trainPx(T,t){const R=SIM.res;return R.prices[T.k*(R.H+1)+t]}
+function trainAct(a){
+  const T=SIM.train,R=SIM.res;if(!T||T.done)return;const px=trainPx(T,T.t),fx=R.fx,s=R.spr/2;
+  if(a==="buy"&&!T.q){const e=px*(1+s)*fx;let q=Math.floor((T.cash-R.fee)/e);if(q<1)q=Math.max(0,(T.cash-R.fee)/e);if(!(q>0))return;
+    T.cash-=q*e+R.fee;T.fees+=R.fee+q*px*s*fx;T.q=q;T.basis=q*e+R.fee;T.log.push(["Kauf",T.t,px,q])}
+  else if(a==="sell"&&T.q){const g=T.q*px*(1-s)*fx-R.fee,gain=g-T.basis,tax=R.tax?gain*TAX:0;T.cash+=g-tax;T.fees+=R.fee+T.q*px*s*fx;T.taxes+=tax;T.log.push(["Verkauf",T.t,px,T.q,gain-tax]);T.q=0;T.basis=0}
+  else if(/^\+\d+$/.test(a)){T.t=Math.min(R.H,T.t+ +a.slice(1));if(T.t>=R.H){if(T.q)trainAct("sell");T.done=true}}
+  else if(a==="end"){T.t=R.H;if(T.q)trainAct("sell");T.done=true}
+  renderTrain();
+}
+function renderTrain(){
+  const T=SIM.train,R=SIM.res,el=$("#trainOut");if(!T||!R){el.innerHTML="";return}
+  const m=S.metrics[R.sym],px=trainPx(T,T.t),hist=R.bars.slice(-60).map(b=>b.c),path=[];for(let i=0;i<=T.t;i++)path.push(trainPx(T,i));
+  const W=720,Hh=200,l=58,rr=12,tp=10,bt=22,N=hist.length+R.H,ys=[...hist,...path],mn=Math.min(...ys)*0.97,mx=Math.max(...ys)*1.03;
+  const X=i=>l+i/(N-1)*(W-l-rr),Y=v=>tp+(mx-v)/(mx-mn)*(Hh-tp-bt);
+  let g=`<rect x="${X(hist.length-1)}" y="${tp}" width="${X(N-1)-X(hist.length-1)}" height="${Hh-tp-bt}" fill="var(--panel-2)"/>`;
+  for(let i=0;i<=3;i++){const v=mn+i/3*(mx-mn);g+=`<line x1="${l}" x2="${W-rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmtPx(v)}</text>`}
+  g+=`<path d="${hist.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+","+Y(v).toFixed(1)).join("")}" fill="none" stroke="var(--muted)" stroke-width="1.4"/>`;
+  g+=`<path d="${path.map((v,i)=>(i?"L":"M")+X(hist.length-1+i).toFixed(1)+","+Y(v).toFixed(1)).join("")}" fill="none" stroke="var(--accent)" stroke-width="2"/>`;
+  for(const [w,t,p] of T.log)g+=`<circle cx="${X(hist.length-1+t)}" cy="${Y(p)}" r="5" fill="${w==="Kauf"?"var(--up)":"var(--down)"}" stroke="var(--panel)" stroke-width="1.5"/>`;
+  const val=T.cash+(T.q?T.q*px*(1-R.spr/2)*R.fx-R.fee:0),start=simNum("#sAmt")||T.cash,pl=val-start;
+  let fin="";
+  if(T.done){const p0=trainPx(T,0),pH=trainPx(T,R.H),e=p0*(1+R.spr/2)*R.fx;let q=Math.floor((start-R.fee)/e);if(q<1)q=(start-R.fee)/e;
+    let g2=q*pH*(1-R.spr/2)*R.fx-R.fee-(q*e+R.fee);if(R.tax)g2*=1-TAX;
+    fin=`<div class="simheat ${pl>=g2?"up":"warn"}"><b>Ergebnis: ${fmtEur(pl)} (${pct(pl/start,1)})</b> – Kaufen &amp; Halten im selben Verlauf: ${fmtEur(g2)}. ${pl>=g2?"Du warst besser als Kaufen &amp; Halten.":"Kaufen &amp; Halten war besser – das geht den meisten aktiven Händlern so."}
+      <br>Gebühren und Spread: ${fmtEur(T.fees)}${T.taxes?` · ${T.taxes>0?"Steuern":"Steuerersparnis (Verlustverrechnung)"}: ${fmtEur(Math.abs(T.taxes))}`:""} · Trades: ${T.log.length} · ${R.crash[T.k]?"In diesem Verlauf gab es eine Korrekturphase.":"In diesem Verlauf gab es keine Korrekturphase."}</div>`}
+  el.innerHTML=`<div class="ctitle" style="margin-top:16px"><h4 style="margin:0">Probehandel · Tag ${T.t} von ${R.H}</h4><span class="muted" style="font-size:12.5px">ein zufälliger Verlauf aus der Simulation – die Zukunft ist verdeckt</span></div>
+  <svg viewBox="0 0 ${W} ${Hh}" class="bsvg" role="img" aria-label="Probehandel: Kursverlauf bis Tag ${T.t}">${g}</svg>
+  <div class="bstats"><div><span class="label">Kurs</span><b class="num">${fmtPx(px)}</b><small>${esc(m?.cur||"")} · seit Start ${pct(px/trainPx(T,0)-1,1)}</small></div>
+    <div><span class="label">Bestand</span><b class="num">${T.q?(T.q%1?nf(3).format(T.q):T.q)+" Stk":"–"}</b><small>Bargeld ${fmtEur(T.cash)}</small></div>
+    <div><span class="label">Depotwert</span><b class="num ${cls(pl)}">${fmtEur(val)}</b><small>${pct(pl/start,1)} · nach Verkaufskosten</small></div></div>
+  ${T.done?fin:`<div class="factions"><button class="btn primary" type="button" data-ta="buy"${T.q?" disabled":""}>Kaufen</button><button class="btn" type="button" data-ta="sell"${T.q?"":" disabled"}>Verkaufen</button>
+    <button class="btn" type="button" data-ta="+1">+1 Tag</button><button class="btn" type="button" data-ta="+5">+1 Woche</button><button class="btn" type="button" data-ta="+21">+1 Monat</button><button class="btn" type="button" data-ta="end">Bis zum Ende</button></div>`}
+  ${T.log.length?`<p class="muted" style="font-size:12.5px">${T.log.map(([w,t,p,q,r])=>`Tag ${t}: ${w} ${q%1?nf(3).format(q):q} Stk zu ${fmtPx(p)}${r!=null?` (${fmtEur(r)} netto)`:""}`).join(" · ")}</p>`:""}`;
+}
+$("#simBtn").addEventListener("click",()=>runSim());
+$("#simNew").addEventListener("click",()=>runSim(true));
+$("#trainBtn").addEventListener("click",startTrain);
+$("#sStrat").addEventListener("change",()=>{simStratUI();if(SIM.res){SIM.res.strat=$("#sStrat").value;renderSim()}});
+$("#trainOut").addEventListener("click",e=>{const b=e.target.closest("button[data-ta]");if(b)trainAct(b.dataset.ta)});
 
 function setView(v){
   if(NO_DEPOT&&v==="depot")v="markt";
