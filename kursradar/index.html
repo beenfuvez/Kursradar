@@ -385,6 +385,9 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
   .kgrid{grid-template-columns:minmax(0,1fr)}
 }
 .foot{font-size:12px;color:var(--muted);text-align:center;padding:4px 0 8px}
+/* Ausgabe ohne Depot */
+:root.nodepot .depot-only{display:none!important}
+@media (max-width:700px){:root.nodepot .mnav{grid-template-columns:repeat(5,1fr)}}
 /* Blasen-Radar */
 .disc{background:var(--warn-soft);border:1px solid var(--warn);border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13.5px}
 .disc summary{color:var(--fg)} .disc p{color:var(--fg);max-width:90ch;margin:8px 0 0}
@@ -419,7 +422,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
 <div class="app">
   <aside class="side" aria-label="Top-10-Listen">
     <div class="brand">
-      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v7.2</small></h1>
+      <h1><svg class="logo" viewBox="30 26 48 55" aria-hidden="true"><path fill="var(--accent)" d="M33,46 L35,29 L46,38 Q54,35 62,38 L73,29 L75,46 Q77,72 54,78 Q31,72 33,46 Z"/><circle cx="45" cy="52" r="8" fill="var(--panel)"/><circle cx="63" cy="52" r="8" fill="var(--panel)"/><circle cx="46" cy="51" r="3.5" fill="var(--fg)"/><circle cx="62" cy="51" r="3.5" fill="var(--fg)"/><path fill="var(--warn)" d="M50,61 L58,61 L54,68 Z"/></svg><b class="wm">Owl<span>go</span></b><small class="ver" id="appVer">v7.3</small></h1>
       <span id="modeBadge" class="badge demo">Demo</span>
     </div>
     <div class="toolbar">
@@ -432,7 +435,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
     <div class="viewsw" role="group" aria-label="Ansicht">
       <button type="button" data-v="markt" id="vMarkt">Markt</button>
       <button type="button" data-v="strat" id="vStrat">Strategien</button>
-      <button type="button" data-v="depot" id="vDepot">Depot <span class="cnt" id="depotCount"></span></button>
+      <button type="button" data-v="depot" id="vDepot" class="depot-only">Depot <span class="cnt" id="depotCount"></span></button>
       <button type="button" data-v="info" id="vInfo">Infos</button>
       <button type="button" data-v="blase" id="vBlase">Blasen-Radar</button>
     </div>
@@ -464,7 +467,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
     <button type="button" data-m="listen">Märkte</button>
     <button type="button" data-m="analyse">Analyse</button>
     <button type="button" data-m="strat">Strategien</button>
-    <button type="button" data-m="depot">Depot</button>
+    <button type="button" data-m="depot" class="depot-only">Depot</button>
     <button type="button" data-m="info">Infos</button>
     <button type="button" data-m="blase">Blasen</button>
   </nav>
@@ -675,7 +678,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
         <div class="sbar"><div class="chips" id="stratCats"><button class="chip" type="button" data-c="alle">Alle</button><button class="chip" type="button" data-c="A">Sehr gut belegt</button><button class="chip" type="button" data-c="B">Gut belegt</button><button class="chip" type="button" data-c="C">Klassisch</button>
           <button class="chip" type="button" data-c="D">Momentum-Varianten</button><button class="chip" type="button" data-c="E">Bewertung &amp; Bilanz</button><button class="chip" type="button" data-c="F">Kapitalmarkt</button>
           <button class="chip" type="button" data-c="G">Risiko &amp; Verhalten</button><button class="chip" type="button" data-c="H">Informationen</button><button class="chip" type="button" data-c="I">Kalender</button></div>
-          <label class="tg"><input type="checkbox" id="stratMine"> Nur meine Depotwerte</label></div>
+          <label class="tg depot-only"><input type="checkbox" id="stratMine"> Nur meine Depotwerte</label></div>
         <p class="muted" id="fundState" style="font-size:12.5px;margin:8px 0 0"></p>
       </section>
       <div id="stratList" class="stratlist"></div>
@@ -689,7 +692,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
       <section class="card" id="topCard" hidden>
         <div class="ctitle"><h3>Top-Treffer: Aktien, auf die die meisten Strategien zutreffen</h3></div>
         <p class="hint" style="margin-top:0">Gezählt werden alle prüfbaren Strategien, die für eine Aktie sprechen. „Meiden“-Strategien (M-Score, Distress, Emissionen, IPO, MAX-Effekt, Short-Quote) zählen nicht als Treffer, sondern erscheinen als Warnsignal. Aktien mit mehr Daten können mehr Treffer sammeln – die Quote (Balken) zeigt den Anteil.</p>
-        <div class="sbar"><div class="chips" id="topFilters"><button class="chip" type="button" data-f="alle">Alle Aktien</button><button class="chip" type="button" data-f="depot">Mein Depot</button><button class="chip" type="button" data-f="watch">Watchlist</button></div>
+        <div class="sbar"><div class="chips" id="topFilters"><button class="chip" type="button" data-f="alle">Alle Aktien</button><button class="chip depot-only" type="button" data-f="depot">Mein Depot</button><button class="chip" type="button" data-f="watch">Watchlist</button></div>
           <label class="tg"><input type="checkbox" id="topAB"> Nur gut belegte Strategien (1–25)</label></div>
         <div id="topList" style="margin-top:10px"></div>
       </section>
@@ -755,7 +758,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
       </section>
       <div class="grid2">
         <section class="card">
-          <div class="ctitle"><h3>Nachrichten zu deinem Depot</h3><button class="btn" type="button" id="newsReload">Neu laden</button></div>
+          <div class="ctitle"><h3 id="newsDepotH">Nachrichten zu deinem Depot</h3><button class="btn" type="button" id="newsReload">Neu laden</button></div>
           <div id="newsDepot" class="news"></div>
         </section>
         <section class="card">
@@ -764,7 +767,7 @@ details p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
         </section>
       </div>
       <section class="card">
-        <h3>Termine deiner Depotwerte</h3>
+        <h3 id="eventsH">Termine deiner Depotwerte</h3>
         <div id="events"></div>
       </section>
       <section class="card know" id="knowCard">
@@ -914,6 +917,8 @@ const pct = (v,d=2,sign=true)=>v==null||!isFinite(v)?"–":(sign&&v>0?"+":"")+nf
 const fmtBn = v=>!v?"–":v>=1000?nf(2).format(v/1000)+" Bio. $":nf(0).format(v)+" Mrd. $";
 const cls = v=>v>0?"up":v<0?"down":"";
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const NO_DEPOT=false; // Ausgabe „ohne Depot“: pack.py setzt hier true (Datei owlgo-ohne-depot)
+if(NO_DEPOT)document.documentElement.classList.add("nodepot");
 const store = {get(k,d){try{const v=localStorage.getItem("kr_"+k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem("kr_"+k,JSON.stringify(v))}catch{}}};
 
 /* ---------- Zustand ---------- */
@@ -1530,12 +1535,13 @@ async function loadPortfolio(){
   const local=store.get("portfolio",[]);
   if(!list||(!list.length&&local.length))list=local; // ältere Browser-Daten übernehmen
   S.portfolio=(list||[]).filter(p=>p&&p.sym&&p.qty>0);
+  if(NO_DEPOT){S._hidPos=S.server?S.portfolio:[];S.portfolio=[]} // gleiche Datei wie die Vollversion: Positionen nur durchreichen
   updateSaveInfo();
 }
 async function savePortfolio(){
-  store.set("portfolio",S.portfolio);store.set("journal",S.journal);store.set("watchlist",S.watch); // Kopie im Browser
+  if(!NO_DEPOT)store.set("portfolio",S.portfolio);store.set("journal",S.journal);store.set("watchlist",S.watch); // Kopie im Browser
   if(S.server){
-    try{const r=await http("PUT","/api/portfolio",{version:1,positions:S.portfolio,journal:S.journal,watchlist:S.watch});
+    try{const r=await http("PUT","/api/portfolio",{version:1,positions:NO_DEPOT?S._hidPos||[]:S.portfolio,journal:S.journal,watchlist:S.watch});
       if(!r.ok)throw new Error("HTTP "+r.status);S.pfPath=(await r.json()).path;S.pfErr=null}
     catch(e){S.pfErr=e.message}
   }
@@ -1549,6 +1555,7 @@ function updateSaveInfo(){
 }
 function isMobile(){return matchMedia("(max-width: 700px)").matches}
 function setMobileTab(t){
+  if(NO_DEPOT&&t==="depot")t="listen";
   document.documentElement.dataset.m=t;store.set("mtab",t);
   document.querySelectorAll("#mnav button").forEach(b=>b.setAttribute("aria-current",b.dataset.m===t?"page":"false"));
   if(t==="depot"&&S.view!=="depot")setView("depot");if(t==="analyse"&&S.view!=="markt")setView("markt");if(t==="info"&&S.view!=="info")setView("info");if(t==="strat"&&S.view!=="strat")setView("strat");if(t==="blase"&&S.view!=="blase")setView("blase");
@@ -1582,7 +1589,7 @@ async function renderInfo(force=false){
   $("#mktTiles").innerHTML=mk.map((x,i)=>x?`<button type="button" class="mtile" data-s="${esc(x.sym)}"><span>${esc(x.name)}</span><b class="num">${fmtPx(x.p)}</b><span class="num ${cls(x.ch)}">${pct(x.ch,2)}</span></button>`
     :`<div class="mtile"><span>${esc(MKT[i][1])}</span><b>–</b></div>`).join("");
   // Nachrichten zu den größten Depotwerten
-  const top=depotRows().rows.filter(r=>r.m&&!r.p.manual).sort((a,b)=>(b.value||0)-(a.value||0)).slice(0,8).map(r=>r.p.sym);
+  const top=NO_DEPOT?S.watch.slice(0,8).map(w=>w.sym):depotRows().rows.filter(r=>r.m&&!r.p.manual).sort((a,b)=>(b.value||0)-(a.value||0)).slice(0,8).map(r=>r.p.sym);
   $("#newsDepot").innerHTML='<p class="muted">Lade …</p>';
   const lists=await pool(top.length?top:["DAX"],4,async q=>(await api("/api/news?q="+encodeURIComponent(q))).news||[]);
   const seen=new Set(),items=lists.flat().filter(Boolean).filter(n=>n.link&&!seen.has(n.title)&&seen.add(n.title))
@@ -1597,7 +1604,7 @@ async function renderInfo(force=false){
 }
 function renderEvents(){
   const now=Date.now()/1000,rows=[];
-  for(const p of S.portfolio){const l=S.live[p.sym];if(!l)continue;
+  for(const p of NO_DEPOT?S.watch:S.portfolio){const l=S.live[p.sym];if(!l)continue;
     if(l.earn&&l.earn>now-86400&&l.earn<now+120*86400)rows.push([l.earn,p,"Quartalszahlen"]);
     if(l.exDiv&&l.exDiv>now-86400&&l.exDiv<now+120*86400)rows.push([l.exDiv,p,"Ex-Dividende"]);
     else if(l.div&&l.div>now-86400&&l.div<now+120*86400)rows.push([l.div,p,"Dividendenzahlung"]);}
@@ -2843,6 +2850,7 @@ $("#bubLegend").addEventListener("click",e=>{const b=e.target.closest("button[da
 $("#bubHot").addEventListener("click",e=>{const tr=e.target.closest("tr[data-sym]");if(tr)select(tr.dataset.sym)});
 
 function setView(v){
+  if(NO_DEPOT&&v==="depot")v="markt";
   S.view=v;store.set("view",v);
   $("#viewMarket").hidden=v!=="markt";$("#viewDepot").hidden=v!=="depot";$("#viewInfo").hidden=v!=="info";$("#viewStrat").hidden=v!=="strat";$("#viewBubble").hidden=v!=="blase";$("#vBlase").setAttribute("aria-pressed",v==="blase");$("#vStrat").setAttribute("aria-pressed",v==="strat");
   $("#vMarkt").setAttribute("aria-pressed",v==="markt");$("#vDepot").setAttribute("aria-pressed",v==="depot");$("#vInfo").setAttribute("aria-pressed",v==="info");
@@ -3100,6 +3108,8 @@ new MutationObserver(retheme).observe(document.documentElement,{attributes:true,
     await refreshAll(true);$("#stamp").textContent="Yahoo Finance nicht erreichbar – zeige simulierte Daten.";
   }
   if(!S.metrics[S.sel]){S.sel=regionList(S.region)[0]?.sym||"NVDA";renderSide();renderStock()}
+  if(NO_DEPOT){$("#newsDepotH").textContent="Nachrichten zu deiner Watchlist";$("#eventsH").textContent="Termine deiner Watchlist-Werte";
+    const c=document.querySelector('#scanCls [data-c="mine"]');if(c)c.textContent="Watchlist";$("#appVer").textContent+=" · ohne Depot"}
   setAuto();setView(S.view);fillSymList("");setTimeout(pollNews,4000);setMobileTab(store.get("mtab","listen"));
   if(NATIVE){ // In der App: Version antippen = nach Updates suchen
     let inf={};try{inf=JSON.parse(NATIVE.info())}catch{}

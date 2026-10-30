@@ -3,6 +3,9 @@ Schema: Hauptversion.Änderung
   kleine Änderung  -> zweite Stelle +1   (z. B. 3.1 -> 3.2)
   große Änderung   -> erste Stelle +1, Zähler beginnt bei 1 (z. B. 3.5 -> 4.1)
 
+7.3      NEU zweite Ausgabe „Owlgo ohne Depot“ (owlgo-ohne-depot_v7.3.zip): alles außer dem Depot-Reiter –
+         keine Positionen, kein Trade-Tagebuch, keine Depot-Filter; Nachrichten und Termine kommen aus der
+         Watchlist. Läuft beide Ausgaben auf demselben PC, bleiben die Depotdaten der Vollversion unangetastet.
 7.2      NEU Blasen-Radar: Blasen-Score 0–100 für S&P 500, Nasdaq 100, Halbleiter, DAX, Euro Stoxx 50, Nikkei,
          Shanghai, Gold und Bitcoin im Vergleich zur eigenen Geschichte (Monatskurse seit Aufzeichnungsbeginn),
          Ausblick aus ähnlichen historischen Phasen (12 Monate / 3 Jahre), Vergleichskurven mit 1929, Japan 1989,
